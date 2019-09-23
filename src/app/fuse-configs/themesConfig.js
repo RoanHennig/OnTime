@@ -5,11 +5,16 @@ const themesConfig = {
     default    : {
         palette: {
             type     : 'light',
-            primary  : fuseDark,
+            primary  : {
+                light: '#FF908B',
+                main : '#D0605E',
+                dark : '#9B3134'
+            },
             secondary: {
-                light: lightBlue[400],
-                main : lightBlue[600],
-                dark : lightBlue[700]
+                light       : '#C76A1D',
+                main        : '#FF994C',
+                dark        : '#FFCA7B',
+                contrastText: '#FFF'
             },
             error    : red
         },
