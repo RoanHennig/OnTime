@@ -14,6 +14,8 @@
         "axios-mock-adapter": "1.17.0",
         "chart.js": "2.8.0",
         "date-fns": "2.1.0",
+        "devextreme": "19.1.7-build-19263-1729",
+        "devextreme-react": "19.1",
         "downshift": "3.2.14",
         "firebase": "6.6.0",
         "formsy-react": "1.1.5",
@@ -50,6 +52,7 @@
         "react-router-dom": "5.0.1",
         "react-scripts": "3.1.1",
         "react-select": "3.0.4",
+        "react-spring": "8.0.27",
         "react-swipeable-views": "0.13.3",
         "react-table": "6.10.2",
         "react-text-mask": "5.4.3",
@@ -58,8 +61,7 @@
         "redux": "4.0.4",
         "redux-thunk": "2.3.0",
         "typeface-muli": "0.0.71",
-        "velocity-react": "1.4.3",
-        "react-spring": "8.0.27"
+        "velocity-react": "1.4.3"
     },
     "resolutions": {
         "react": "16.9.0",
