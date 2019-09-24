@@ -1,5 +1,8 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+#Modules Cache
+/node_modules/.cache
+
 # testing
 /coverage
 
