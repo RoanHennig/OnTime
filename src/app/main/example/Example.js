@@ -4,7 +4,7 @@ import {FusePageSimple, DemoContent} from '@fuse';
 import Scheduler from 'devextreme-react/scheduler';
 
 const currentDate = new Date(2017, 4, 25);
-const views = ['day', 'week', 'workWeek', 'month'];
+const views = [{type:'day',cellDuration:15}, 'week', 'workWeek', 'month'];
 
 const styles = theme => ({
     layoutRoot: {}
@@ -105,7 +105,9 @@ class Example extends Component {
                         views={views}
                         defaultCurrentView={'day'}
                         defaultCurrentDate={currentDate}
-                        startDayHour={9} />
+                        startDayHour={9}
+                        cellDuration={15}
+                        cell />
                     </div>
                 }
             />

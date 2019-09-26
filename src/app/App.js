@@ -12,6 +12,7 @@ import {create} from 'jss';
 import {StylesProvider, jssPreset, createGenerateClassName} from '@material-ui/styles';
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.css';
+
 const jss = create({
     ...jssPreset(),
     plugins       : [...jssPreset().plugins, jssExtend()],
