@@ -1,7 +1,7 @@
-import React from 'react';
 
-/* 
-export const ExampleConfig = {
+
+
+/* export const ExampleConfig = {
     settings: {
         layout: {
             config: {}
@@ -14,6 +14,7 @@ export const ExampleConfig = {
         }
     ]
 }; */
+
 
 
 import Example from './Example';
@@ -31,3 +32,4 @@ export const ExampleConfig = {
         }
     ]
 };
+

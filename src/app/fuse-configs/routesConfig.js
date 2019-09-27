@@ -11,7 +11,7 @@ const routeConfigs = [
 ];
 
 const routes = [
-    ...FuseUtils.generateRoutesFromConfigs(routeConfigs,authRoles.user),
+    ...FuseUtils.generateRoutesFromConfigs(routeConfigs),
     {
         path     : '/',
         component: () => <Redirect to="/example"/>

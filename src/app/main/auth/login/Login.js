@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import {Card, CardContent, Typography, Tabs, Tab} from '@material-ui/core';
 import {darken} from '@material-ui/core/styles/colorManipulator';
 import {FuseAnimate} from '@fuse';
-import {Link} from 'react-router-dom';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/styles';
 import {Button} from '@material-ui/core';

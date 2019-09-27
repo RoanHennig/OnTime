@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Typography, Dialog, Icon, IconButton, Slide} from '@material-ui/core';
+import {Typography, Dialog, Icon, IconButton, Slide} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import {red} from '@material-ui/core/colors';
 import {FuseScrollbars, FuseSettings} from '@fuse';
@@ -60,10 +60,6 @@ function SettingsPanel()
 {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
 
     const handleClose = () => {
         setOpen(false);

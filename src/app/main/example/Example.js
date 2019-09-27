@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import {FusePageSimple, DemoContent} from '@fuse';
+import {FusePageSimple} from '@fuse';
 import Scheduler from 'devextreme-react/scheduler';
 
 const currentDate = new Date(2017, 4, 25);
