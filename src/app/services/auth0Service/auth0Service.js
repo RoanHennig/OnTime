@@ -23,9 +23,11 @@ class auth0Service {
             AUTH_CONFIG.domain,
             {
                 autoclose        : true,
+                avatar           : null,
                 socialButtonStyle: "big",
                 auth             : {
-                    redirect: false,
+                    sso: false,
+                    redirect: true,
                     redirectUrl : AUTH_CONFIG.callbackUrl,
                     responseType: 'token id_token',
                     audience    : `https://${AUTH_CONFIG.domain}/api/v2/`,
