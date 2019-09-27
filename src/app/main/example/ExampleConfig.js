@@ -1,6 +1,6 @@
 import React from 'react';
 
-
+/* 
 export const ExampleConfig = {
     settings: {
         layout: {
@@ -13,13 +13,8 @@ export const ExampleConfig = {
             component: React.lazy(() => import('./Example'))
         }
     ]
-};
+}; */
 
-
-/**
- * Lazy load Example
- */
-/*
 
 import Example from './Example';
 
@@ -36,4 +31,3 @@ export const ExampleConfig = {
         }
     ]
 };
-*/

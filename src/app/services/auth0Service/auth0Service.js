@@ -25,13 +25,17 @@ class auth0Service {
                 autoclose        : true,
                 socialButtonStyle: "big",
                 auth             : {
-                    // redirect: false,
+                    redirect: true,
                     redirectUrl : AUTH_CONFIG.callbackUrl,
                     responseType: 'token id_token',
                     audience    : `https://${AUTH_CONFIG.domain}/api/v2/`,
                     params      : {
                         scope: 'openid profile email user_metadata app_metadata picture update:current_user_metadata create:current_user_metadata read:current_user'
                     }
+                },
+                theme: {
+                    primaryColor: '#D0605E',
+                    labeledSubmitButton: false
                 }
             }
         );
