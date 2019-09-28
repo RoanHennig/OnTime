@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {FusePageSimple} from '@fuse';
 import Scheduler from 'devextreme-react/scheduler';
+import {useDispatch} from 'react-redux';
+import withReducer from 'app/store/withReducer';
+import * as Actions from './store/actions';
+import reducer from './store/reducers';
 
 const currentDate = new Date(2017, 4, 25);
 const views = [{type:'day',cellDuration:15}, 'week', 'workWeek', 'month'];
@@ -82,6 +86,10 @@ const data = [
 
 class Example extends Component {
 
+  componentDidMount () {
+    Actions.getTest();    
+  }
+
     render()
     {
         const {classes} = this.props;
@@ -115,4 +123,4 @@ class Example extends Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(Example);
+export default withStyles(styles, {withTheme: true})(withReducer('exampleApp', reducer)(Example));

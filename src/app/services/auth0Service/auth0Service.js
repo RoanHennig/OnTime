@@ -31,6 +31,7 @@ class auth0Service {
                     redirectUrl : AUTH_CONFIG.callbackUrl,
                     responseType: 'token id_token',
                     audience    : `https://${AUTH_CONFIG.domain}/api/v2/`,
+                    allowedConnections: ['Username-Password-Authentication'],
                     params      : {
                         scope: 'openid profile email user_metadata app_metadata picture update:current_user_metadata create:current_user_metadata read:current_user'
                     }
@@ -38,7 +39,32 @@ class auth0Service {
                 theme: {
                     primaryColor: '#D0605E',
                     labeledSubmitButton: false
-                }
+                },
+                additionalSignUpFields: [{
+                    name: "first_name",
+                    placeholder: "your first name",
+                    icon:"assets/images/icons/usericon.png",
+                    validator: function() { 
+                      return true;
+                    }
+                  },
+                  {
+                    name: "last_name",
+                    placeholder: "your last name",
+                    icon:"assets/images/icons/usericon.png",
+                    validator: function() { 
+                      return true;
+                    }
+                  },
+                  {
+                    name: "business_name",
+                    placeholder: "your business name",
+                    icon: "assets/images/icons/businessicon.png",
+                    validator: function() { 
+                      return true;
+                    }
+                  }
+                ]
             }
         );
         this.handleAuthentication();
