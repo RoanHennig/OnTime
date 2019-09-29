@@ -5,6 +5,7 @@ import AUTH_CONFIG from './auth0ServiceConfig';
 
 class auth0Service {
     sdk = {auth0Manage: null};
+    
 
     init(success)
     {
@@ -17,7 +18,7 @@ class auth0Service {
             success(false);
             return;
         }
-
+        this.registrationComplete = false;
         this.lock = new Auth0Lock(
             AUTH_CONFIG.clientId,
             AUTH_CONFIG.domain,
@@ -103,6 +104,9 @@ class auth0Service {
         this.lock.on('authorization_error', (err) => {
             console.warn(`Error: ${err.error}. Check the console for further details.`);
         });
+
+        this.lock.on('signup ready', this.onSignupReady);
+        this.lock.on('signin ready', this.onSigninReady);
     };
 
     onAuthenticated = (callback) => {
@@ -111,6 +115,22 @@ class auth0Service {
             return false;
         }
         this.lock.on('authenticated', callback);
+    };
+
+    onSignupReady = () => {
+        if ( !this.lock )
+        {
+            return false;
+        }
+        this.registrationComplete = true;
+    };
+
+    onSigninReady = () => {
+        if ( !this.lock )
+        {
+            return false;
+        }
+        this.registrationComplete = false;
     };
 
     setSession = (authResult) => {
@@ -167,6 +187,10 @@ class auth0Service {
                     'Authorization': 'Bearer ' + this.getAccessToken()
                 }
             }).then(response => {
+                    if(response.data.app_metadata.accountStatus &&
+                     response.data.app_metadata.accountStatus == 'Complete'){
+                    this.registrationComplete = true;
+                }
                 resolve(response.data);
             }).catch(error => {
                 // handle error
@@ -207,6 +231,10 @@ class auth0Service {
             return null;
         }
         return decoded;
+    }
+
+    isRegistrationComplete = () => {
+        return this.registrationComplete;
     }
 }
 

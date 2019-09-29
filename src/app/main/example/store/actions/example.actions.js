@@ -6,10 +6,11 @@ export const GET_TEST = '[EXAMPLE APP] GET TEST';
 
 export function getTest()
 {
-    const request = axios.get('https://localhost:5001/api/weatherforecast/stuff' ,{
+    const request = axios.get('api/weatherforecast/stuff' ,{
         headers: {
             'Content-Type' : 'application/json',
-            'Authorization': 'Bearer ' + auth0Service.getAccessToken()
+            'Authorization': 'Bearer ' + auth0Service.getAccessToken(),
+            
         }
     });
 

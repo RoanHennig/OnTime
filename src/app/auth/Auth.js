@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import history from '@history';
 import {FuseSplashScreen} from '@fuse';
 import {connect} from 'react-redux';
 import * as userActions from 'app/auth/store/actions';
@@ -11,7 +12,8 @@ import jwtService from 'app/services/jwtService';
 class Auth extends Component {
 
     state = {
-        waitAuthCheck: true
+        waitAuthCheck: true,
+        isRegistrationComplete: false
     }
 
     componentDidMount()
@@ -22,7 +24,7 @@ class Auth extends Component {
             this.auth0Check(),
             //this.jwtCheck()
         ]).then(() => {
-            this.setState({waitAuthCheck: false})
+            this.setState({waitAuthCheck: false, isRegistrationComplete:auth0Service.isRegistrationComplete})
         })
     }
 
@@ -99,6 +101,14 @@ class Auth extends Component {
 
                 this.props.showMessage({message: 'Logged in with Auth0'});
             })
+
+            if(!this.state.isRegistrationComplete){
+                history.push({
+                    pathname: '/business-setup'
+                });
+    
+                this.props.showMessage({message: 'Registration Incomplete'});
+            }
         }
         else
         {

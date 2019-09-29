@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {FusePageSimple} from '@fuse';
 import Scheduler from 'devextreme-react/scheduler';
-import {useDispatch} from 'react-redux';
 import withReducer from 'app/store/withReducer';
 import * as Actions from './store/actions';
 import reducer from './store/reducers';

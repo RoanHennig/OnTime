@@ -12,6 +12,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import App from 'app/App';
+import axios from 'axios';
+import AXIOS_CONFIG from './app/fuse-configs/axiosConfig';
+
+axios.defaults.baseURL = AXIOS_CONFIG.baseURL;
 
 ReactDOM.render(
     <App/>,
