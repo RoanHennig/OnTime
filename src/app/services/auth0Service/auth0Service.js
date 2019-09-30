@@ -186,7 +186,7 @@ class auth0Service {
                 }
             }).then(response => {
                     if(response.data.app_metadata.accountStatus &&
-                     response.data.app_metadata.accountStatus == 'Complete'){
+                     response.data.app_metadata.accountStatus === 'Complete'){
                     this.registrationComplete = true;
                 }
                 else {

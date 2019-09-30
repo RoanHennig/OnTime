@@ -3,6 +3,7 @@ import {FuseSplashScreen} from '@fuse';
 import auth0Service from 'app/services/auth0Service';
 import * as userActions from 'app/auth/store/actions';
 import * as Actions from 'app/store/actions';
+import history from '@history';
 import {useDispatch} from 'react-redux';
 
 function Callback(props)
@@ -11,14 +12,16 @@ function Callback(props)
 
     useEffect(() => {
         auth0Service.onAuthenticated(() => {
-            dispatch(Actions.showMessage({message: 'Logging in with Auth0'}));
-
-            /**
-             * Retrieve user data from Auth0
-             */
             auth0Service.getUserData().then(tokenData => {
                 dispatch(userActions.setUserDataAuth0(tokenData));
-                dispatch(Actions.showMessage({message: 'Logged in with Auth0'}));
+          
+                if(!auth0Service.isRegistrationComplete()){
+                    history.push({
+                        pathname: '/business-setup'
+                    });
+        
+                    this.props.showMessage({message: 'Registration Incomplete'});
+                }
             });
         });
     }, [dispatch]);

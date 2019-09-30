@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import {Card, CardContent, Typography, Tabs, Tab} from '@material-ui/core';
 import {darken} from '@material-ui/core/styles/colorManipulator';
 import {FuseAnimate} from '@fuse';
@@ -6,9 +6,6 @@ import clsx from 'clsx';
 import {makeStyles} from '@material-ui/styles';
 import {Button} from '@material-ui/core';
 import auth0Service from 'app/services/auth0Service';
-import * as authActions from 'app/auth/store/actions';
-import * as Actions from 'app/store/actions';
-import {useDispatch} from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,35 +17,12 @@ const useStyles = makeStyles(theme => ({
 function Login()
 {
 
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-
-        auth0Service.onAuthenticated(() => {
-
-            dispatch(Actions.showMessage({message: 'Logging in with Auth0'}));
-
-            auth0Service.getUserData().then(tokenData => {
-
-                dispatch(authActions.setUserDataAuth0(tokenData));
-
-                dispatch(Actions.showMessage({message: 'Logged in with Auth0'}));
-            });
-        });
-    }, [dispatch]);
-
     function showDialog()
     {
         auth0Service.login();
     }
 
     const classes = useStyles();
-    const [selectedTab, setSelectedTab] = useState(0);
-
-    function handleTabChange(event, value)
-    {
-        setSelectedTab(value);
-    }
 
     return (
         <div className={clsx(classes.root, "flex flex-col flex-1 flex-shrink-0 p-24 md:flex-row md:p-0")}>
@@ -81,8 +55,7 @@ function Login()
                         <Typography variant="h6" className="text-center md:w-full mb-48">LOGIN TO YOUR ACCOUNT</Typography>
 
                         <Tabs
-                            value={selectedTab}
-                            onChange={handleTabChange}
+                            value={0}
                             variant="fullWidth"
                             className="w-full mb-32"
                         >
@@ -93,7 +66,7 @@ function Login()
                             />
                         </Tabs>
 
-                        {selectedTab === 0 &&         
+                        {        
                         <div className="w-full">
                             <Button
                                 className="w-full my-48"
