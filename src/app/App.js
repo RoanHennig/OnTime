@@ -11,7 +11,7 @@ import routes from './fuse-configs/routesConfig';
 import {create} from 'jss';
 import {StylesProvider, jssPreset, createGenerateClassName} from '@material-ui/styles';
 import 'devextreme/dist/css/dx.common.css';
-import 'devextreme/dist/css/dx.light.css';
+import 'devextreme/dist/css/dx.material.custom.light.css';
 
 const jss = create({
     ...jssPreset(),

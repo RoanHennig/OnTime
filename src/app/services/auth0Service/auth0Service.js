@@ -122,7 +122,6 @@ class auth0Service {
         {
             return false;
         }
-        this.registrationComplete = true;
     };
 
     onSigninReady = () => {
@@ -130,7 +129,6 @@ class auth0Service {
         {
             return false;
         }
-        this.registrationComplete = false;
     };
 
     setSession = (authResult) => {
@@ -190,6 +188,9 @@ class auth0Service {
                     if(response.data.app_metadata.accountStatus &&
                      response.data.app_metadata.accountStatus == 'Complete'){
                     this.registrationComplete = true;
+                }
+                else {
+                    response.data.app_metadata.roles = ['newBusinessOwner'];
                 }
                 resolve(response.data);
             }).catch(error => {
