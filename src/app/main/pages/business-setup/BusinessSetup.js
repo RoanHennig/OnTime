@@ -1,22 +1,31 @@
 import React, {Component} from 'react';
-import {Card, CardContent} from '@material-ui/core';
+import {Container, Card, CardContent} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
-import {FusePageSimple} from '@fuse';
-import { CheckBox, SelectBox, NumberBox, Form } from 'devextreme-react';
+import {makeStyles} from '@material-ui/styles';
 import service from './data.js';
 import {darken} from '@material-ui/core/styles/colorManipulator';
 import {FuseAnimate} from '@fuse';
 import clsx from 'clsx';
+import Step1 from './Steps/Step1';
+
+import Stepper  from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
+function getSteps() {
+    return ['Business Details', 'Business Type', 'Services Provided' ,'Opening Times','Additional Extensions'];
+  } 
 
 const styles = theme => ({
-    layoutRoot: {
-        background: 'radial-gradient(' + darken(theme.palette.primary.dark, 0.3) + ' 0%, ' + theme.palette.primary.dark + ' 60%)',
+    root: {
+        background: 'radial-gradient(' + darken(theme.palette.primary.dark, 0.5) + ' 0%, ' + theme.palette.primary.dark + ' 80%)',
         color     : theme.palette.primary.contrastText
-    },
-    root:{
-        background: 'radial-gradient(' + darken(theme.palette.primary.dark, 0.3) + ' 0%, ' + theme.palette.primary.dark + ' 60%)',
-        color     : theme.palette.primary.contrastText
-    }
+    }, 
+    button: {
+        marginRight: theme.spacing(1),
+      }
 });
 
 class BusinessSetup extends Component {
@@ -24,176 +33,154 @@ class BusinessSetup extends Component {
         super();
         this.companies = service.getCompanies();
         this.state = {
-          labelLocation: 'top',
-          readOnly: false,
-          showColon: true,
-          minColWidth: 600,
-          colCount: 2,
-          width: 500,
-          company: this.companies[0]
-        };
-        this.onCompanyChanged = this.onCompanyChanged.bind(this);
-        this.onLabelLocationChanged = this.onLabelLocationChanged.bind(this);
-        this.onReadOnlyChanged = this.onReadOnlyChanged.bind(this);
-        this.onShowColonChanged = this.onShowColonChanged.bind(this);
-        this.onMinColWidthChanged = this.onMinColWidthChanged.bind(this);
-        this.onColumnsCountChanged = this.onColumnsCountChanged.bind(this);
-        this.onFormWidthChanged = this.onFormWidthChanged.bind(this);
+            activeStep: 0,
+            skipped: new Set(),
+            step1: <Step1 companies = {this.companies}/>
+          };
       }
 
       render()
       {
         const {
-            labelLocation,
-            readOnly,
-            showColon,
-            minColWidth,
-            colCount,
-            company,
-            width
+            activeStep
           } = this.state;
 
-          const {classes} = this.props;
-       
+          const { classes } = this.props;
+          console.log(styles);
+          const steps = getSteps();
+
           return (
-              <FusePageSimple
-                  classes={{
-                      root: classes.layoutRoot
-                  }}
-                  content={
+                <div className={clsx(classes.root, "flex flex-col flex-auto flex-shrink-0 items-center justify-center p-32")}>
 
-                    <div className={clsx(classes.root, "flex flex-col flex-auto flex-shrink-0 items-center justify-center p-32")}>
+                <div className="flex flex-col items-center justify-center w-full">
+                <Container maxWidth="md" className="max-w-lg flex flex-col items-center justify-center p-32 text-center">
+                    <FuseAnimate animation="transition.expandIn">
 
-                        <div className="flex flex-col items-center justify-center w-full">
+                        <Card className="max-w-lg max-h-full ">
 
-                            <FuseAnimate animation="transition.expandIn">
+                            <CardContent className="flex flex-col items-center justify-center p-32 text-center">
+                            <div >
+                                <Stepper activeStep={activeStep}>
+                                    {steps.map((label, index) => {
+                                    const stepProps = {};
+                                    const labelProps = {};
+                                    if (this.isStepOptional(index)) {
+                                        labelProps.optional = <Typography variant="caption">Optional</Typography>;
+                                    }
+                                    if (this.isStepSkipped(index)) {
+                                        stepProps.completed = false;
+                                    }
+                                    return (
+                                        <Step key={label} {...stepProps}>
+                                        <StepLabel {...labelProps}>{label}</StepLabel>
+                                        </Step>
+                                    );
+                                    })}
+                                </Stepper >
+                                <div>
+                                    {activeStep === steps.length ? (
+                                    <div>
+                                        <Typography>
+                                            <Step1
+                                                companies = {this.companies}
+                                            />
+                                        </Typography>
+                                        <Button onClick={this.handleReset} className={classes.button} >
+                                        Reset
+                                        </Button>
+                                    </div>
+                                    ) : (
+                                    <div>
+                                        <Typography>{this.getStepContent(activeStep)}</Typography>
+                                        <div>
+                                        <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
+                                            Back
+                                        </Button>
+                                        {this.isStepOptional(activeStep) && (
+                                            <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={this.handleSkip}
+                                            className={classes.button}
+                                            >
+                                            Skip
+                                            </Button>
+                                        )}
 
-                                <Card className="w-full max-w-640">
-
-                                    <CardContent className="flex flex-col items-center justify-center p-32 text-center">
-
-                                        <div id={'form-demo'}>
-                                            <div className={'widget-container'}>
-                                                <div>Select company:</div>
-                                                <SelectBox
-                                                    displayExpr={'Name'}
-                                                    dataSource={this.companies}
-                                                    value={company}
-                                                    onValueChanged={this.onCompanyChanged}
-                                                />
-                                                <Form
-                                                    id={'form'}
-                                                    formData={company}
-                                                    readOnly={readOnly}
-                                                    showColonAfterLabel={showColon}
-                                                    labelLocation={labelLocation}
-                                                    minColWidth={minColWidth}
-                                                    colCount={colCount}
-                                                    width={width}
-                                                />
-                                                </div>
-                                                <div className={'options'}>
-                                                <div className={'caption'}>Options</div>
-                                                <div className={'option'}>
-                                                    <span>Label location:</span>
-                                                    <SelectBox
-                                                    items={['left', 'top']}
-                                                    value={labelLocation}
-                                                    onValueChanged={this.onLabelLocationChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <span>Columns count:</span>
-                                                    <SelectBox
-                                                    items={['auto', 1, 2, 3]}
-                                                    value={colCount}
-                                                    onValueChanged={this.onColumnsCountChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <span>Min column width:</span>
-                                                    <SelectBox
-                                                    items={[150, 200, 300]}
-                                                    value={minColWidth}
-                                                    onValueChanged={this.onMinColWidthChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <span>Form width:</span>
-                                                    <NumberBox
-                                                    max={550}
-                                                    value={width}
-                                                    onValueChanged={this.onFormWidthChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <CheckBox
-                                                    text={'readOnly'}
-                                                    value={readOnly}
-                                                    onValueChanged={this.onReadOnlyChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <CheckBox
-                                                    text={'showColonAfterLabel'}
-                                                    value={showColon}
-                                                    onValueChanged={this.onShowColonChanged}
-                                                    />
-                                                </div>
-                                            </div>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={this.handleNext } 
+                                            className={classes.button}
+                                        >
+                                            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                        </Button>
                                         </div>
-                                    </CardContent>
-                                </Card>
-                            </FuseAnimate>
-                        </div>
-                    </div>
-                    
-                  }
-              />
+                                    </div>
+                                    )}
+                                </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </FuseAnimate>
+                </Container>
+                </div>
+            </div>
           )
       }
 
-      onCompanyChanged(e) {
-        this.setState({
-          company: e.value
-        });
-      }
+
+    getStepContent = (step) => {
+        switch (step) {
+          case 0:
+            return this.state.step1;
+          case 1:
+            return 'What is an ad group anyways?';
+          case 2:
+            return 'This is the bit I really care about!';
+          default:
+            return 'Unknown step';
+        }
+    };
+
+    isStepOptional = step => {
+        return step === 1;
+    };
+    isStepSkipped = step => {
+        return this.state.skipped.has(step);
+    };
+
+    handleNext = () => {
+        let newSkipped = this.state.skipped;
+        if (this.isStepSkipped(this.state.activeStep)) {
+          newSkipped = new Set(newSkipped.values());
+          newSkipped.delete(this.state.activeStep);
+        }
     
-      onLabelLocationChanged(e) {
-        this.setState({
-          labelLocation: e.value
-        });
-      }
+        this.setState({activeStep: this.state.activeStep + 1})
+        this.setState({skipped: newSkipped});
+    };
+
+    handleBack = () => {
+        this.setState({activeStep: this.state.activeStep - 1})
+    };
+
+    handleSkip = () => {
+        if (!this.isStepOptional(this.state.activeStep)) {
+          throw new Error("You can't skip a step that isn't optional.");
+        }
     
-      onReadOnlyChanged(e) {
-        this.setState({
-          readOnly: e.value
-        });
-      }
-    
-      onShowColonChanged(e) {
-        this.setState({
-          showColon: e.value
-        });
-      }
-    
-      onMinColWidthChanged(e) {
-        this.setState({
-          minColWidth: e.value
-        });
-      }
-    
-      onColumnsCountChanged(e) {
-        this.setState({
-          colCount: e.value
-        });
-      }
-    
-      onFormWidthChanged(e) {
-        this.setState({
-          width: e.value
-        });
-      }
+        this.setState({activeStep: this.state.activeStep + 1});
+        const newSkipped = new Set(this.state.skipped.values());
+        newSkipped.add(this.state.activeStep);
+        this.setState({skipped: newSkipped});
+
+    };
+
+    handleReset = () => {
+        this.setState({activeStep: 0});
+    };
+
   }
   
   
