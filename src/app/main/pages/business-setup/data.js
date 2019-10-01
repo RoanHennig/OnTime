@@ -2,12 +2,12 @@ const companies = [{
     FirstName: 'Roan',
     LastName: 'Hennig',
     BusinessName: 'HTH',
+    Phone: '(800) 555-2797',
+    Website: 'http://www.HTHSoftareSolutions.com',
     Province: 'Western Cape',
     City: 'Cape Town',
-    ZipCode: 7130,
-    Phone: '(800) 555-2797',
-    Fax: '(800) 555-2171',
-    Website: 'http://www.HTHSoftareSolutions.com'
+    Address: 'De Velde Estate',
+    Zipcode: 7130
   }];
   
   export default {

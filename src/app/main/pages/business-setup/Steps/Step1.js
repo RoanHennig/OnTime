@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SelectBox, Form } from 'devextreme-react';
+import Form, { Item } from 'devextreme-react/form';
 
 class Step1 extends Component {
     constructor(props) {
@@ -12,7 +12,18 @@ class Step1 extends Component {
           minColWidth: 600,
           colCount: 2
         };
+
+        this.groupedItems = {
+            businessDetails: [
+               'FirstName', 'LastName', 'BusinessName', 'Phone', 'Website'
+            ],
+            businessLocation: [
+                'Address', 'City', 'Province', 'Zipcode'
+            ]
+          };
       }
+
+      
 
     render () {
         const {
@@ -31,7 +42,10 @@ class Step1 extends Component {
             labelLocation={labelLocation}
             minColWidth={minColWidth}
             colCount={colCount}
-        />
+        >
+            <Item itemType={'group'} caption={'Business Details'} items={this.groupedItems.businessDetails} />
+            <Item itemType={'group'} caption={'Business Location'} items={this.groupedItems.businessLocation} />
+            </Form>
       )
     }
 }
