@@ -5,6 +5,8 @@ import Scheduler from 'devextreme-react/scheduler';
 import withReducer from 'app/store/withReducer';
 import * as Actions from './store/actions';
 import reducer from './store/reducers';
+import auth0Service from 'app/services/auth0Service';
+import history from '@history';
 
 const currentDate = new Date(2017, 4, 25);
 const views = [{type:'day',cellDuration:15}, 'week', 'workWeek', 'month'];
@@ -87,6 +89,11 @@ class Example extends Component {
 
   componentDidMount () {
     Actions.getTest();    
+    if(!auth0Service.isRegistrationComplete()){
+      history.push({
+          pathname: '/business-setup'
+      });
+  }
   }
 
     render()
