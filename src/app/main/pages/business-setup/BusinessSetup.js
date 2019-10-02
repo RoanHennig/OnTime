@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import {Container, Card, CardContent} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
-import {makeStyles} from '@material-ui/styles';
 import service from './data.js';
 import {darken} from '@material-ui/core/styles/colorManipulator';
 import {FuseAnimate} from '@fuse';
 import clsx from 'clsx';
 import Step1 from './Steps/Step1';
-
 import Stepper  from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -31,11 +29,11 @@ const styles = theme => ({
 class BusinessSetup extends Component {
     constructor() {
         super();
-        this.companies = service.getCompanies();
+        this.businessDetails = service.getbusinessDetails();
         this.state = {
             activeStep: 0,
             skipped: new Set(),
-            step1: <Step1 companies = {this.companies}/>
+            step1: <Step1 businessDetails = {this.businessDetails}/>
           };
       }
 

@@ -1,4 +1,4 @@
-const companies = [{
+const businessDetails = {
     FirstName: 'Roan',
     LastName: 'Hennig',
     BusinessName: 'HTH',
@@ -8,11 +8,11 @@ const companies = [{
     City: 'Cape Town',
     Address: 'De Velde Estate',
     Zipcode: 7130
-  }];
+  };
   
   export default {
-    getCompanies() {
-      return companies;
+    getbusinessDetails() {
+      return businessDetails;
     }
   };
   
