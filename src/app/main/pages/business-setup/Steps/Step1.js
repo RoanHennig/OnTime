@@ -15,6 +15,16 @@ class Step1 extends Component {
         this.onRequiredFieldChanged = this.onRequiredFieldChanged.bind(this);     
       }  
       
+      componentDidMount() {
+        var result = validationEngine.validateGroup('businessData')
+        if(result.isValid){
+            this.props.setEnableNext();           
+        }
+        else {
+            this.props.setDisableNext();
+        }
+    }
+
     render () {
         const {
             labelLocation,
@@ -25,7 +35,8 @@ class Step1 extends Component {
           } = this.props.stepDetails;
           return (               
                 <Form
-                    id={'form'}
+                    id={'form'}                
+                    onContentReady={this.onRequiredFieldChanged}
                     formData={businessDetails}
                     readOnly={readOnly}
                     showColonAfterLabel={showColon}

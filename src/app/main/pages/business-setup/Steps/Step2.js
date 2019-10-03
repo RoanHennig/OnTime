@@ -4,49 +4,68 @@ import * as BusinessSetupActions from '../store/actions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import validationEngine from 'devextreme/ui/validation_engine';
-import Form, { GroupItem, Item,  PatternRule, RequiredRule, Label } from 'devextreme-react/form';
-import { SelectBox } from 'devextreme-react/select-box';
 import service from './businessTypes.js';
+import Form, {Item, RequiredRule } from 'devextreme-react/form';
 
 class Step2 extends Component {
     constructor(props) {
         super(props);
         this.onRequiredFieldChanged = this.onRequiredFieldChanged.bind(this);     
-        
       }  
-
+      
       componentDidMount() {
         window.scrollTo(0, 0);
       }
       
     render () {
-        // const {
-        //     businessType
-        //   } = this.props.stepDetails;
+        const {
+            labelLocation,
+            readOnly,
+            showColon,
+            colCount,
+            businessTypeDetails
+          } = this.props.stepDetails;
           return (
-              <div>
-                  <SelectBox className="mb-24" dataSource={service.getBusinessTypes()}
-                  displayExpr={'Name'}
-                  searchEnabled={true}
-                  searchMode={'contains'}
-                  searchExpr={'Name'}
-                  searchTimeout={200}
-                  minSearchLength={2}
-                  stylingMode= {'outlined'}
-                  showDataBeforeSearch={true} />
-
-                  <SelectBox dataSource={service.getBusinessSize()}
-                  displayExpr={'Name'}
-                  searchEnabled={false}
-                  stylingMode= {'outlined'}
-                  showDataBeforeSearch={true} />
-              </div>           
+                    <Form
+                    id={'form'}
+                    formData={businessTypeDetails}
+                    readOnly={readOnly}
+                    showColonAfterLabel={showColon}
+                    labelLocation={labelLocation}
+                    colCount={colCount}
+                    showValidationSummary={true}
+                    validationGroup={'businessType'}
+                    stylingMode= {'outlined'}
+                    onFieldDataChanged = {this.onRequiredFieldChanged}
+                    >           
+                        <Item dataField={'businessType'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getBusinessTypes(),
+                            //className="mb-24",
+                            displayExpr:'Name',
+                            searchEnabled:true,
+                            searchMode:'contains',
+                            searchExpr:'Name',
+                            searchTimeout:200,
+                            minSearchLength:2,
+                            placeholder:'which option describes your business best...',
+                            showDataBeforeSearch:true
+                            }}>
+                            <RequiredRule message={'Business Type is required'} />
+                        </Item>  
+                        <Item dataField={'businessSize'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getBusinessSize(),
+                            displayExpr:'Name',                    
+                            placeholder:'how many members are there within your business...',
+                            searchEnabled:false,
+                            showDataBeforeSearch:true
+                            }}>
+                            <RequiredRule message={'Business Size is required'} />
+                        </Item>  
+                    </Form>
           )
     }
 
     onRequiredFieldChanged(e) {
         var result = validationEngine.validateGroup('businessType')
-        if(result.isValid){
+        if(result.isValid && this.props.stepDetails.businessTypeDetails.businessType && this.props.stepDetails.businessTypeDetails.businessType){
             this.props.setEnableNext();           
         }
         else {
