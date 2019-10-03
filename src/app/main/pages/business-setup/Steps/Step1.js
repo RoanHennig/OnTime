@@ -1,42 +1,18 @@
 import React, { Component } from 'react';
-import Form, { Item } from 'devextreme-react/form';
-import {Icon, Tooltip} from '@material-ui/core';
-import GoogleMap from 'google-map-react';
+import Form, { GroupItem, Item,  PatternRule, RequiredRule, Label } from 'devextreme-react/form';
 import * as Actions from './store/actions';
+import * as BusinessSetupActions from '../store/actions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-
-const Marker = ({ text }) =>         
-<Tooltip title={text} placement="top">
-    <Icon className="text-red">place</Icon>
-</Tooltip>;
+import validationEngine from 'devextreme/ui/validation_engine';
+import service from './provices.js';
 
 class Step1 extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-			address: '',
-			city: '',
-			area: '',
-			state: '',
-			mapPosition: {
-				lat: this.props.center.lat,
-				lng: this.props.center.lng
-			},
-			markerPosition: {
-				lat: this.props.center.lat,
-				lng: this.props.center.lng
-			}
-		}
-
         this.props.setBusinessDetails(this.props.businessDetails);
-        this.onBusinessNameChanged = this.onBusinessNameChanged.bind(this);
-        this.groupedItems = {
-            businessLocation: [
-                'Address', 'City', 'Province', 'Zipcode'
-            ]
-          };
+        this.onRequiredFieldChanged = this.onRequiredFieldChanged.bind(this);     
       }  
       
     render () {
@@ -44,53 +20,73 @@ class Step1 extends Component {
             labelLocation,
             readOnly,
             showColon,
-            minColWidth,
             colCount,
             businessDetails
           } = this.props.stepDetails;
-          return (    
-            <div>
+          return (               
                 <Form
                     id={'form'}
                     formData={businessDetails}
                     readOnly={readOnly}
                     showColonAfterLabel={showColon}
                     labelLocation={labelLocation}
-                    minColWidth={minColWidth}
                     colCount={colCount}
+                    showValidationSummary={true}
+                    validationGroup={'businessData'}
+                    stylingMode= {'outlined'}
+                    onFieldDataChanged = {this.onRequiredFieldChanged}
                     >
-                    <Item itemType={'group'} caption={'Business Details'}>
-                        <Item dataField={'FirstName'} />
-                        <Item dataField={'LastName'} />
-                        <Item dataField={'BusinessName'} editorOptions={{ onValueChanged:this.onBusinessNameChanged }} />
-                        <Item dataField={'Phone'} />
-                        <Item dataField={'Website'} />
-                    </Item>
-                    <Item itemType={'group'} caption={'Business Location'} items={this.groupedItems.businessLocation} />
-                    
+                    <GroupItem caption={'Business Details'}>
+                        <Item dataField={'FirstName'}>
+                            <RequiredRule message={'First Name is required'}/>
+                            <PatternRule message={'Do not use digits in the First Name'}
+                                        pattern={/^[^0-9]+$/} />
+                        </Item>
+                        <Item dataField={'LastName'}>
+                            <RequiredRule message={'Last Name is required'}/>
+                            <PatternRule message={'Do not use digits in the Last Name'}
+                                        pattern={/^[^0-9]+$/} />
+                        </Item>
+                        <Item dataField={'BusinessName'}  >
+                            <RequiredRule message={'Business Name is required'} />
+                        </Item>
+                        <Item dataField={'Phone'} editorOptions={{mask: '+27 00 000 0000',
+                                maskRules: {
+                                    X: /[02-9]/
+                                },
+                                useMaskedValue: true,
+                                maskInvalidMessage: 'Must have a correct phone format'}} />
+                        <Item dataField={'Website'}> 
+                            <Label text={'Your Business Website'} />
+                        </Item>
+                    </GroupItem>
+                    <GroupItem caption={'Business Address'} > 
+                        <Item dataField={'Address'} >
+                            <RequiredRule message={'Address is required'} />
+                        </Item>
+                        <Item dataField={'City'} >
+                            <RequiredRule message={'City is required'} />
+                        </Item>
+                        <Item dataField={'Province'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getProvinces() }}>
+                            <RequiredRule message={'Province is required'} />
+                        </Item>
+                        <Item dataField={'Zipcode'}>
+                            <RequiredRule message={'Zipcode is required'} />
+                        </Item>
+                    </GroupItem>                
                 </Form>
-                <div className="w-full h-400">
-                    <GoogleMap
-                        bootstrapURLKeys={{
-                            key: 'AIzaSyBW7u4uqkxWX2qQaJhLwuhwfE58I8irucY'
-                        }}
-                        defaultZoom={12}
-                        defaultCenter={[59.955413, 30.337844]}
-                    >
-                    <Marker
-                        lat={59.955413}
-                        lng={30.337844}
-                        text={businessDetails.BusinessName}
-                    />
-                    </GoogleMap>
-                </div>
-              </div>
       )
     }
 
-    onBusinessNameChanged(e) {
-        this.props.setBusinessName(e.value);
-      }
+    onRequiredFieldChanged(e) {
+        var result = validationEngine.validateGroup('businessData')
+        if(result.isValid){
+            this.props.setEnableNext();           
+        }
+        else {
+            this.props.setDisableNext();
+        }
+    }
 }
 
 const mapStateToProps = state => {
@@ -102,11 +98,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>
 {
     return bindActionCreators({
-            setBusinessDetails     : Actions.setBusinessDetails,
-            setBusinessName        : Actions.setBusinessName,
-            getBusinessDetails        : Actions.getBusinessDetails
-        },
-        dispatch);
+        setBusinessDetails     : Actions.setBusinessDetails,
+        setEnableNext             : BusinessSetupActions.setEnableNext,
+        setDisableNext             : BusinessSetupActions.setDisableNext,
+    },
+    dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Step1);

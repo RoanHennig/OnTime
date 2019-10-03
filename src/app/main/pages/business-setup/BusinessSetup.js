@@ -6,11 +6,14 @@ import {darken} from '@material-ui/core/styles/colorManipulator';
 import {FuseAnimate} from '@fuse';
 import clsx from 'clsx';
 import Step1 from './Steps/Step1';
+import Step2 from './Steps/Step2';
 import Stepper  from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
+import Grow from '@material-ui/core/Grow';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import {connect} from 'react-redux';
 
 function getSteps() {
     return ['Business Details', 'Business Type', 'Services Provided' ,'Opening Times','Additional Extensions'];
@@ -23,6 +26,7 @@ const styles = theme => ({
     }, 
     button: {
         marginRight: theme.spacing(1),
+        marginTop: theme.spacing(3),
       }
 });
 
@@ -33,7 +37,8 @@ class BusinessSetup extends Component {
         this.state = {
             activeStep: 0,
             skipped: new Set(),
-            step1: <Step1 businessDetails = {this.businessDetails}/>
+            step1: <Step1 businessDetails = {this.businessDetails}/>,
+            step2: <Step2 />
           };
       }
 
@@ -44,7 +49,6 @@ class BusinessSetup extends Component {
           } = this.state;
 
           const { classes } = this.props;
-          console.log(styles);
           const steps = getSteps();
 
           return (
@@ -89,7 +93,7 @@ class BusinessSetup extends Component {
                                     </div>
                                     ) : (
                                     <div>
-                                        <Typography>{this.getStepContent(activeStep)}</Typography>
+                                        {this.getStepContent(activeStep)}
                                         <div>
                                         <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
                                             Back
@@ -110,6 +114,7 @@ class BusinessSetup extends Component {
                                             color="primary"
                                             onClick={this.handleNext } 
                                             className={classes.button}
+                                            disabled={!this.props.enableNext}
                                         >
                                             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                                         </Button>
@@ -131,9 +136,27 @@ class BusinessSetup extends Component {
     getStepContent = (step) => {
         switch (step) {
           case 0:
-            return this.state.step1;
+            return <div>             
+                    <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
+                    Tell us a little bit about your business...
+                    </Typography>
+                    <FuseAnimate animation="transition.perspectiveRightIn" 
+                                 duration={250}
+                                 delay={25}>
+                            {this.state.step1}
+                    </FuseAnimate>
+                    </div>;
           case 1:
-            return 'What is an ad group anyways?';
+            return <div>             
+                        <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
+                            What type of business are you in?
+                        </Typography>
+                        <FuseAnimate animation="transition.perspectiveLeftIn" 
+                                    duration={250}
+                                    delay={25}>
+                                {this.state.step2}
+                        </FuseAnimate>
+                    </div>;
           case 2:
             return 'This is the bit I really care about!';
           default:
@@ -153,8 +176,7 @@ class BusinessSetup extends Component {
         if (this.isStepSkipped(this.state.activeStep)) {
           newSkipped = new Set(newSkipped.values());
           newSkipped.delete(this.state.activeStep);
-        }
-    
+        }  
         this.setState({activeStep: this.state.activeStep + 1})
         this.setState({skipped: newSkipped});
     };
@@ -181,5 +203,10 @@ class BusinessSetup extends Component {
 
   }
   
+const mapStateToProps = state => {
+    return {
+        enableNext: state.businessSetup.BusinessSetup.enableNext
+    };
+}
   
-  export default withStyles(styles, {withTheme: true})(BusinessSetup);
+export default withStyles(styles, {withTheme: true})(connect(mapStateToProps, null)(BusinessSetup));

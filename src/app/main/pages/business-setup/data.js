@@ -2,7 +2,7 @@ const businessDetails = {
     FirstName: 'Roan',
     LastName: 'Hennig',
     BusinessName: 'HTH',
-    Phone: '(800) 555-2797',
+    Phone: '',
     Website: 'http://www.HTHSoftareSolutions.com',
     Province: 'Western Cape',
     City: 'Cape Town',
