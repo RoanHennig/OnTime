@@ -10,7 +10,7 @@ import Form, {Item, RequiredRule } from 'devextreme-react/form';
 class Step2 extends Component {
     constructor(props) {
         super(props);
-        this.onRequiredFieldChanged = this.onRequiredFieldChanged.bind(this);     
+        this.onRequiredFieldChanged = this.onRequiredFieldChanged.bind(this); 
       }  
       
       componentDidMount() {
@@ -22,13 +22,12 @@ class Step2 extends Component {
             labelLocation,
             readOnly,
             showColon,
-            colCount,
-            businessTypeDetails
+            colCount
           } = this.props.stepDetails;
           return (
                     <Form
                     id={'form'}
-                    formData={businessTypeDetails}
+                    formData={this.props.stepDetails.businessTypeDetails}
                     readOnly={readOnly}
                     showColonAfterLabel={showColon}
                     labelLocation={labelLocation}
@@ -39,14 +38,13 @@ class Step2 extends Component {
                     onFieldDataChanged = {this.onRequiredFieldChanged}
                     >           
                         <Item dataField={'businessType'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getBusinessTypes(),
-                            //className="mb-24",
                             displayExpr:'Name',
                             searchEnabled:true,
                             searchMode:'contains',
                             searchExpr:'Name',
                             searchTimeout:200,
                             minSearchLength:2,
-                            placeholder:'which option describes your business best...',
+                            placeholder:'what describes your business best...',
                             showDataBeforeSearch:true
                             }}>
                             <RequiredRule message={'Business Type is required'} />
@@ -66,7 +64,8 @@ class Step2 extends Component {
     onRequiredFieldChanged(e) {
         var result = validationEngine.validateGroup('businessType')
         if(result.isValid && this.props.stepDetails.businessTypeDetails.businessType && this.props.stepDetails.businessTypeDetails.businessType){
-            this.props.setEnableNext();           
+            this.props.setEnableNext();       
+            console.log(this.props.stepDetails.businessTypeDetails);    
         }
         else {
             this.props.setDisableNext();

@@ -3,20 +3,21 @@ import {Container, Card, CardContent} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
 import service from './data.js';
 import {darken} from '@material-ui/core/styles/colorManipulator';
-import {FuseAnimate} from '@fuse';
+import {FuseAnimate, FuseAnimateGroup} from '@fuse';
 import clsx from 'clsx';
 import Step1 from './Steps/Step1';
 import Step2 from './Steps/Step2';
+import Step3 from './Steps/Step3';
+import Step4 from './Steps/Step4';
 import Stepper  from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
-import Grow from '@material-ui/core/Grow';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux';
 
 function getSteps() {
-    return ['Business Details', 'Business Type', 'Services Provided' ,'Opening Times','Additional Extensions'];
+    return ['Business Details', 'Business Type', 'Services Provided' ,'Staff & Operating Hours','Additional Extensions'];
   } 
 
 const styles = theme => ({
@@ -38,7 +39,9 @@ class BusinessSetup extends Component {
             activeStep: 0,
             skipped: new Set(),
             step1: <Step1 businessDetails = {this.businessDetails}/>,
-            step2: <Step2 />
+            step2: <Step2 />,
+            step3: <Step3 />,
+            step4: <Step4 />
           };
       }
 
@@ -93,7 +96,16 @@ class BusinessSetup extends Component {
                                     </div>
                                     ) : (
                                     <div>
-                                        {this.getStepContent(activeStep)}
+                                        <FuseAnimateGroup        
+                                            enter={{
+                                                animation: "transition.slideLeftBigIn"
+                                            }}
+                                            leave={{
+                                                animation: "transition.slideRightBigOut"
+                                            }}>
+                                            {this.getStepContent(activeStep)}
+                                        </FuseAnimateGroup>
+                                       
                                         <div>
                                         <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
                                             Back
@@ -136,36 +148,64 @@ class BusinessSetup extends Component {
     getStepContent = (step) => {
         switch (step) {
           case 0:
-            return <div>             
-                    <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
-                    Tell us a little bit about your business...
-                    </Typography>
-                    <FuseAnimate animation="transition.perspectiveRightIn" 
-                                 duration={250}
-                                 delay={25}>
-                            {this.state.step1}
-                    </FuseAnimate>
-                    </div>;
+            return <FuseAnimateGroup        
+                        enter={{
+                            animation: "transition.slideLeftBigIn"
+                        }}
+                        leave={{
+                            animation: "transition.slideRightBigOut"
+                        }}>
+                        <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
+                            Tell us a little bit about your business...
+                        </Typography>
+                        {this.state.step1}
+                    </FuseAnimateGroup>;
           case 1:
-            return <div>             
+            return <FuseAnimateGroup        
+                        enter={{
+                            animation: "transition.slideLeftBigIn"
+                        }}
+                        leave={{
+                            animation: "transition.slideRightBigOut"
+                        }}>
                         <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                             What type of business are you in?
                         </Typography>
-                        <FuseAnimate animation="transition.perspectiveLeftIn" 
-                                    duration={250}
-                                    delay={25}>
-                                {this.state.step2}
-                        </FuseAnimate>
-                    </div>;
+                        {this.state.step2}
+                    </FuseAnimateGroup>;
           case 2:
-            return 'This is the bit I really care about!';
+            return <FuseAnimateGroup        
+                        enter={{
+                            animation: "transition.slideLeftBigIn"
+                        }}
+                        leave={{
+                            animation: "transition.slideRightBigOut"
+                        }}>
+                        <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
+                            What kind of services do you provide?
+                        </Typography>
+                        {this.state.step3}
+                    </FuseAnimateGroup>;
+          case 3:
+            return <FuseAnimateGroup        
+                        enter={{
+                            animation: "transition.slideLeftBigIn"
+                        }}
+                        leave={{
+                            animation: "transition.slideRightBigOut"
+                        }}>
+                        <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
+                            What times are you open for business?
+                        </Typography>
+                        {this.state.step4}
+                    </FuseAnimateGroup>;                    
           default:
             return 'Unknown step';
         }
     };
 
     isStepOptional = step => {
-        return step === 1;
+        return step === 2 || step === 4;
     };
     isStepSkipped = step => {
         return this.state.skipped.has(step);
