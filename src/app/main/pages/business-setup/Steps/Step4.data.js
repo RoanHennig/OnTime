@@ -1,6 +1,9 @@
 const rows = [
-  createData('Roan Hennig', ['08:00 - 12:00', '13:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00']),
-  createData('Madre Hennig', ['08:00 - 12:00', '13:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'])
+  createData(1,'Roan Hennig', [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }, '13:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00']),
+  createData(2,'Madre Hennig', ['08:00 - 12:00', '13:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'])
 ];
 
 export default {
@@ -10,7 +13,7 @@ export default {
   };
   
 
-  function createData(staffName, sunday, monday, tuesday, wednesday, thursday, friday, saturday) {
-    return { staffName, sunday, monday, tuesday, wednesday, thursday, friday, saturday };
+  function createData(staffID,staffName, sunday, monday, tuesday, wednesday, thursday, friday, saturday) {
+    return {staffID, staffName, sunday, monday, tuesday, wednesday, thursday, friday, saturday };
   }
   

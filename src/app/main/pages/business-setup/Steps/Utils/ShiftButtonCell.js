@@ -6,6 +6,7 @@ import {makeStyles} from '@material-ui/styles';
 const useStyles = makeStyles(theme => ({
     button: {
         marginBottom: theme.spacing(1),
+        minWidth: 120
       }
 }));
 
@@ -18,7 +19,8 @@ function ShiftButtonCell(props) {
             className ={classes.button}
             variant="contained"
             color="primary" 
-            onClick= {props.click}>
+            onClick= {props.click}
+            startIcon = {props.startIcon ? props.startIcon : null}>
             {props.shift}
         </Button>
       </div>

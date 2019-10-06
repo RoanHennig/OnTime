@@ -69,9 +69,6 @@ class BusinessSetup extends Component {
                                     {steps.map((label, index) => {
                                     const stepProps = {};
                                     const labelProps = {};
-                                    if (this.isStepOptional(index)) {
-                                        labelProps.optional = <Typography variant="caption">Optional</Typography>;
-                                    }
                                     if (this.isStepSkipped(index)) {
                                         stepProps.completed = false;
                                     }

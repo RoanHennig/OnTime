@@ -13,6 +13,7 @@ import {makeStyles} from '@material-ui/styles';
 
 export default function ShiftDialog(props) {
 
+    const formData ={ ...props.shiftPeriod};
     const useStyles = makeStyles(theme => ({
         button: {
             margin: theme.spacing(1),
@@ -21,6 +22,9 @@ export default function ShiftDialog(props) {
         deleteButton: {
             float: 'left',
             margin: theme.spacing(1),
+        },
+        dialogAction: {
+            display: 'block'
         }
     }))
 
@@ -32,14 +36,14 @@ export default function ShiftDialog(props) {
 
         return (
             <Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+                <DialogTitle id="form-dialog-title">Shift Period</DialogTitle>
                 <DialogContent>
                 <DialogContentText>
                     Customize your working hours to suit your business.
                 </DialogContentText>
                             <Form
                             id={'form'}                
-                            formData={[]}
+                            formData={formData}
                             readOnly={false}
                             showColonAfterLabel={true}
                             labelLocation={'top'}
@@ -48,15 +52,15 @@ export default function ShiftDialog(props) {
                             validationGroup={'businessOperatingHours'}
                             stylingMode= {'outlined'}
                             >
-                                <Item dataField={'ShiftStart'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers' }} >
+                                <Item dataField={'shiftStart'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers' }} >
                                     <RequiredRule message={'Please select a starting time for your shift'} />
                                 </Item>
-                                <Item dataField={'ShiftEnd'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers' }}>
+                                <Item dataField={'shiftEnd'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers' }}>
                                     <RequiredRule message={'Please select an ending time for your shift'}  />
                                 </Item>           
                         </Form>
                 </DialogContent>
-                <DialogActions disableSpacing={true}>
+                <DialogActions className={classes.dialogAction} disableSpacing={true}>
                 <Button
                     variant="contained"
                     color="secondary"
@@ -65,7 +69,7 @@ export default function ShiftDialog(props) {
                     >
                     Delete
                 </Button>
-                <Button variant="contained" color="primary" className={classes.button} startIcon={<SaveIcon />}>
+                <Button variant="contained" color="primary" onClick={() => props.handleSave(formData)} className={classes.button} startIcon={<SaveIcon />}>
                     Save
                 </Button>
                 </DialogActions>

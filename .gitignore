@@ -2,6 +2,8 @@
 
 #Modules Cache
 /node_modules
+/node_modules/.cache
+/node_modules/.bin
 
 # testing
 /coverage
