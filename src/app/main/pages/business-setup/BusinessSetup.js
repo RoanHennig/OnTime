@@ -58,10 +58,10 @@ class BusinessSetup extends Component {
                 <div className={clsx(classes.root, "flex flex-col flex-auto flex-shrink-0 items-center justify-center p-32")}>
 
                 <div className="flex flex-col items-center justify-center w-full">
-                <Container maxWidth="md" className="max-w-lg flex flex-col items-center justify-center p-32 text-center">
+                <Container maxWidth="xl" className=".max-w-3xl flex flex-col items-center justify-center p-32 text-center">
                     <FuseAnimate animation="transition.expandIn">
 
-                        <Card className="max-w-lg max-h-full ">
+                        <Card className=".max-w-3xl max-h-full ">
 
                             <CardContent className="flex flex-col items-center justify-center p-32 text-center">
                             <div >
