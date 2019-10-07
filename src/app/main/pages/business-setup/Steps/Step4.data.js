@@ -1,7 +1,7 @@
 const rows = [
   createData(1,'Roan Hennig', [{
     shiftStart:'08:00',
-    shiftEnd:'12:00'
+    shiftEnd:'13:00'
   }, {
     shiftStart:'13:00',
     shiftEnd:'17:00'

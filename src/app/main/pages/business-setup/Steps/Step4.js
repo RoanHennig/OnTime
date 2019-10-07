@@ -46,9 +46,7 @@ function Step4(props) {
     const handleClick = (row, day, period, dayOfWeek) => {
         setShiftRow(row);
         setShiftDay(day);
-        setShiftPeriod(period);
         setShiftDayOfWeek(dayOfWeek);
-        period = shiftPeriod;
         setIsOpen(true);
     };
 
@@ -63,37 +61,94 @@ function Step4(props) {
                     newDataSource[index].sunday = shiftDayOfWeek;
                     setDataSource(newDataSource);
                 }
+                break;
             case 'monday':
                 {
                     newDataSource[index].monday = shiftDayOfWeek;
                     setDataSource(newDataSource);
                 }
+                break;
             case 'tuesday':
                 {
                     newDataSource[index].tuesday = shiftDayOfWeek;
                     setDataSource(newDataSource);
                 }
+                break;
             case 'wednesday':
                 {
                     newDataSource[index].wednesday = shiftDayOfWeek;
                     setDataSource(newDataSource);
                 }
+                break;
             case 'thursday':
                 {
                     newDataSource[index].thursday = shiftDayOfWeek;
                     setDataSource(newDataSource);
                 }
+                break;
             case 'friday':
                 {
                     newDataSource[index].friday = shiftDayOfWeek;
                     setDataSource(newDataSource);
                 }
+                break;
             case 'saturday':
                 {
                     newDataSource[index].saturday = shiftDayOfWeek;
                     setDataSource(newDataSource);
                 }
+                break;
 
+        }
+    };
+
+    const handleDeleteWholeShift = () => {
+        const newDataSource = [...dataSource];
+        const index = newDataSource.indexOf(shiftRow);
+        setIsOpen(false);
+        switch (shiftDay) {
+            case 'sunday':
+                {
+                    newDataSource[index].sunday = null;
+                    setDataSource(newDataSource);
+                }
+                break;
+            case 'monday':
+                {
+                    newDataSource[index].monday = null;
+                    setDataSource(newDataSource);
+                }
+                break;
+            case 'tuesday':
+                {
+                    newDataSource[index].tuesday = null;
+                    setDataSource(newDataSource);
+                }
+                break;
+            case 'wednesday':
+                {
+                    newDataSource[index].wednesday = null;
+                    setDataSource(newDataSource);
+                }
+                break;
+            case 'thursday':
+                {
+                    newDataSource[index].thursday = null;
+                    setDataSource(newDataSource);
+                }
+                break;
+            case 'friday':
+                {
+                    newDataSource[index].friday = null;
+                    setDataSource(newDataSource);
+                }
+                break;
+            case 'saturday':
+                {
+                    newDataSource[index].saturday = null;
+                    setDataSource(newDataSource);
+                }
+                break;
         }
     };
 
@@ -109,6 +164,7 @@ function Step4(props) {
                     newDataSource[index].sunday.splice(shiftIndex, 1);
                     setDataSource(newDataSource);
                 }
+                break;
             case 'monday':
                 {
                     const newShift = [...newDataSource[index].monday];
@@ -116,6 +172,7 @@ function Step4(props) {
                     newDataSource[index].monday.splice(shiftIndex, 1);
                     setDataSource(newDataSource);
                 }
+                break;
             case 'tuesday':
                 {
                     const newShift = [...newDataSource[index].tuesday];
@@ -123,6 +180,7 @@ function Step4(props) {
                     newDataSource[index].tuesday.splice(shiftIndex, 1);
                     setDataSource(newDataSource);
                 }
+                break;
             case 'wednesday':
                 {
                     const newShift = [...newDataSource[index].wednesday];
@@ -130,6 +188,7 @@ function Step4(props) {
                     newDataSource[index].wednesday.splice(shiftIndex, 1);
                     setDataSource(newDataSource);
                 }
+                break;
             case 'thursday':
                 {
                     const newShift = [...newDataSource[index].thursday];
@@ -137,6 +196,7 @@ function Step4(props) {
                     newDataSource[index].thursday.splice(shiftIndex, 1);
                     setDataSource(newDataSource);
                 }
+                break;
             case 'friday':
                 {
                     const newShift = [...newDataSource[index].friday];
@@ -144,6 +204,7 @@ function Step4(props) {
                     newDataSource[index].friday.splice(shiftIndex, 1);
                     setDataSource(newDataSource);
                 }
+                break;
             case 'saturday':
                 {
                     const newShift = [...newDataSource[index].saturday];
@@ -151,13 +212,14 @@ function Step4(props) {
                     newDataSource[index].saturday.splice(shiftIndex, 1);
                     setDataSource(newDataSource);
                 }
+                break;
         }
     };
 
     const handleAddStaffClick = () => {
         const newItem = { ...dataSource[0] };
         newItem.staffID = dataSource.length + 1;
-        newItem.staffName = '';
+        newItem.staffName = 'Staff Member';
         setDataSource(dataSource.concat(newItem));
     };
 
@@ -169,7 +231,6 @@ function Step4(props) {
     };
 
     const [isOpen, setIsOpen] = useState(null);
-    const [shiftPeriod, setShiftPeriod] = useState(null);
     const [shiftRow, setShiftRow] = useState(null);
     const [shiftDay, setShiftDay] = useState(null);
     const [shiftDayOfWeek, setShiftDayOfWeek] = useState([]);
@@ -179,7 +240,7 @@ function Step4(props) {
 
     return (
         <Paper className={classes.root}>
-            <ShiftDialog open={isOpen} setClose={setIsOpen} shiftPeriod={shiftPeriod} setShiftDayOfWeek={setShiftDayOfWeek} shiftDayOfWeek={shiftDayOfWeek} handleSaveShift={handleSaveShift} handleDeleteShift={handleDeleteShift} />
+            <ShiftDialog open={isOpen} setClose={setIsOpen} handleDeleteWholeShift={handleDeleteWholeShift} setShiftDayOfWeek={setShiftDayOfWeek} shiftDayOfWeek={shiftDayOfWeek} handleSaveShift={handleSaveShift} handleDeleteShift={handleDeleteShift} />
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
