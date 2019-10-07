@@ -5,8 +5,62 @@ const rows = [
   }, {
     shiftStart:'13:00',
     shiftEnd:'17:00'
-  }], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00']),
-  createData(2,'Madre Hennig', ['08:00 - 12:00', '13:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'], ['08:00 - 17:00'])
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }]),
+  createData(2,'Madre Hennig', [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }, {
+    shiftStart:'13:00',
+    shiftEnd:'17:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }],
+  [{
+    shiftStart:'08:00',
+    shiftEnd:'12:00'
+  }])
 ];
 
 export default {

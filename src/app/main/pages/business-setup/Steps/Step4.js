@@ -1,6 +1,6 @@
-import React,{ useState, useEffect }  from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as BusinessSetupActions from '../store/actions';
 import ShiftButtonCell from './Utils/ShiftButtonCell'
 import service from './Step4.data.js';
@@ -11,7 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ShiftDialog from './Utils/ShiftDialog';
-import {makeStyles} from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -24,74 +24,145 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         marginTop: theme.spacing(3),
         overflowX: 'auto',
-      },
+    },
     tableCell: {
         maxWidth: 250
-      },
+    },
     table: {
         marginBottom: theme.spacing(2),
-      },
+    },
     addStaffButton: {
         float: 'left',
         marginBottom: theme.spacing(1),
         marginLeft: theme.spacing(1),
-      },
+    },
     cellButton: {
         marginBottom: theme.spacing(1),
-      }
+    }
 }));
 
-function Step4(props){
+function Step4(props) {
 
-    const handleClick = (row,day,period,dayOfWeek) => {
+    const handleClick = (row, day, period, dayOfWeek) => {
         setShiftRow(row);
         setShiftDay(day);
         setShiftPeriod(period);
         setShiftDayOfWeek(dayOfWeek);
         period = shiftPeriod;
         setIsOpen(true);
-      };
+    };
 
-    const handleSaveShift = () => {        
+    const handleSaveShift = () => {
         setIsOpen(false);
         const newDataSource = [...dataSource];
         const index = newDataSource.indexOf(shiftRow);
 
-        switch(shiftDay)
-        {
+        switch (shiftDay) {
             case 'sunday':
                 {
                     newDataSource[index].sunday = shiftDayOfWeek;
                     setDataSource(newDataSource);
                 }
+            case 'monday':
+                {
+                    newDataSource[index].monday = shiftDayOfWeek;
+                    setDataSource(newDataSource);
+                }
+            case 'tuesday':
+                {
+                    newDataSource[index].tuesday = shiftDayOfWeek;
+                    setDataSource(newDataSource);
+                }
+            case 'wednesday':
+                {
+                    newDataSource[index].wednesday = shiftDayOfWeek;
+                    setDataSource(newDataSource);
+                }
+            case 'thursday':
+                {
+                    newDataSource[index].thursday = shiftDayOfWeek;
+                    setDataSource(newDataSource);
+                }
+            case 'friday':
+                {
+                    newDataSource[index].friday = shiftDayOfWeek;
+                    setDataSource(newDataSource);
+                }
+            case 'saturday':
+                {
+                    newDataSource[index].saturday = shiftDayOfWeek;
+                    setDataSource(newDataSource);
+                }
+
         }
     };
 
-    const handleDeleteShift = (shift) => {        
-        setIsOpen(false);
+    const handleDeleteShift = (shift) => {
         const newDataSource = [...dataSource];
         const index = newDataSource.indexOf(shiftRow);
 
-        switch(shiftDay)
-        {
+        switch (shiftDay) {
             case 'sunday':
                 {
-                    const newShift = [...newDataSource[index].sunday];   
+                    const newShift = [...newDataSource[index].sunday];
                     const shiftIndex = newShift.indexOf(shift);
                     newDataSource[index].sunday.splice(shiftIndex, 1);
+                    setDataSource(newDataSource);
+                }
+            case 'monday':
+                {
+                    const newShift = [...newDataSource[index].monday];
+                    const shiftIndex = newShift.indexOf(shift);
+                    newDataSource[index].monday.splice(shiftIndex, 1);
+                    setDataSource(newDataSource);
+                }
+            case 'tuesday':
+                {
+                    const newShift = [...newDataSource[index].tuesday];
+                    const shiftIndex = newShift.indexOf(shift);
+                    newDataSource[index].tuesday.splice(shiftIndex, 1);
+                    setDataSource(newDataSource);
+                }
+            case 'wednesday':
+                {
+                    const newShift = [...newDataSource[index].wednesday];
+                    const shiftIndex = newShift.indexOf(shift);
+                    newDataSource[index].wednesday.splice(shiftIndex, 1);
+                    setDataSource(newDataSource);
+                }
+            case 'thursday':
+                {
+                    const newShift = [...newDataSource[index].thursday];
+                    const shiftIndex = newShift.indexOf(shift);
+                    newDataSource[index].thursday.splice(shiftIndex, 1);
+                    setDataSource(newDataSource);
+                }
+            case 'friday':
+                {
+                    const newShift = [...newDataSource[index].friday];
+                    const shiftIndex = newShift.indexOf(shift);
+                    newDataSource[index].friday.splice(shiftIndex, 1);
+                    setDataSource(newDataSource);
+                }
+            case 'saturday':
+                {
+                    const newShift = [...newDataSource[index].saturday];
+                    const shiftIndex = newShift.indexOf(shift);
+                    newDataSource[index].saturday.splice(shiftIndex, 1);
                     setDataSource(newDataSource);
                 }
         }
     };
 
     const handleAddStaffClick = () => {
-        const newItem = {...dataSource[0]};
+        const newItem = { ...dataSource[0] };
         newItem.staffID = dataSource.length + 1;
+        newItem.staffName = '';
         setDataSource(dataSource.concat(newItem));
     };
 
     const handleDeleteStaffMember = (row) => {
-        const newDataSource = [...dataSource];     
+        const newDataSource = [...dataSource];
         const index = newDataSource.indexOf(row);
         newDataSource.splice(index, 1);
         setDataSource(newDataSource);
@@ -106,12 +177,12 @@ function Step4(props){
 
     const classes = useStyles();
 
-        return (      
-            <Paper className={classes.root}>
-                <ShiftDialog open={isOpen} setClose={setIsOpen} shiftPeriod={shiftPeriod} setShiftDayOfWeek={setShiftDayOfWeek} shiftDayOfWeek={shiftDayOfWeek} handleSaveShift={handleSaveShift} handleDeleteShift={handleDeleteShift}/>
-                <Table className={classes.table}>
-                    <TableHead>
-                        <TableRow>
+    return (
+        <Paper className={classes.root}>
+            <ShiftDialog open={isOpen} setClose={setIsOpen} shiftPeriod={shiftPeriod} setShiftDayOfWeek={setShiftDayOfWeek} shiftDayOfWeek={shiftDayOfWeek} handleSaveShift={handleSaveShift} handleDeleteShift={handleDeleteShift} />
+            <Table className={classes.table}>
+                <TableHead>
+                    <TableRow>
                         <TableCell></TableCell>
                         <TableCell>Staff Member</TableCell>
                         <TableCell className={classes.tableCell} align="center">Sunday</TableCell>
@@ -121,72 +192,72 @@ function Step4(props){
                         <TableCell className={classes.tableCell} align="center">Thursday</TableCell>
                         <TableCell className={classes.tableCell} align="center">Friday</TableCell>
                         <TableCell className={classes.tableCell} align="center">Saturday</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {dataSource.map(row => (
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {dataSource.map(row => (
                         <TableRow key={row.staffID}>
                             <TableCell scope="row">
-                            <IconButton aria-label="delete" onClick={() => handleDeleteStaffMember(row)} className={classes.margin}>
-                                <DeleteIcon />
-                            </IconButton>
+                                <IconButton aria-label="delete" onClick={() => handleDeleteStaffMember(row)} className={classes.margin}>
+                                    <DeleteIcon />
+                                </IconButton>
                             </TableCell>
                             <TableCell component="th" scope="row">
-                            <TextField
-                                defaultValue={row.staffName}
-                                margin="normal"
-                                inputProps={{ 'aria-label': 'name' }}
-                            />                               
+                                <TextField
+                                    defaultValue={row.staffName}
+                                    margin="normal"
+                                    inputProps={{ 'aria-label': 'name' }}
+                                />
                             </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                            {row.sunday ? row.sunday.map(shift => (                       
-                                <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row,'sunday',shift, row.sunday)}/>                  
-                            )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick}/>}  
-                            </TableCell>                
+                                {row.sunday ? row.sunday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'sunday', shift, row.sunday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                            </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                            {row.monday ? row.monday.map(shift => (                       
-                                <ShiftButtonCell shift={shift} click={handleClick}/>                  
-                            )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick}/>}  
-                            </TableCell>  
+                                {row.monday ? row.monday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'monday', shift, row.monday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                            </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                            {row.tuesday ? row.tuesday.map(shift => (                       
-                                <ShiftButtonCell shift={shift} click={handleClick}/>                  
-                            )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick}/>} 
-                            </TableCell>  
+                                {row.tuesday ? row.tuesday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'tuesday', shift, row.tuesday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                            </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                            {row.wednesday ? row.wednesday.map(shift => (                       
-                                <ShiftButtonCell shift={shift} click={handleClick}/>                  
-                            )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick}/>} 
-                            </TableCell>  
+                                {row.wednesday ? row.wednesday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'wednesday', shift, row.wednesday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                            </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                            {row.thursday ? row.thursday.map(shift => (                       
-                                <ShiftButtonCell shift={shift} click={handleClick}/>                  
-                            )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick}/>} 
-                            </TableCell>  
+                                {row.thursday ? row.thursday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'thursday', shift, row.thursday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                            </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                            {row.friday ? row.friday.map(shift => (                       
-                                <ShiftButtonCell shift={shift} click={handleClick}/>                  
-                            )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick}/>} 
-                            </TableCell> 
+                                {row.friday ? row.friday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'friday', shift, row.friday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                            </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                            {row.saturday ? row.saturday.map(shift => (                       
-                                <ShiftButtonCell shift={shift} click={handleClick}/>                  
-                            )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick}/>} 
-                            </TableCell> 
+                                {row.saturday ? row.saturday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'saturday', shift, row.saturday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                            </TableCell>
                         </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                <Button 
+                    ))}
+                </TableBody>
+            </Table>
+            <Button
                 className={classes.addStaffButton}
                 variant="outlined"
                 color="primary"
                 onClick={handleAddStaffClick}
                 startIcon={<AddIcon />} >
-                    Add Staff
+                Add Staff
                 </Button>
-          </Paper>
-      )
+        </Paper>
+    )
 }
 
 const mapStateToProps = state => {
@@ -195,13 +266,12 @@ const mapStateToProps = state => {
     };
 }
 
-const mapDispatchToProps = dispatch =>
-{
+const mapDispatchToProps = dispatch => {
     return bindActionCreators({
-        setEnableNext               : BusinessSetupActions.setEnableNext,
-        setDisableNext              : BusinessSetupActions.setDisableNext,
+        setEnableNext: BusinessSetupActions.setEnableNext,
+        setDisableNext: BusinessSetupActions.setDisableNext,
     },
-    dispatch);
+        dispatch);
 }
 
 export default (connect(mapStateToProps, mapDispatchToProps)(Step4));
