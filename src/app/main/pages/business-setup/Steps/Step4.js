@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
         overflowX: 'auto',
       },
     tableCell: {
-        maxWidth: 250,
+        maxWidth: 250
       },
     table: {
         marginBottom: theme.spacing(2),
@@ -43,14 +43,45 @@ const useStyles = makeStyles(theme => ({
 
 function Step4(props){
 
-    const handleClick = (period) => {
+    const handleClick = (row,day,period,dayOfWeek) => {
+        setShiftRow(row);
+        setShiftDay(day);
         setShiftPeriod(period);
+        setShiftDayOfWeek(dayOfWeek);
+        period = shiftPeriod;
         setIsOpen(true);
       };
 
-    const handleSave = (formData) => {
-        setShiftPeriod(formData);
+    const handleSaveShift = () => {        
         setIsOpen(false);
+        const newDataSource = [...dataSource];
+        const index = newDataSource.indexOf(shiftRow);
+
+        switch(shiftDay)
+        {
+            case 'sunday':
+                {
+                    newDataSource[index].sunday = shiftDayOfWeek;
+                    setDataSource(newDataSource);
+                }
+        }
+    };
+
+    const handleDeleteShift = (shift) => {        
+        setIsOpen(false);
+        const newDataSource = [...dataSource];
+        const index = newDataSource.indexOf(shiftRow);
+
+        switch(shiftDay)
+        {
+            case 'sunday':
+                {
+                    const newShift = [...newDataSource[index].sunday];   
+                    const shiftIndex = newShift.indexOf(shift);
+                    newDataSource[index].sunday.splice(shiftIndex, 1);
+                    setDataSource(newDataSource);
+                }
+        }
     };
 
     const handleAddStaffClick = () => {
@@ -61,32 +92,35 @@ function Step4(props){
 
     const handleDeleteStaffMember = (row) => {
         const newDataSource = [...dataSource];     
-        const index = newDataSource.indexOf(row)  
+        const index = newDataSource.indexOf(row);
         newDataSource.splice(index, 1);
         setDataSource(newDataSource);
     };
 
     const [isOpen, setIsOpen] = useState(null);
     const [shiftPeriod, setShiftPeriod] = useState(null);
+    const [shiftRow, setShiftRow] = useState(null);
+    const [shiftDay, setShiftDay] = useState(null);
+    const [shiftDayOfWeek, setShiftDayOfWeek] = useState([]);
     const [dataSource, setDataSource] = useState(service.createDataSet());
 
     const classes = useStyles();
 
         return (      
             <Paper className={classes.root}>
-                <ShiftDialog open={isOpen} setClose={setIsOpen} shiftPeriod={shiftPeriod} handleSave={handleSave} setShiftPeriod = {setShiftPeriod}/>
+                <ShiftDialog open={isOpen} setClose={setIsOpen} shiftPeriod={shiftPeriod} setShiftDayOfWeek={setShiftDayOfWeek} shiftDayOfWeek={shiftDayOfWeek} handleSaveShift={handleSaveShift} handleDeleteShift={handleDeleteShift}/>
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
                         <TableCell></TableCell>
                         <TableCell>Staff Member</TableCell>
-                        <TableCell align="center">Sunday</TableCell>
-                        <TableCell align="center">Monday</TableCell>
-                        <TableCell align="center">Tuesday</TableCell>
-                        <TableCell align="center">Wednesday</TableCell>
-                        <TableCell align="center">Thursday</TableCell>
-                        <TableCell align="center">Friday</TableCell>
-                        <TableCell align="center">Saturday</TableCell>
+                        <TableCell className={classes.tableCell} align="center">Sunday</TableCell>
+                        <TableCell className={classes.tableCell} align="center">Monday</TableCell>
+                        <TableCell className={classes.tableCell} align="center">Tuesday</TableCell>
+                        <TableCell className={classes.tableCell} align="center">Wednesday</TableCell>
+                        <TableCell className={classes.tableCell} align="center">Thursday</TableCell>
+                        <TableCell className={classes.tableCell} align="center">Friday</TableCell>
+                        <TableCell className={classes.tableCell} align="center">Saturday</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -106,7 +140,7 @@ function Step4(props){
                             </TableCell>
                             <TableCell className={classes.tableCell} align="right">
                             {row.sunday ? row.sunday.map(shift => (                       
-                                <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(shift)}/>                  
+                                <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row,'sunday',shift, row.sunday)}/>                  
                             )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick}/>}  
                             </TableCell>                
                             <TableCell className={classes.tableCell} align="right">
