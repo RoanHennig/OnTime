@@ -10,14 +10,17 @@ import Step2 from './Steps/Step2';
 import Step3 from './Steps/Step3';
 import Step4 from './Steps/Step4';
 import Stepper from '@material-ui/core/Stepper';
+import MobileStepper from '@material-ui/core/MobileStepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-import {Toolbar, AppBar, Avatar} from '@material-ui/core';
+import { compose } from 'redux'
+import {Avatar} from '@material-ui/core';
 import auth0Service from 'app/services/auth0Service';
 import history from '@history';
+import withSizes from 'react-sizes'
 
 function getSteps() {
     return ['Business Details', 'Business Type', 'Services Provided', 'Staff & Operating Hours'];
@@ -31,6 +34,11 @@ const styles = theme => ({
     button: {
         marginRight: theme.spacing(1),
         marginTop: theme.spacing(3),
+    },
+    mobileStepper:
+    {
+        maxWidth: 400,
+        flexGrow: 1,
     }
 });
 
@@ -57,17 +65,24 @@ class BusinessSetup extends Component {
         const steps = getSteps();
 
         return (
-            <div className={clsx(classes.root, "flex flex-col flex-auto flex-shrink-0 items-center justify-center p-32")}>
+            <div className={clsx(classes.root, "flex flex-col flex-auto flex-shrink-0 items-center justify-center sm:p-32 p-2")}>
 
                 <div className="flex flex-col items-center justify-center w-full">
-                    <Container maxWidth="xl" className=".max-w-3xl flex flex-col items-center justify-center p-32 text-center">
+                    <Container maxWidth="xl" className=".max-w-3xl flex flex-col items-center justify-center sm:p-32 p-2 text-center">
                         <FuseAnimate animation="transition.expandIn">
 
                             <Card className=".max-w-3xl max-h-full ">
 
                                 <CardContent className="flex flex-col items-center justify-center p-32 text-center">
                                     <div >
-                                        <Stepper activeStep={activeStep}>
+                                       {this.props.isMobile ?                                   
+                                       <MobileStepper 
+                                            variant="dots"
+                                            steps={4}
+                                            activeStep={activeStep}
+                                            position="static"
+                                            className={classes.mobileStepper}>
+
                                             {steps.map((label, index) => {
                                                 const stepProps = {};
                                                 const labelProps = {};
@@ -80,7 +95,22 @@ class BusinessSetup extends Component {
                                                     </Step>
                                                 );
                                             })}
-                                        </Stepper >
+                                        </MobileStepper >
+                                            :
+                                       <Stepper activeStep={activeStep}>
+                                            {steps.map((label, index) => {
+                                                const stepProps = {};
+                                                const labelProps = {};
+                                                if (this.isStepSkipped(index)) {
+                                                    stepProps.completed = false;
+                                                }
+                                                return (
+                                                    <Step key={label} {...stepProps}>
+                                                        <StepLabel {...labelProps}>{label}</StepLabel>
+                                                    </Step>
+                                                );
+                                            })}
+                                        </Stepper >}
                                         <div>
                                             {activeStep === steps.length ? (
                                                 <div>
@@ -117,7 +147,7 @@ class BusinessSetup extends Component {
                                                         <div>
                                                             <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
                                                                 Back
-                                        </Button>
+                                                            </Button>
                                                             {this.isStepOptional(activeStep) && (
                                                                 <Button
                                                                     variant="contained"
@@ -265,4 +295,11 @@ const mapStateToProps = state => {
     };
 }
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, null)(BusinessSetup));
+const mapSizesToProps = ({ width }) => ({
+    isMobile: width < 480,
+  })
+
+  export default compose(
+    withStyles(styles, { withTheme: true }),
+    withSizes(mapSizesToProps)
+  )(connect(mapStateToProps, null)(BusinessSetup))
