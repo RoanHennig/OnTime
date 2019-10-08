@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
     },
     table: {
         marginBottom: theme.spacing(2),
+        minWidth: 650
     },
     addStaffButton: {
         float: 'left',

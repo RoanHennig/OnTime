@@ -67,9 +67,9 @@ class Step1 extends Component {
                                 },
                                 useMaskedValue: true,
                                 maskInvalidMessage: 'Must have a correct phone format'}} />
-                        <Item dataField={'Website'}> 
+                        {/* <Item dataField={'Website'}> 
                             <Label text={'Your Business Website'} />
-                        </Item>
+                        </Item> */}
                     </GroupItem>
                     <GroupItem caption={'Business Address'} > 
                         <Item dataField={'Address'} >
