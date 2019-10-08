@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import SaveIcon from '@material-ui/icons/Save';
-import Form, { SimpleItem, RequiredRule, CompareRule,RangeRule} from 'devextreme-react/form';
+import Form, { SimpleItem, RequiredRule} from 'devextreme-react/form';
 import { makeStyles } from '@material-ui/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
@@ -21,7 +21,7 @@ export default function ShiftDialog(props) {
             float: 'right'
         },
         deleteButton: {
-            margin: theme.spacing(1),
+            margin: theme.spacing(2),
             float: 'left'
         },
         dialogAction: {
@@ -31,31 +31,35 @@ export default function ShiftDialog(props) {
             marginBottom: theme.spacing(1),
         },
         addShiftButton: {
-            float: 'left',
-            marginBottom: theme.spacing(1),
-            marginLeft: theme.spacing(1),
+            float: 'left'
         }
     }))
 
     const handleClose = () => {
         props.setClose(false);
+        setData([...props.shiftDayOfWeek]);
     };
 
-    const handleShiftValidation = () => {
-        if(props.shiftDayOfWeek.length == 2) {
-            console.log(props.shiftDayOfWeek);
-        }
-        return true;
+    useEffect(() => {
+        setData([...props.shiftDayOfWeek]);
+    }, [props.shiftDayOfWeek]);
+
+    const handleDeleteShift = (shift) => {
+        const newShift = [...shiftData];
+        const index = newShift.indexOf(shift);
+        newShift.splice(index, 1);
+        setData(newShift);
     };
 
     const handleAddShiftClick = () => {
-        props.setShiftDayOfWeek([...props.shiftDayOfWeek, { shiftStart: '00:00', shiftEnd: '00:00' }]);
+        setData([...props.shiftDayOfWeek, { shiftStart: '00:00', shiftEnd: '00:00' }]);
     };
 
     const onFieldChanged = (e) => {
-        validationEngine.validateGroup('businessOperatingHours')
+        validationEngine.validateGroup('staffOperatingHours')
     }
 
+    const [shiftData, setData] = useState([]);
     const classes = useStyles();
 
     return (
@@ -65,7 +69,7 @@ export default function ShiftDialog(props) {
                 <DialogContentText>
                     Customize your working hours to suit your business.
                 </DialogContentText>
-                {props.shiftDayOfWeek.map(shift => (
+                {shiftData.map(shift => (
                     <div>
                         <Form
                             id={'form'}
@@ -77,18 +81,18 @@ export default function ShiftDialog(props) {
                             showRequiredMark={false}
                             colCount={10}
                             showValidationSummary={true}
-                            validationGroup={'businessOperatingHours'}
+                            validationGroup={'staffOperatingHours'}
                             stylingMode={'outlined'}
                             onFieldDataChanged = {onFieldChanged}
                         >
-                            <SimpleItem colSpan={4}  dataField={'shiftStart'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: '00:00', max:shift.shiftEnd }} >
+                            <SimpleItem colSpan={4}  dataField={'shiftStart'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: props.businessOperatingHours.openingTime }} >
                                 <RequiredRule message={'Please select a starting time for your shift'} />
                             </SimpleItem>
-                            <SimpleItem colSpan={4}  dataField={'shiftEnd'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: shift.shiftStart }}>
+                            <SimpleItem colSpan={4}  dataField={'shiftEnd'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: shift.shiftStart, max:props.businessOperatingHours.closingTime }}>
                                 <RequiredRule message={'Please select an ending time for your shift'} />
                             </SimpleItem>
-                            <SimpleItem colSpan={2}>
-                                <IconButton aria-label="delete" onClick={() => props.handleDeleteShift(shift)}>
+                            <SimpleItem dataField={'Remove'} colSpan={2}>
+                                <IconButton aria-label="delete" onClick={() => handleDeleteShift(shift)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </SimpleItem>
@@ -99,7 +103,7 @@ export default function ShiftDialog(props) {
                 ))}
                 <Button
                     className={classes.addShiftButton}
-                    hidden={props.shiftDayOfWeek.length == 2}
+                    hidden={props.shiftDayOfWeek && props.shiftDayOfWeek.length == 2}
                     variant="outlined"
                     color="primary"
                     onClick={handleAddShiftClick}
@@ -112,7 +116,7 @@ export default function ShiftDialog(props) {
             <Button variant="contained" color="secondary" onClick={() => props.handleDeleteWholeShift()} className={classes.deleteButton} startIcon={<DeleteIcon />}>
                     Delete
             </Button>
-            <Button variant="contained" color="primary" onClick={() => props.handleSaveShift()} className={classes.button} startIcon={<SaveIcon />}>
+            <Button variant="contained" color="primary" onClick={() => props.handleSaveShift(shiftData)} className={classes.button} startIcon={<SaveIcon />}>
                     Save
             </Button>
             <Button className={classes.button} onClick={handleClose}>

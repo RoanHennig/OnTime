@@ -14,10 +14,11 @@ import ShiftDialog from './Utils/ShiftDialog';
 import { makeStyles } from '@material-ui/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
+import Form, { SimpleItem, RequiredRule} from 'devextreme-react/form';
+import validationEngine from 'devextreme/ui/validation_engine';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -27,6 +28,9 @@ const useStyles = makeStyles(theme => ({
     },
     tableCell: {
         maxWidth: 250
+    },
+    tableCellStaffName: {
+        minWidth: 150
     },
     table: {
         marginBottom: theme.spacing(2),
@@ -44,14 +48,14 @@ const useStyles = makeStyles(theme => ({
 
 function Step4(props) {
 
-    const handleClick = (row, day, period, dayOfWeek) => {
+    const handleClick = (row, day, dayOfWeek) => {
         setShiftRow(row);
         setShiftDay(day);
         setShiftDayOfWeek(dayOfWeek);
         setIsOpen(true);
     };
 
-    const handleSaveShift = () => {
+    const handleSaveShift = (shifts) => {
         setIsOpen(false);
         const newDataSource = [...dataSource];
         const index = newDataSource.indexOf(shiftRow);
@@ -59,43 +63,43 @@ function Step4(props) {
         switch (shiftDay) {
             case 'sunday':
                 {
-                    newDataSource[index].sunday = shiftDayOfWeek;
+                    newDataSource[index].sunday = shifts;
                     setDataSource(newDataSource);
                 }
                 break;
             case 'monday':
                 {
-                    newDataSource[index].monday = shiftDayOfWeek;
+                    newDataSource[index].monday = shifts;
                     setDataSource(newDataSource);
                 }
                 break;
             case 'tuesday':
                 {
-                    newDataSource[index].tuesday = shiftDayOfWeek;
+                    newDataSource[index].tuesday = shifts;
                     setDataSource(newDataSource);
                 }
                 break;
             case 'wednesday':
                 {
-                    newDataSource[index].wednesday = shiftDayOfWeek;
+                    newDataSource[index].wednesday = shifts;
                     setDataSource(newDataSource);
                 }
                 break;
             case 'thursday':
                 {
-                    newDataSource[index].thursday = shiftDayOfWeek;
+                    newDataSource[index].thursday = shifts;
                     setDataSource(newDataSource);
                 }
                 break;
             case 'friday':
                 {
-                    newDataSource[index].friday = shiftDayOfWeek;
+                    newDataSource[index].friday = shifts;
                     setDataSource(newDataSource);
                 }
                 break;
             case 'saturday':
                 {
-                    newDataSource[index].saturday = shiftDayOfWeek;
+                    newDataSource[index].saturday = shifts;
                     setDataSource(newDataSource);
                 }
                 break;
@@ -110,107 +114,43 @@ function Step4(props) {
         switch (shiftDay) {
             case 'sunday':
                 {
-                    newDataSource[index].sunday = null;
+                    newDataSource[index].sunday = [];
                     setDataSource(newDataSource);
                 }
                 break;
             case 'monday':
                 {
-                    newDataSource[index].monday = null;
+                    newDataSource[index].monday = [];
                     setDataSource(newDataSource);
                 }
                 break;
             case 'tuesday':
                 {
-                    newDataSource[index].tuesday = null;
+                    newDataSource[index].tuesday = [];
                     setDataSource(newDataSource);
                 }
                 break;
             case 'wednesday':
                 {
-                    newDataSource[index].wednesday = null;
+                    newDataSource[index].wednesday = [];
                     setDataSource(newDataSource);
                 }
                 break;
             case 'thursday':
                 {
-                    newDataSource[index].thursday = null;
+                    newDataSource[index].thursday = [];
                     setDataSource(newDataSource);
                 }
                 break;
             case 'friday':
                 {
-                    newDataSource[index].friday = null;
+                    newDataSource[index].friday = [];
                     setDataSource(newDataSource);
                 }
                 break;
             case 'saturday':
                 {
-                    newDataSource[index].saturday = null;
-                    setDataSource(newDataSource);
-                }
-                break;
-        }
-    };
-
-    const handleDeleteShift = (shift) => {
-        const newDataSource = [...dataSource];
-        const index = newDataSource.indexOf(shiftRow);
-
-        switch (shiftDay) {
-            case 'sunday':
-                {
-                    const newShift = [...newDataSource[index].sunday];
-                    const shiftIndex = newShift.indexOf(shift);
-                    newDataSource[index].sunday.splice(shiftIndex, 1);
-                    setDataSource(newDataSource);
-                }
-                break;
-            case 'monday':
-                {
-                    const newShift = [...newDataSource[index].monday];
-                    const shiftIndex = newShift.indexOf(shift);
-                    newDataSource[index].monday.splice(shiftIndex, 1);
-                    setDataSource(newDataSource);
-                }
-                break;
-            case 'tuesday':
-                {
-                    const newShift = [...newDataSource[index].tuesday];
-                    const shiftIndex = newShift.indexOf(shift);
-                    newDataSource[index].tuesday.splice(shiftIndex, 1);
-                    setDataSource(newDataSource);
-                }
-                break;
-            case 'wednesday':
-                {
-                    const newShift = [...newDataSource[index].wednesday];
-                    const shiftIndex = newShift.indexOf(shift);
-                    newDataSource[index].wednesday.splice(shiftIndex, 1);
-                    setDataSource(newDataSource);
-                }
-                break;
-            case 'thursday':
-                {
-                    const newShift = [...newDataSource[index].thursday];
-                    const shiftIndex = newShift.indexOf(shift);
-                    newDataSource[index].thursday.splice(shiftIndex, 1);
-                    setDataSource(newDataSource);
-                }
-                break;
-            case 'friday':
-                {
-                    const newShift = [...newDataSource[index].friday];
-                    const shiftIndex = newShift.indexOf(shift);
-                    newDataSource[index].friday.splice(shiftIndex, 1);
-                    setDataSource(newDataSource);
-                }
-                break;
-            case 'saturday':
-                {
-                    const newShift = [...newDataSource[index].saturday];
-                    const shiftIndex = newShift.indexOf(shift);
-                    newDataSource[index].saturday.splice(shiftIndex, 1);
+                    newDataSource[index].saturday = [];
                     setDataSource(newDataSource);
                 }
                 break;
@@ -224,6 +164,11 @@ function Step4(props) {
         setDataSource(dataSource.concat(newItem));
     };
 
+    const onFieldChanged = (e) => {
+        //setBusinessoperatingHours(operatingHours);
+        validationEngine.validateGroup('businessOperatingHours')
+    }
+
     const handleDeleteStaffMember = (row) => {
         const newDataSource = [...dataSource];
         const index = newDataSource.indexOf(row);
@@ -234,6 +179,7 @@ function Step4(props) {
     const [isOpen, setIsOpen] = useState(null);
     const [shiftRow, setShiftRow] = useState(null);
     const [shiftDay, setShiftDay] = useState(null);
+    const [businessOperatingHours] = useState({openingTime: '08:00', closingTime: '17:00'});
     const [shiftDayOfWeek, setShiftDayOfWeek] = useState([]);
     const [dataSource, setDataSource] = useState(service.createDataSet());
 
@@ -241,7 +187,28 @@ function Step4(props) {
 
     return (
         <Paper className={classes.root}>
-            <ShiftDialog open={isOpen} setClose={setIsOpen} handleDeleteWholeShift={handleDeleteWholeShift} setShiftDayOfWeek={setShiftDayOfWeek} shiftDayOfWeek={shiftDayOfWeek} handleSaveShift={handleSaveShift} handleDeleteShift={handleDeleteShift} />
+            <ShiftDialog open={isOpen} setClose={setIsOpen} handleDeleteWholeShift={handleDeleteWholeShift} setShiftDayOfWeek={setShiftDayOfWeek}
+                shiftDayOfWeek={shiftDayOfWeek} handleSaveShift={handleSaveShift} businessOperatingHours={businessOperatingHours} />
+            <Form
+                id={'form'}
+                formData={businessOperatingHours}
+                readOnly={false}
+                showColonAfterLabel={true}
+                labelLocation={'top'}
+                showRequiredMark={false}
+                colCount={2}
+                showValidationSummary={true}
+                validationGroup={'businessOperatingHours'}
+                stylingMode={'outlined'}                
+                onFieldDataChanged = {onFieldChanged}
+            >
+                <SimpleItem dataField={'openingTime'} editorType={'dxDateBox'} editorOptions={{ defaultValue: '08:00', type: 'time', pickerType: 'rollers', min: '00:00' }} >
+                    <RequiredRule message={'Please select an opening time for your business'} />
+                </SimpleItem>
+                <SimpleItem dataField={'closingTime'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: '08:00' }}>
+                    <RequiredRule message={'Please select a closing time for your business'} />
+                </SimpleItem>
+            </Form>
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
@@ -264,7 +231,7 @@ function Step4(props) {
                                     <DeleteIcon />
                                 </IconButton>
                             </TableCell>
-                            <TableCell component="th" scope="row">
+                            <TableCell className={classes.tableCellStaffName} component="th" scope="row">
                                 <TextField
                                     defaultValue={row.staffName}
                                     margin="normal"
@@ -272,39 +239,39 @@ function Step4(props) {
                                 />
                             </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                                {row.sunday ? row.sunday.map(shift => (
-                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'sunday', shift, row.sunday)} />
-                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                                {row.sunday.length > 0 ? row.sunday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'sunday', row.sunday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={() => handleClick(row, 'sunday', row.sunday)} />}
                             </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                                {row.monday ? row.monday.map(shift => (
-                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'monday', shift, row.monday)} />
-                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                                {row.monday.length > 0 ? row.monday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'monday', row.monday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={() => handleClick(row, 'sunday', row.sunday)} />}
                             </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                                {row.tuesday ? row.tuesday.map(shift => (
-                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'tuesday', shift, row.tuesday)} />
-                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                                {row.tuesday.length > 0 ? row.tuesday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'tuesday', row.tuesday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={() => handleClick(row, 'sunday', row.sunday)} />}
                             </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                                {row.wednesday ? row.wednesday.map(shift => (
-                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'wednesday', shift, row.wednesday)} />
-                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                                {row.wednesday.length > 0 ? row.wednesday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'wednesday', row.wednesday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={() => handleClick(row, 'sunday', row.sunday)} />}
                             </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                                {row.thursday ? row.thursday.map(shift => (
-                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'thursday', shift, row.thursday)} />
-                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                                {row.thursday.length > 0 ? row.thursday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'thursday', row.thursday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={() => handleClick(row, 'sunday', row.sunday)} />}
                             </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                                {row.friday ? row.friday.map(shift => (
-                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'friday', shift, row.friday)} />
-                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                                {row.friday.length > 0 ? row.friday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'friday', row.friday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={() => handleClick(row, 'sunday', row.sunday)} />}
                             </TableCell>
                             <TableCell className={classes.tableCell} align="right">
-                                {row.saturday ? row.saturday.map(shift => (
-                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'saturday', shift, row.saturday)} />
-                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={handleClick} />}
+                                {row.saturday.length > 0 ? row.saturday.map(shift => (
+                                    <ShiftButtonCell shift={shift.shiftStart + ' - ' + shift.shiftEnd} click={() => handleClick(row, 'saturday', row.saturday)} />
+                                )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={() => handleClick(row, 'sunday', row.sunday)} />}
                             </TableCell>
                         </TableRow>
                     ))}

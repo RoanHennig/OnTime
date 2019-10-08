@@ -3,7 +3,7 @@ import { Container, Card, CardContent } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import service from './data.js';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import { FuseAnimate, FuseAnimateGroup } from '@fuse';
+import { FuseAnimate, FuseScrollbars } from '@fuse';
 import clsx from 'clsx';
 import Step1 from './Steps/Step1';
 import Step2 from './Steps/Step2';
@@ -21,6 +21,9 @@ import {Avatar} from '@material-ui/core';
 import auth0Service from 'app/services/auth0Service';
 import history from '@history';
 import withSizes from 'react-sizes'
+import SwipeableViews from 'react-swipeable-views';
+import {bindActionCreators} from 'redux';
+import * as BusinessSetupActions from './store/actions';
 
 function getSteps() {
     return ['Business Details', 'Business Type', 'Services Provided', 'Staff & Operating Hours'];
@@ -82,8 +85,8 @@ class BusinessSetup extends Component {
                                             activeStep={activeStep}
                                             position="static"
                                             className={classes.mobileStepper}>
-
-                                            {steps.map((label, index) => {
+              
+                                                {steps.map((label, index) => {
                                                 const stepProps = {};
                                                 const labelProps = {};
                                                 if (this.isStepSkipped(index)) {
@@ -95,10 +98,11 @@ class BusinessSetup extends Component {
                                                     </Step>
                                                 );
                                             })}
+
                                         </MobileStepper >
                                             :
-                                       <Stepper activeStep={activeStep}>
-                                            {steps.map((label, index) => {
+                                       <Stepper activeStep={activeStep}>           
+                                                {steps.map((label, index) => {
                                                 const stepProps = {};
                                                 const labelProps = {};
                                                 if (this.isStepSkipped(index)) {
@@ -112,8 +116,38 @@ class BusinessSetup extends Component {
                                             })}
                                         </Stepper >}
                                         <div>
-                                            {activeStep === steps.length ? (
-                                                <div>
+                                                    <div>
+                                                        <FuseScrollbars className="w-full overflow-auto">
+                                                            <SwipeableViews
+                                                            className="overflow-hidden"
+                                                            index={activeStep}
+                                                            enableMouseEvents={false}                            
+                                                            >  
+                                                            <div>
+                                                                <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
+                                                                    Tell us a little bit about your business...
+                                                                </Typography>
+                                                                {this.state.step1}
+                                                            </div>
+                                                            <div>
+                                                                <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
+                                                                    What type of business are you in?
+                                                                </Typography>
+                                                                {this.state.step2}
+                                                            </div>                                                       
+                                                            <div>
+                                                                <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
+                                                                    What kind of services do you provide?
+                                                                    </Typography>
+                                                                {this.state.step3}
+                                                            </div>
+                                                            <div>
+                                                                <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
+                                                                    What times are you open for business?
+                                                                    </Typography>
+                                                                {this.state.step4}
+                                                            </div>
+                                                            <div>
                                                         <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                                                             Setup Complete!
                                                         </Typography>
@@ -128,22 +162,12 @@ class BusinessSetup extends Component {
                                                             </Button>
                                                         </div>
 
-                                                    <Button variant="contained" color="primary" onClick={this.handleComplete} className={classes.button} >
-                                                        Take me to my business dashboard
-                                                    </Button>
-                                                </div>
-                                            ) : (
-                                                    <div>
-                                                        <FuseAnimateGroup
-                                                            enter={{
-                                                                animation: "transition.slideLeftBigIn"
-                                                            }}
-                                                            leave={{
-                                                                animation: "transition.slideRightBigOut"
-                                                            }}>
-                                                            {this.getStepContent(activeStep)}
-                                                        </FuseAnimateGroup>
-
+                                                            <Button variant="contained" color="primary" onClick={this.handleComplete} className={classes.button} >
+                                                                Take me to my business dashboard
+                                                            </Button>
+                                                         </div>
+                                                            </SwipeableViews>
+                                                        </FuseScrollbars>
                                                         <div>
                                                             <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
                                                                 Back
@@ -156,7 +180,7 @@ class BusinessSetup extends Component {
                                                                     className={classes.button}
                                                                 >
                                                                     Skip
-                                            </Button>
+                                                            </Button>
                                                             )}
 
                                                             <Button
@@ -170,7 +194,6 @@ class BusinessSetup extends Component {
                                                             </Button>
                                                         </div>
                                                     </div>
-                                                )}
                                         </div>
                                     </div>
                                 </CardContent>
@@ -182,61 +205,37 @@ class BusinessSetup extends Component {
         )
     }
 
-
+    
     getStepContent = (step) => {
         switch (step) {
             case 0:
-                return <FuseAnimateGroup
-                    enter={{
-                        animation: "transition.slideLeftBigIn"
-                    }}
-                    leave={{
-                        animation: "transition.slideRightBigOut"
-                    }}>
+                return <div>
                     <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                         Tell us a little bit about your business...
-                        </Typography>
+                    </Typography>
                     {this.state.step1}
-                </FuseAnimateGroup>;
+                </div>;
             case 1:
-                return <FuseAnimateGroup
-                    enter={{
-                        animation: "transition.slideLeftBigIn"
-                    }}
-                    leave={{
-                        animation: "transition.slideRightBigOut"
-                    }}>
+                return <div>
                     <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                         What type of business are you in?
                     </Typography>
                     {this.state.step2}
-                </FuseAnimateGroup>;
+                </div>;
             case 2:
-                return <FuseAnimateGroup
-                    enter={{
-                        animation: "transition.slideLeftBigIn"
-                    }}
-                    leave={{
-                        animation: "transition.slideRightBigOut"
-                    }}>
+                return <div>
                     <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                         What kind of services do you provide?
                         </Typography>
                     {this.state.step3}
-                </FuseAnimateGroup>;
+                </div>;
             case 3:
-                return <FuseAnimateGroup
-                    enter={{
-                        animation: "transition.slideLeftBigIn"
-                    }}
-                    leave={{
-                        animation: "transition.slideRightBigOut"
-                    }}>
+                return <div>
                     <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                         What times are you open for business?
                         </Typography>
                     {this.state.step4}
-                </FuseAnimateGroup>;
+                </div>;
             default:
                 return 'Unknown step';
         }
@@ -295,6 +294,15 @@ const mapStateToProps = state => {
     };
 }
 
+const mapDispatchToProps = dispatch =>
+{
+    return bindActionCreators({
+        setEnableNext               : BusinessSetupActions.setEnableNext,
+        setDisableNext              : BusinessSetupActions.setDisableNext,
+    },
+    dispatch);
+}
+
 const mapSizesToProps = ({ width }) => ({
     isMobile: width < 480,
   })
@@ -302,4 +310,4 @@ const mapSizesToProps = ({ width }) => ({
   export default compose(
     withStyles(styles, { withTheme: true }),
     withSizes(mapSizesToProps)
-  )(connect(mapStateToProps, null)(BusinessSetup))
+  )(connect(mapStateToProps, mapDispatchToProps)(BusinessSetup))
