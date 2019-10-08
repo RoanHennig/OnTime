@@ -68,12 +68,12 @@ class BusinessSetup extends Component {
             <div className={clsx(classes.root, "flex flex-col flex-auto flex-shrink-0 items-center justify-center sm:p-32 p-2")}>
 
                 <div className="flex flex-col items-center justify-center w-full">
-                    <Container maxWidth="xl" className=".max-w-3xl flex flex-col items-center justify-center sm:p-32 p-2 text-center">
+                    <Container maxWidth="md" className="md:max-w-4xl flex flex-col items-stretch justify-center sm:p-32 p-2 text-center">
                         <FuseAnimate animation="transition.expandIn">
 
-                            <Card className=".max-w-3xl max-h-full ">
+                            <Card className="md:max-w-4xl max-h-full ">
 
-                                <CardContent className="flex flex-col items-center justify-center p-32 text-center">
+                                <CardContent className="flex flex-col items-stretch justify-center p-32 text-center">
                                     <div >
                                        {this.props.isMobile ?                                   
                                        <MobileStepper 
@@ -208,7 +208,7 @@ class BusinessSetup extends Component {
                     }}>
                     <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                         What type of business are you in?
-                        </Typography>
+                    </Typography>
                     {this.state.step2}
                 </FuseAnimateGroup>;
             case 2:
