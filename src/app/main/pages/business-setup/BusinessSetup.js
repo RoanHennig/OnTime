@@ -190,7 +190,6 @@ class BusinessSetup extends Component {
                                                                 color="primary"
                                                                 onClick={this.handleNext}
                                                                 className={classes.button}
-                                                                disabled={!this.props.enableNext}
                                                             >
                                                                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                                                             </Button>
@@ -220,9 +219,11 @@ class BusinessSetup extends Component {
             newSkipped = new Set(newSkipped.values());
             newSkipped.delete(this.state.activeStep);
         }
-        this.setState({ activeStep: this.state.activeStep + 1 })
-        this.setState({ skipped: newSkipped });
-        this.handleValidation(this.state.activeStep + 1);
+        const success =  this.handleValidation(this.state.activeStep + 1);
+        if(success) {
+            this.setState({ activeStep: this.state.activeStep + 1 })
+            this.setState({ skipped: newSkipped });
+        }     
     };
 
     handleBack = () => {
@@ -259,34 +260,35 @@ class BusinessSetup extends Component {
             case 0: {
                     var result = validationEngine.validateGroup('businessData')
                     if(result.isValid){
-                        this.props.setEnableNext();           
+                        return true;          
                     }
                     else {
-                        this.props.setDisableNext();
+                        return false; 
                     }
                 }
                 break;
             case 1: {
                 var result = validationEngine.validateGroup('businessType')
                 if(result.isValid && this.props.Step2.businessTypeDetails.businessType && this.props.Step2.businessTypeDetails.businessType){
-                    this.props.setEnableNext();        
+                    return true;         
                 }
                 else {
-                    this.props.setDisableNext();
+                    return false; 
                 }
             }
             break;
             case 3: {
                 var result = validationEngine.validateGroup('businessOperatingHours')
                 if(result.isValid && this.props.Step4.staffOperatingHours && this.props.Step4.staffOperatingHours.length > 1){
-                    this.props.setEnableNext();        
+                    return true;        
                 }
                 else {
-                    this.props.setDisableNext();
+                    return false; 
                 }
             }
             break;
         }
+        return true; 
     };
 
 }

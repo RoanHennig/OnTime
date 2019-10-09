@@ -12,13 +12,7 @@ function Step1(props) {
     const stepDetails = useSelector(state => state.businessSetupSteps.Step1);
     stepDetails.businessDetails = props.businessDetails;
     const onRequiredFieldChanged = () => {
-        var result = validationEngine.validateGroup('businessData');
-        if(result.isValid){ 
-            props.setEnableNext();                   
-        }
-        else {        
-            props.setDisableNext();
-        }
+
     }
 
     const {
