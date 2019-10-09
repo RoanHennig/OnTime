@@ -1,33 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
 import * as Actions from './store/actions';
 import * as BusinessSetupActions from '../store/actions';
-import {connect} from 'react-redux';
+import {connect, useSelector, useDispatch} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import validationEngine from 'devextreme/ui/validation_engine';
 import service from './businessTypes.js';
 import Form, {Item, RequiredRule } from 'devextreme-react/form';
+import reducer from '../store/reducers';
 
-class Step2 extends Component {
-    constructor(props) {
-        super(props);
-        this.onRequiredFieldChanged = this.onRequiredFieldChanged.bind(this); 
-      }  
+import withReducer from 'app/store/withReducer';
+function Step2({setEnableNext, setDisableNext}) {
+
+    const stepDetails = useSelector(state => state.businessSetupSteps.Step2);
+    const {
+        labelLocation,
+        readOnly,
+        showColon,
+        colCount
+      } = stepDetails;
       
-      componentDidMount() {
-        window.scrollTo(0, 0);
-      }
-      
-    render () {
-        const {
-            labelLocation,
-            readOnly,
-            showColon,
-            colCount
-          } = this.props.stepDetails;
+      const onRequiredFieldChanged = () => {
+        var result = validationEngine.validateGroup('businessType')
+        if(result.isValid && stepDetails.businessTypeDetails.businessType && stepDetails.businessTypeDetails.businessType){ 
+                setEnableNext();   
+        }
+        else {     
+                setDisableNext();
+        }
+    }
           return (
                     <Form
                     id={'form'}
-                    formData={this.props.stepDetails.businessTypeDetails}
+                    formData={stepDetails.businessTypeDetails}
                     readOnly={readOnly}
                     showColonAfterLabel={showColon}
                     labelLocation={labelLocation}
@@ -35,7 +39,7 @@ class Step2 extends Component {
                     showValidationSummary={true}
                     validationGroup={'businessType'}
                     stylingMode= {'outlined'}
-                    onFieldDataChanged = {this.onRequiredFieldChanged}
+                    onFieldDataChanged = {onRequiredFieldChanged}
                     >           
                         <Item dataField={'businessType'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getBusinessTypes(),
                             displayExpr:'Name',
@@ -59,34 +63,16 @@ class Step2 extends Component {
                         </Item>  
                     </Form>
           )
-    }
 
-    onRequiredFieldChanged(e) {
-        var result = validationEngine.validateGroup('businessType')
-        if(result.isValid && this.props.stepDetails.businessTypeDetails.businessType && this.props.stepDetails.businessTypeDetails.businessType){
-            this.props.setEnableNext();       
-            console.log(this.props.stepDetails.businessTypeDetails);    
-        }
-        else {
-            this.props.setDisableNext();
-        }
-    }
-}
-
-const mapStateToProps = state => {
-    return {
-        stepDetails: state.businessSetupSteps.Step2
-    };
 }
 
 const mapDispatchToProps = dispatch =>
 {
     return bindActionCreators({
-        setBusinessType             : Actions.setBusinessType,
         setEnableNext               : BusinessSetupActions.setEnableNext,
         setDisableNext              : BusinessSetupActions.setDisableNext,
     },
     dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Step2);
+export default (connect(null, mapDispatchToProps)(Step2));

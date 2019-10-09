@@ -1,43 +1,37 @@
-import React, { Component } from 'react';
-import Form, { GroupItem, Item,  PatternRule, RequiredRule, Label } from 'devextreme-react/form';
-import * as Actions from './store/actions';
+import React from 'react';
+import Form, { GroupItem, Item,  PatternRule, RequiredRule } from 'devextreme-react/form';
 import * as BusinessSetupActions from '../store/actions';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import * as Actions from './store/actions';
 import validationEngine from 'devextreme/ui/validation_engine';
 import service from './provices.js';
+import {connect, useSelector} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
-class Step1 extends Component {
-    constructor(props) {
-        super(props);
+function Step1(props) {     
 
-        this.props.setBusinessDetails(this.props.businessDetails);
-        this.onRequiredFieldChanged = this.onRequiredFieldChanged.bind(this);     
-      }  
-      
-      componentDidMount() {
-        var result = validationEngine.validateGroup('businessData')
-        if(result.isValid){
-            this.props.setEnableNext();           
+    const stepDetails = useSelector(state => state.businessSetupSteps.Step1);
+    stepDetails.businessDetails = props.businessDetails;
+    const onRequiredFieldChanged = () => {
+        var result = validationEngine.validateGroup('businessData');
+        if(result.isValid){ 
+            props.setEnableNext();                   
         }
-        else {
-            this.props.setDisableNext();
+        else {        
+            props.setDisableNext();
         }
     }
 
-    render () {
-        const {
-            labelLocation,
-            readOnly,
-            showColon,
-            colCount,
-            businessDetails
-          } = this.props.stepDetails;
+    const {
+        labelLocation,
+        readOnly,
+        showColon,
+        colCount
+      } = stepDetails;
+
           return (               
                 <Form
                     id={'form'}                
-                    onContentReady={this.onRequiredFieldChanged}
-                    formData={businessDetails}
+                    formData={stepDetails.businessDetails}
                     readOnly={readOnly}
                     showColonAfterLabel={showColon}
                     labelLocation={labelLocation}
@@ -45,20 +39,19 @@ class Step1 extends Component {
                     showValidationSummary={true}
                     validationGroup={'businessData'}
                     stylingMode= {'outlined'}
-                    onFieldDataChanged = {this.onRequiredFieldChanged}
                     >
                     <GroupItem caption={'Business Details'}>
-                        <Item dataField={'FirstName'}>
+                        <Item dataField={'FirstName'} editorOptions={{onValueChanged: onRequiredFieldChanged}}>
                             <RequiredRule message={'First Name is required'}/>
                             <PatternRule message={'Do not use digits in the First Name'}
                                         pattern={/^[^0-9]+$/} />
                         </Item>
-                        <Item dataField={'LastName'}>
+                        <Item dataField={'LastName'} editorOptions={{onValueChanged: onRequiredFieldChanged}}>
                             <RequiredRule message={'Last Name is required'}/>
                             <PatternRule message={'Do not use digits in the Last Name'}
                                         pattern={/^[^0-9]+$/} />
                         </Item>
-                        <Item dataField={'BusinessName'}  >
+                        <Item dataField={'BusinessName'}  editorOptions={{onValueChanged: onRequiredFieldChanged}}>
                             <RequiredRule message={'Business Name is required'} />
                         </Item>
                         <Item dataField={'Phone'} editorOptions={{mask: '+27 00 000 0000',
@@ -69,16 +62,16 @@ class Step1 extends Component {
                                 maskInvalidMessage: 'Must have a correct phone format'}} />
                     </GroupItem>
                     <GroupItem caption={'Business Address'} > 
-                        <Item dataField={'Address'} >
+                        <Item dataField={'Address'} editorOptions={{onValueChanged: onRequiredFieldChanged}} >
                             <RequiredRule message={'Address is required'} />
                         </Item>
-                        <Item dataField={'City'} >
+                        <Item dataField={'City'} editorOptions={{onValueChanged: onRequiredFieldChanged}} >
                             <RequiredRule message={'City is required'} />
                         </Item>
-                        <Item dataField={'Province'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getProvinces() }}>
+                        <Item dataField={'Province'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getProvinces() , onValueChanged: onRequiredFieldChanged}}>
                             <RequiredRule message={'Province is required'} />
                         </Item>
-                        <Item dataField={'Zipcode'}>
+                        <Item dataField={'Zipcode'} editorOptions={{onValueChanged: onRequiredFieldChanged}}>
                             <RequiredRule message={'Zipcode is required'} />
                         </Item>
                     </GroupItem>                
@@ -86,31 +79,13 @@ class Step1 extends Component {
       )
     }
 
-    onRequiredFieldChanged(e) {
-        var result = validationEngine.validateGroup('businessData')
-        if(result.isValid){
-            this.props.setEnableNext();           
-        }
-        else {
-            this.props.setDisableNext();
-        }
+    const mapDispatchToProps = dispatch =>
+    {
+        return bindActionCreators({
+            setEnableNext               : BusinessSetupActions.setEnableNext,
+            setDisableNext              : BusinessSetupActions.setDisableNext
+        },
+        dispatch);
     }
-}
 
-const mapStateToProps = state => {
-    return {
-        stepDetails: state.businessSetupSteps.Step1
-    };
-}
-
-const mapDispatchToProps = dispatch =>
-{
-    return bindActionCreators({
-        setBusinessDetails     : Actions.setBusinessDetails,
-        setEnableNext             : BusinessSetupActions.setEnableNext,
-        setDisableNext             : BusinessSetupActions.setDisableNext,
-    },
-    dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Step1);
+export default (connect(null, mapDispatchToProps)(Step1));

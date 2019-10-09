@@ -24,6 +24,7 @@ import withSizes from 'react-sizes'
 import SwipeableViews from 'react-swipeable-views';
 import {bindActionCreators} from 'redux';
 import * as BusinessSetupActions from './store/actions';
+import validationEngine from 'devextreme/ui/validation_engine';
 
 function getSteps() {
     return ['Business Details', 'Business Type', 'Services Provided', 'Staff & Operating Hours'];
@@ -117,11 +118,12 @@ class BusinessSetup extends Component {
                                         </Stepper >}
                                         <div>
                                                     <div>
-                                                        <FuseScrollbars className="w-full overflow-auto">
+                                                        <FuseScrollbars className="w-full md:max-h-full max-h-512 overflow-auto" scrollToTopOnChildChange={true}>
                                                             <SwipeableViews
-                                                            className="overflow-hidden"
+                                                            className="overflow-hidden "
                                                             index={activeStep}
-                                                            enableMouseEvents={false}                            
+                                                            enableMouseEvents={false} 
+                                                            disabled={true}       
                                                             >  
                                                             <div>
                                                                 <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
@@ -205,42 +207,6 @@ class BusinessSetup extends Component {
         )
     }
 
-    
-    getStepContent = (step) => {
-        switch (step) {
-            case 0:
-                return <div>
-                    <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
-                        Tell us a little bit about your business...
-                    </Typography>
-                    {this.state.step1}
-                </div>;
-            case 1:
-                return <div>
-                    <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
-                        What type of business are you in?
-                    </Typography>
-                    {this.state.step2}
-                </div>;
-            case 2:
-                return <div>
-                    <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
-                        What kind of services do you provide?
-                        </Typography>
-                    {this.state.step3}
-                </div>;
-            case 3:
-                return <div>
-                    <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
-                        What times are you open for business?
-                        </Typography>
-                    {this.state.step4}
-                </div>;
-            default:
-                return 'Unknown step';
-        }
-    };
-
     isStepOptional = step => {
         return step === 2;
     };
@@ -256,10 +222,12 @@ class BusinessSetup extends Component {
         }
         this.setState({ activeStep: this.state.activeStep + 1 })
         this.setState({ skipped: newSkipped });
+        this.handleValidation(this.state.activeStep + 1);
     };
 
     handleBack = () => {
         this.setState({ activeStep: this.state.activeStep - 1 })
+        this.handleValidation(this.state.activeStep - 1);
     };
 
     handleSkip = () => {
@@ -276,7 +244,6 @@ class BusinessSetup extends Component {
 
     handleComplete = () => {
         auth0Service.getUserData().then(tokenData => {
-            console.log(tokenData);
             tokenData.user_metadata.accountStatus = 'Complete';
             auth0Service.updateUserData(tokenData.user_metadata);
             auth0Service.setRegistrationComplete();
@@ -286,11 +253,49 @@ class BusinessSetup extends Component {
         });
     };
 
+    handleValidation = (step) => {
+        switch(step)
+        {
+            case 0: {
+                    var result = validationEngine.validateGroup('businessData')
+                    if(result.isValid){
+                        this.props.setEnableNext();           
+                    }
+                    else {
+                        this.props.setDisableNext();
+                    }
+                }
+                break;
+            case 1: {
+                var result = validationEngine.validateGroup('businessType')
+                if(result.isValid && this.props.Step2.businessTypeDetails.businessType && this.props.Step2.businessTypeDetails.businessType){
+                    this.props.setEnableNext();        
+                }
+                else {
+                    this.props.setDisableNext();
+                }
+            }
+            break;
+            case 3: {
+                var result = validationEngine.validateGroup('businessOperatingHours')
+                if(result.isValid && this.props.Step4.staffOperatingHours && this.props.Step4.staffOperatingHours.length > 1){
+                    this.props.setEnableNext();        
+                }
+                else {
+                    this.props.setDisableNext();
+                }
+            }
+            break;
+        }
+    };
+
 }
 
 const mapStateToProps = state => {
     return {
-        enableNext: state.businessSetup.BusinessSetup.enableNext
+        enableNext: state.businessSetup.BusinessSetup.enableNext,
+        Step2: state.businessSetupSteps.Step2,  
+        Step4: state.businessSetupSteps.Step4
     };
 }
 

@@ -5,7 +5,7 @@ let initialState = {
     readOnly: false,
     showColon: true,
     colCount: 2,
-    businessDetails: []
+    businessDetails: {}
 };
 
 

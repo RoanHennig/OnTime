@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import {connect, useSelector} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as BusinessSetupActions from '../store/actions';
+import * as Actions from './store/actions';
 import ShiftButtonCell from './Utils/ShiftButtonCell'
-import service from './Step4.data.js';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -46,7 +46,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function Step4(props) {
+function Step4({setOperatingHours}) {
+
+    const stepDetails = useSelector(state => state.businessSetupSteps.Step4);
 
     const handleClick = (row, day, dayOfWeek) => {
         setShiftRow(row);
@@ -57,50 +59,50 @@ function Step4(props) {
 
     const handleSaveShift = (shifts) => {
         setIsOpen(false);
-        const newDataSource = [...dataSource];
+        const newDataSource = [...stepDetails.staffOperatingHours];
         const index = newDataSource.indexOf(shiftRow);
 
         switch (shiftDay) {
             case 'sunday':
                 {
                     newDataSource[index].sunday = shifts;
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'monday':
                 {
                     newDataSource[index].monday = shifts;
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'tuesday':
                 {
                     newDataSource[index].tuesday = shifts;
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'wednesday':
                 {
                     newDataSource[index].wednesday = shifts;
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'thursday':
                 {
                     newDataSource[index].thursday = shifts;
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'friday':
                 {
                     newDataSource[index].friday = shifts;
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'saturday':
                 {
                     newDataSource[index].saturday = shifts;
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
 
@@ -108,60 +110,61 @@ function Step4(props) {
     };
 
     const handleDeleteWholeShift = () => {
-        const newDataSource = [...dataSource];
+        const newDataSource = [...stepDetails.staffOperatingHours];
         const index = newDataSource.indexOf(shiftRow);
         setIsOpen(false);
         switch (shiftDay) {
             case 'sunday':
                 {
                     newDataSource[index].sunday = [];
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'monday':
                 {
                     newDataSource[index].monday = [];
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'tuesday':
                 {
                     newDataSource[index].tuesday = [];
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'wednesday':
                 {
                     newDataSource[index].wednesday = [];
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'thursday':
                 {
                     newDataSource[index].thursday = [];
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'friday':
                 {
                     newDataSource[index].friday = [];
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
             case 'saturday':
                 {
                     newDataSource[index].saturday = [];
-                    setDataSource(newDataSource);
+                    setOperatingHours(newDataSource);
                 }
                 break;
         }
     };
 
     const handleAddStaffClick = () => {
-        const newItem = { ...dataSource[0] };
-        newItem.staffID = dataSource.length + 1;
+        const newStaffOperatingHours = [...stepDetails.staffOperatingHours]
+        const newItem = { ...newStaffOperatingHours[0] };
+        newItem.staffID = newStaffOperatingHours.length + 1;
         newItem.staffName = 'Staff Member';
-        setDataSource(dataSource.concat(newItem));
+        setOperatingHours(newStaffOperatingHours.concat(newItem));
     };
 
     const onFieldChanged = (e) => {
@@ -170,28 +173,26 @@ function Step4(props) {
     }
 
     const handleDeleteStaffMember = (row) => {
-        const newDataSource = [...dataSource];
+        const newDataSource = [...stepDetails.staffOperatingHours];
         const index = newDataSource.indexOf(row);
         newDataSource.splice(index, 1);
-        setDataSource(newDataSource);
+        
+        setOperatingHours(newDataSource);
     };
 
     const [isOpen, setIsOpen] = useState(null);
     const [shiftRow, setShiftRow] = useState(null);
     const [shiftDay, setShiftDay] = useState(null);
-    const [businessOperatingHours] = useState({openingTime: '08:00', closingTime: '17:00'});
     const [shiftDayOfWeek, setShiftDayOfWeek] = useState([]);
-    const [dataSource, setDataSource] = useState(service.createDataSet());
 
     const classes = useStyles();
 
     return (
-        <Paper className={classes.root}>
-            <ShiftDialog open={isOpen} setClose={setIsOpen} handleDeleteWholeShift={handleDeleteWholeShift} setShiftDayOfWeek={setShiftDayOfWeek}
-                shiftDayOfWeek={shiftDayOfWeek} handleSaveShift={handleSaveShift} businessOperatingHours={businessOperatingHours} />
+        <div>
+            <Paper className={classes.root}>
             <Form
                 id={'form'}
-                formData={businessOperatingHours}
+                formData={stepDetails.businessOperatingHours}
                 readOnly={false}
                 showColonAfterLabel={true}
                 labelLocation={'top'}
@@ -202,13 +203,18 @@ function Step4(props) {
                 stylingMode={'outlined'}                
                 onFieldDataChanged = {onFieldChanged}
             >
-                <SimpleItem dataField={'openingTime'} editorType={'dxDateBox'} editorOptions={{ defaultValue: '08:00', type: 'time', pickerType: 'rollers', min: '00:00' }} >
+                <SimpleItem dataField={'openingTime'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: '00:00' }} >
                     <RequiredRule message={'Please select an opening time for your business'} />
                 </SimpleItem>
                 <SimpleItem dataField={'closingTime'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: '08:00' }}>
                     <RequiredRule message={'Please select a closing time for your business'} />
                 </SimpleItem>
             </Form>
+            </Paper>
+            <Paper className={classes.root}>
+            <ShiftDialog open={isOpen} setClose={setIsOpen} handleDeleteWholeShift={handleDeleteWholeShift} setShiftDayOfWeek={setShiftDayOfWeek}
+                shiftDayOfWeek={shiftDayOfWeek} handleSaveShift={handleSaveShift} businessOperatingHours={stepDetails.businessOperatingHours} />
+
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
@@ -224,7 +230,7 @@ function Step4(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {dataSource.map(row => (
+                    {stepDetails.staffOperatingHours.map(row => (
                         <TableRow key={row.staffID}>
                             <TableCell scope="row">
                                 <IconButton aria-label="delete" onClick={() => handleDeleteStaffMember(row)} className={classes.margin}>
@@ -286,21 +292,19 @@ function Step4(props) {
                 Add Staff
                 </Button>
         </Paper>
+        </div>
+        
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        stepDetails: state.businessSetupSteps.Step4
-    };
-}
-
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch =>
+{
     return bindActionCreators({
-        setEnableNext: BusinessSetupActions.setEnableNext,
-        setDisableNext: BusinessSetupActions.setDisableNext,
+        setEnableNext               : BusinessSetupActions.setEnableNext,
+        setDisableNext              : BusinessSetupActions.setDisableNext,       
+        setOperatingHours           : Actions.setOperatingHours
     },
-        dispatch);
+    dispatch);
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(Step4));
+export default (connect(null, mapDispatchToProps)(Step4));

@@ -1,4 +1,4 @@
-export const BUSINESS_TYPE_CHANGED = '[STEP1] BUSINESS TYPE CHANGED';
+export const BUSINESS_TYPE_CHANGED = '[STEP2] BUSINESS TYPE CHANGED';
 
 export function setBusinessType(businessType)
 {
