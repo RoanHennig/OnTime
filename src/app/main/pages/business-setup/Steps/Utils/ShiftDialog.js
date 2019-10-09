@@ -103,7 +103,7 @@ export default function ShiftDialog(props) {
                 ))}
                 <Button
                     className={classes.addShiftButton}
-                    hidden={props.shiftDayOfWeek && props.shiftDayOfWeek.length == 2}
+                    hidden={shiftData && shiftData.length == 2}
                     variant="outlined"
                     color="primary"
                     onClick={handleAddShiftClick}

@@ -22,8 +22,6 @@ import auth0Service from 'app/services/auth0Service';
 import history from '@history';
 import withSizes from 'react-sizes'
 import SwipeableViews from 'react-swipeable-views';
-import {bindActionCreators} from 'redux';
-import * as BusinessSetupActions from './store/actions';
 import validationEngine from 'devextreme/ui/validation_engine';
 
 function getSteps() {
@@ -219,7 +217,7 @@ class BusinessSetup extends Component {
             newSkipped = new Set(newSkipped.values());
             newSkipped.delete(this.state.activeStep);
         }
-        const success =  this.handleValidation(this.state.activeStep + 1);
+        const success =  this.handleValidation(this.state.activeStep);
         if(success) {
             this.setState({ activeStep: this.state.activeStep + 1 })
             this.setState({ skipped: newSkipped });
@@ -227,8 +225,10 @@ class BusinessSetup extends Component {
     };
 
     handleBack = () => {
-        this.setState({ activeStep: this.state.activeStep - 1 })
-        this.handleValidation(this.state.activeStep - 1);
+        const success =  this.handleValidation(this.state.activeStep);
+        if(success) {
+            this.setState({ activeStep: this.state.activeStep - 1 });
+        }   
     };
 
     handleSkip = () => {
@@ -301,15 +301,6 @@ const mapStateToProps = state => {
     };
 }
 
-const mapDispatchToProps = dispatch =>
-{
-    return bindActionCreators({
-        setEnableNext               : BusinessSetupActions.setEnableNext,
-        setDisableNext              : BusinessSetupActions.setDisableNext,
-    },
-    dispatch);
-}
-
 const mapSizesToProps = ({ width }) => ({
     isMobile: width < 480,
   })
@@ -317,4 +308,4 @@ const mapSizesToProps = ({ width }) => ({
   export default compose(
     withStyles(styles, { withTheme: true }),
     withSizes(mapSizesToProps)
-  )(connect(mapStateToProps, mapDispatchToProps)(BusinessSetup))
+  )(connect(mapStateToProps, null)(BusinessSetup))

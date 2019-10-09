@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {connect, useSelector} from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as BusinessSetupActions from '../store/actions';
+import { FuseAnimate, FuseScrollbars } from '@fuse';
 import * as Actions from './store/actions';
 import ShiftButtonCell from './Utils/ShiftButtonCell'
 import Table from '@material-ui/core/Table';
@@ -18,7 +18,6 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Form, { SimpleItem, RequiredRule} from 'devextreme-react/form';
-import validationEngine from 'devextreme/ui/validation_engine';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -46,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function Step4({setOperatingHours}) {
+function Step4({setOperatingHours, setBusinessOperatingHours}) {
 
     const stepDetails = useSelector(state => state.businessSetupSteps.Step4);
 
@@ -167,15 +166,32 @@ function Step4({setOperatingHours}) {
         setOperatingHours(newStaffOperatingHours.concat(newItem));
     };
 
-    const onFieldChanged = (e) => {
-        //setBusinessoperatingHours(operatingHours);
-        validationEngine.validateGroup('businessOperatingHours')
-    }
+    const onBusinessOperatingOpeningHoursChanged = (e) => {
+        const newBusinessOperatingHours = {...stepDetails.businessOperatingHours};
+        newBusinessOperatingHours.openingTime = e.value;
+
+        setBusinessOperatingHours(newBusinessOperatingHours);  
+    };
+
+    const onBusinessOperatingClosingHoursChanged = (e) => {
+        const newBusinessOperatingHours = {...stepDetails.businessOperatingHours};
+
+        newBusinessOperatingHours.closingTime = e.value;
+        setBusinessOperatingHours(newBusinessOperatingHours);  
+    };
 
     const handleDeleteStaffMember = (row) => {
         const newDataSource = [...stepDetails.staffOperatingHours];
         const index = newDataSource.indexOf(row);
         newDataSource.splice(index, 1);
+        
+        setOperatingHours(newDataSource);
+    };
+
+    const handleStaffNameChange = (event,row) => {
+        const newDataSource = [...stepDetails.staffOperatingHours];
+        const index = newDataSource.indexOf(row);
+        newDataSource[index].staffName = event.target.value;
         
         setOperatingHours(newDataSource);
     };
@@ -201,12 +217,11 @@ function Step4({setOperatingHours}) {
                 showValidationSummary={true}
                 validationGroup={'businessOperatingHours'}
                 stylingMode={'outlined'}                
-                onFieldDataChanged = {onFieldChanged}
             >
-                <SimpleItem dataField={'openingTime'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: '00:00' }} >
+                <SimpleItem dataField={'openingTime'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: '00:00',max: stepDetails.businessOperatingHours.closingTime, onValueChanged:onBusinessOperatingOpeningHoursChanged }} >
                     <RequiredRule message={'Please select an opening time for your business'} />
                 </SimpleItem>
-                <SimpleItem dataField={'closingTime'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: '08:00' }}>
+                <SimpleItem dataField={'closingTime'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: stepDetails.businessOperatingHours.openingTime , onValueChanged:onBusinessOperatingClosingHoursChanged }}>
                     <RequiredRule message={'Please select a closing time for your business'} />
                 </SimpleItem>
             </Form>
@@ -231,6 +246,7 @@ function Step4({setOperatingHours}) {
                 </TableHead>
                 <TableBody>
                     {stepDetails.staffOperatingHours.map(row => (
+                        <FuseAnimate animation="transition.slideDownBigIn">
                         <TableRow key={row.staffID}>
                             <TableCell scope="row">
                                 <IconButton aria-label="delete" onClick={() => handleDeleteStaffMember(row)} className={classes.margin}>
@@ -241,6 +257,7 @@ function Step4({setOperatingHours}) {
                                 <TextField
                                     defaultValue={row.staffName}
                                     margin="normal"
+                                    onChange={(event) => handleStaffNameChange(event,row)}
                                     inputProps={{ 'aria-label': 'name' }}
                                 />
                             </TableCell>
@@ -280,6 +297,8 @@ function Step4({setOperatingHours}) {
                                 )) : <ShiftButtonCell shift={'ADD'} startIcon={<AddIcon />} click={() => handleClick(row, 'sunday', row.sunday)} />}
                             </TableCell>
                         </TableRow>
+                        </FuseAnimate>
+
                     ))}
                 </TableBody>
             </Table>
@@ -300,9 +319,8 @@ function Step4({setOperatingHours}) {
 const mapDispatchToProps = dispatch =>
 {
     return bindActionCreators({
-        setEnableNext               : BusinessSetupActions.setEnableNext,
-        setDisableNext              : BusinessSetupActions.setDisableNext,       
-        setOperatingHours           : Actions.setOperatingHours
+        setOperatingHours           : Actions.setOperatingHours,
+        setBusinessOperatingHours           : Actions.setBusinessOperatingHours
     },
     dispatch);
 }

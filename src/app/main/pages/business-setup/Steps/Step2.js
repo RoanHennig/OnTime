@@ -1,15 +1,9 @@
 import React from 'react';
-import * as Actions from './store/actions';
-import * as BusinessSetupActions from '../store/actions';
-import {connect, useSelector, useDispatch} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import validationEngine from 'devextreme/ui/validation_engine';
+import {useSelector} from 'react-redux';
 import service from './businessTypes.js';
 import Form, {Item, RequiredRule } from 'devextreme-react/form';
-import reducer from '../store/reducers';
 
-import withReducer from 'app/store/withReducer';
-function Step2({setEnableNext, setDisableNext}) {
+function Step2() {
 
     const stepDetails = useSelector(state => state.businessSetupSteps.Step2);
     const {
@@ -19,15 +13,6 @@ function Step2({setEnableNext, setDisableNext}) {
         colCount
       } = stepDetails;
       
-      const onRequiredFieldChanged = () => {
-        var result = validationEngine.validateGroup('businessType')
-        if(result.isValid && stepDetails.businessTypeDetails.businessType && stepDetails.businessTypeDetails.businessType){ 
-                setEnableNext();   
-        }
-        else {     
-                setDisableNext();
-        }
-    }
           return (
                     <Form
                     id={'form'}
@@ -39,7 +24,6 @@ function Step2({setEnableNext, setDisableNext}) {
                     showValidationSummary={true}
                     validationGroup={'businessType'}
                     stylingMode= {'outlined'}
-                    onFieldDataChanged = {onRequiredFieldChanged}
                     >           
                         <Item dataField={'businessType'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getBusinessTypes(),
                             displayExpr:'Name',
@@ -66,13 +50,4 @@ function Step2({setEnableNext, setDisableNext}) {
 
 }
 
-const mapDispatchToProps = dispatch =>
-{
-    return bindActionCreators({
-        setEnableNext               : BusinessSetupActions.setEnableNext,
-        setDisableNext              : BusinessSetupActions.setDisableNext,
-    },
-    dispatch);
-}
-
-export default (connect(null, mapDispatchToProps)(Step2));
+export default (Step2);
