@@ -27,10 +27,11 @@ const useStyles = makeStyles(theme => ({
         overflowX: 'auto',
     },
     tableCell: {
-        maxWidth: 250
+        maxWidth: 250,
+        padding:theme.spacing(1)
     },
     tableCellStaffName: {
-        minWidth: 150
+        minWidth: 200
     },
     table: {
         marginBottom: theme.spacing(2),
