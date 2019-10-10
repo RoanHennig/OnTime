@@ -1,5 +1,4 @@
 import React from 'react';
-import * as BusinessSetupActions from '../store/actions';
 
 function Step3() {
 

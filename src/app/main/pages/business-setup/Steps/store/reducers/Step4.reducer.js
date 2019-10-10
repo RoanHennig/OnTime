@@ -2,8 +2,8 @@ import * as Actions from '../actions';
 import service from '../../Step4.data.js';
 
 let initialState = {
-    businessOperatingHours: { openingTime: '09:00', closingTime: '17:00' },
-    staffOperatingHours: service.createDataSet()
+    businessOperatingHours: { openingTime: '08:00', closingTime: '17:00' },
+    staffOperatingHours: service.createDefaultDataSet()
 };
 
 

@@ -11,27 +11,16 @@ import Form, { SimpleItem, RequiredRule} from 'devextreme-react/form';
 import { makeStyles } from '@material-ui/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
-import validationEngine from 'devextreme/ui/validation_engine';
+import { FuseAnimate } from '@fuse';
 
 export default function ShiftDialog(props) {
 
     const useStyles = makeStyles(theme => ({
-        button: {
-            margin: theme.spacing(1),
-            float: 'right'
-        },
-        deleteButton: {
-            margin: theme.spacing(2),
-            float: 'left'
-        },
         dialogAction: {
             display: 'block'
         },
         form: {
             marginBottom: theme.spacing(1),
-        },
-        addShiftButton: {
-            float: 'left'
         }
     }))
 
@@ -52,12 +41,30 @@ export default function ShiftDialog(props) {
     };
 
     const handleAddShiftClick = () => {
-        setData([...props.shiftDayOfWeek, { shiftStart: '00:00', shiftEnd: '00:00' }]);
+        if(props.shiftDayOfWeek.length > 0) {
+            setData([...props.shiftDayOfWeek, { shiftStart: props.shiftDayOfWeek[0].shiftEnd, shiftEnd: props.shiftDayOfWeek[0].shiftEnd, min: props.shiftDayOfWeek[0].shiftEnd, max:props.shiftDayOfWeek[0].shiftStart} ]);
+        }      
+        else {
+            setData([...props.shiftDayOfWeek, { shiftStart: '00:00', shiftEnd: '00:00', }]);
+        }
+        
     };
 
-    const onFieldChanged = (e) => {
-        validationEngine.validateGroup('staffOperatingHours')
-    }
+    const onStaffOperatingOpeningHoursChanged = (e, shift) => {
+        const newStaffOperatingHours = [...shiftData ];
+        const index = newStaffOperatingHours.indexOf(shift);
+        newStaffOperatingHours[index].shiftStart = e.value;
+
+        setData(newStaffOperatingHours);
+    };
+
+    const onStaffOperatingClosingHoursChanged = (e,shift) => {
+        const newStaffOperatingHours = [...shiftData ];
+        const index = newStaffOperatingHours.indexOf(shift);
+        newStaffOperatingHours[index].shiftEnd = e.value;
+
+        setData(newStaffOperatingHours);
+    };
 
     const [shiftData, setData] = useState([]);
     const classes = useStyles();
@@ -70,7 +77,7 @@ export default function ShiftDialog(props) {
                     Customize your working hours to suit your business.
                 </DialogContentText>
                 {shiftData.map(shift => (
-                    <div>
+                    <FuseAnimate animation="transition.slideDownBigIn">
                         <Form
                             id={'form'}
                             className={classes.form}
@@ -83,12 +90,11 @@ export default function ShiftDialog(props) {
                             showValidationSummary={true}
                             validationGroup={'staffOperatingHours'}
                             stylingMode={'outlined'}
-                            onFieldDataChanged = {onFieldChanged}
                         >
-                            <SimpleItem colSpan={4}  dataField={'shiftStart'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: props.businessOperatingHours.openingTime }} >
+                            <SimpleItem colSpan={4}  dataField={'shiftStart'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: shift.min ? shift.min : props.businessOperatingHours.openingTime, max: shift.shiftEnd, onValueChanged: (e) => onStaffOperatingOpeningHoursChanged(e,shift) }} >
                                 <RequiredRule message={'Please select a starting time for your shift'} />
                             </SimpleItem>
-                            <SimpleItem colSpan={4}  dataField={'shiftEnd'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: shift.shiftStart, max:props.businessOperatingHours.closingTime }}>
+                            <SimpleItem colSpan={4}  dataField={'shiftEnd'} editorType={'dxDateBox'} editorOptions={{ type: 'time', pickerType: 'rollers', min: shift.shiftStart, max: props.businessOperatingHours.closingTime, onValueChanged: (e) => onStaffOperatingClosingHoursChanged(e,shift) }}>
                                 <RequiredRule message={'Please select an ending time for your shift'} />
                             </SimpleItem>
                             <SimpleItem dataField={'Remove'} colSpan={2}>
@@ -98,12 +104,11 @@ export default function ShiftDialog(props) {
                             </SimpleItem>
 
                         </Form>
-
-                    </div>
+                        </FuseAnimate>
                 ))}
                 <Button
-                    className={classes.addShiftButton}
-                    hidden={shiftData && shiftData.length == 2}
+                    className="sm:float-left sm:min-w-52 min-w-full"
+                    hidden={shiftData && shiftData.length === 2}
                     variant="outlined"
                     color="primary"
                     onClick={handleAddShiftClick}
@@ -113,13 +118,13 @@ export default function ShiftDialog(props) {
             </DialogContent>
 
             <DialogActions className={classes.dialogAction} disableSpacing={true}>
-            <Button variant="contained" color="secondary" onClick={() => props.handleDeleteWholeShift()} className={classes.deleteButton} startIcon={<DeleteIcon />}>
+            <Button variant="contained" color="secondary" onClick={() => props.handleDeleteWholeShift()} className={"sm:float-left sm:m-16 m-3 sm:min-w-52 min-w-full"} startIcon={<DeleteIcon />}>
                     Delete
             </Button>
-            <Button variant="contained" color="primary" onClick={() => props.handleSaveShift(shiftData)} className={classes.button} startIcon={<SaveIcon />}>
+            <Button variant="contained" color="primary" onClick={() => props.handleSaveShift(shiftData)} className={"sm:float-right sm:m-16 m-3 sm:min-w-52 min-w-full"} startIcon={<SaveIcon />}>
                     Save
             </Button>
-            <Button className={classes.button} onClick={handleClose}>
+            <Button className={"sm:float-right sm:m-16 m-3 sm:min-w-52 min-w-full"} onClick={handleClose}>
                 Close
             </Button>
             </DialogActions>

@@ -1,9 +1,6 @@
-import React,{ useState, useEffect } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import {makeStyles} from '@material-ui/styles';
-import AddIcon from '@material-ui/icons/Add';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -19,7 +16,7 @@ function ShiftButtonCell(props) {
       <div>       
           <Button                 
             className={classes.button}  
-            variant="contained"
+            variant={props.variant}
             color="primary" 
             onClick= {props.click}
             startIcon = {props.startIcon ? props.startIcon : null}>
