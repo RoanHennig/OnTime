@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import service from './data.js';
+import service from './data/data.js';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { FuseAnimate, FuseScrollbars } from '@fuse';
 import * as Actions from './Steps/store/actions';

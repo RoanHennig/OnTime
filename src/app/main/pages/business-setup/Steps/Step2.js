@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import service from './businessTypes.js';
+import service from './data/businessTypes.js';
 import Form, {Item, RequiredRule } from 'devextreme-react/form';
 
 function Step2() {

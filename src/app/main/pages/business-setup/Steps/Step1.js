@@ -1,6 +1,6 @@
 import React from 'react';
 import Form, { GroupItem, Item,  PatternRule, RequiredRule } from 'devextreme-react/form';
-import service from './provices.js';
+import service from './data/provices.js';
 import {useSelector} from 'react-redux';
 
 function Step1(props) {     

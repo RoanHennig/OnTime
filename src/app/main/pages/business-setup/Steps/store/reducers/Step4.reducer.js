@@ -1,5 +1,5 @@
 import * as Actions from '../actions';
-import service from '../../Step4.data.js';
+import service from '../../data/Step4.data.js';
 
 let initialState = {
     businessOperatingHours: { openingTime: '08:00', closingTime: '17:00' },
