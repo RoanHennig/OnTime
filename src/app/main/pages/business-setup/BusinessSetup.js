@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Container, Card, CardContent } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import service from './data.js';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { FuseAnimate, FuseScrollbars } from '@fuse';
@@ -30,7 +30,7 @@ function getSteps() {
     return ['Business Details', 'Business Type', 'Services Provided', 'Staff & Operating Hours'];
 }
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     root: {
         background: 'radial-gradient(' + darken(theme.palette.primary.dark, 0.5) + ' 0%, ' + theme.palette.primary.dark + ' 80%)',
         color: theme.palette.primary.contrastText
@@ -47,29 +47,107 @@ const styles = theme => ({
         maxWidth: 400,
         flexGrow: 1,
     }
-});
+}));
 
-class BusinessSetup extends Component {
-    constructor() {
-        super();
-        this.businessDetails = service.getbusinessDetails();
-        this.state = {
-            activeStep: 0,
-            skipped: new Set(),
-            step1: <Step1 businessDetails={this.businessDetails} />,
-            step2: <Step2 />,
-            step3: <Step3 />,
-            step4: <Step4 />
-        };
-    }
+function BusinessSetup(props) {
 
-    render() {
-        const {
-            activeStep
-        } = this.state;
+    const isStepOptional = step => {
+        return step === 2;
+    };
+    const isSetupComplete = step => {
+        return step === 4;
+    };
+    const isStepSkipped = step => {
+        return skipped.has(step);
+    };
 
-        const { classes } = this.props;
-        const steps = getSteps();
+    const handleNext = () => {
+        let newSkipped = skipped;
+        if (isStepSkipped(activeStep)) {
+            newSkipped = new Set(newSkipped.values());
+            newSkipped.delete(activeStep);
+        }
+        const success = handleValidation(activeStep);
+        if (success) {
+            setActiveStep(activeStep + 1)
+            setSkipped(newSkipped);
+        }
+    };
+
+    const handleBack = () => {
+        setActiveStep(activeStep - 1);
+    };
+
+    const handleSkip = () => {
+        if (!isStepOptional(activeStep)) {
+            throw new Error("You can't skip a step that isn't optional.");
+        }
+
+        setActiveStep({ activeStep: activeStep + 1 });
+        const newSkipped = new Set(skipped.values());
+        newSkipped.add(activeStep);
+        setSkipped(newSkipped);
+
+    };
+
+    const handleComplete = () => {
+        auth0Service.getUserData().then(tokenData => {
+            tokenData.user_metadata.accountStatus = 'Complete';
+            auth0Service.updateUserData(tokenData.user_metadata);
+            auth0Service.setRegistrationComplete();
+            history.push({
+                pathname: '/example'
+            });
+        });
+    };
+
+    const handleValidation = (step) => {
+        switch (step) {
+            case 0: {
+                var result = validationEngine.validateGroup('businessData')
+                if (result.isValid) {
+                    if(props.Step4.staffOperatingHours && props.Step4.staffOperatingHours.length > 0) {
+                        const newStaffOperatingHours = [...props.Step4.staffOperatingHours];
+                        const newFirstStaffMember = {...newStaffOperatingHours[0]};
+                        newFirstStaffMember.staffName = props.Step1.businessDetails.FirstName + ' ' + props.Step1.businessDetails.LastName;
+                        newStaffOperatingHours[0] = newFirstStaffMember;
+                        props.setOperatingHours(newStaffOperatingHours);
+                    }
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            case 1: {
+                result = validationEngine.validateGroup('businessType')
+                if (result.isValid && props.Step2.businessTypeDetails.businessType && props.Step2.businessTypeDetails.businessType) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            case 3: {
+                result = validationEngine.validateGroup('businessOperatingHours')
+                if (result.isValid && props.Step4.staffOperatingHours && props.Step4.staffOperatingHours.length > 0) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            default: {
+                return true;
+            }
+        }
+    };
+
+    const [businessDetails] = useState(service.getbusinessDetails());
+    const [activeStep, setActiveStep] = useState(0);
+    const [skipped, setSkipped] = useState(new Set());
+    const classes = useStyles();
+    const steps = getSteps();
 
         return (
             <div className={clsx(classes.root, "flex flex-col flex-auto flex-shrink-0 items-center justify-center sm:p-32 p-2")}>
@@ -82,7 +160,7 @@ class BusinessSetup extends Component {
                             
                                 <CardContent className="flex flex-col items-stretch justify-center p-32 text-center">
                                     <div >
-                                        {this.props.isMobile ?
+                                        {props.isMobile ?
                                             <MobileStepper
                                                 variant="dots"
                                                 steps={4}
@@ -93,7 +171,7 @@ class BusinessSetup extends Component {
                                                 {steps.map((label, index) => {
                                                     const stepProps = {};
                                                     const labelProps = {};
-                                                    if (this.isStepSkipped(index)) {
+                                                    if (isStepSkipped(index)) {
                                                         stepProps.completed = false;
                                                     }
                                                     return (
@@ -109,7 +187,7 @@ class BusinessSetup extends Component {
                                                 {steps.map((label, index) => {
                                                     const stepProps = {};
                                                     const labelProps = {};
-                                                    if (this.isStepSkipped(index)) {
+                                                    if (isStepSkipped(index)) {
                                                         stepProps.completed = false;
                                                     }
                                                     return (
@@ -132,25 +210,25 @@ class BusinessSetup extends Component {
                                                             <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                                                                 Tell us a little bit about your business...
                                                                 </Typography>
-                                                            {this.state.step1}
+                                                            <Step1 businessDetails={businessDetails} />
                                                         </div>
                                                         <div>
                                                             <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                                                                 What type of business are you in?
                                                                 </Typography>
-                                                            {this.state.step2}
+                                                                <Step2 />
                                                         </div>
                                                         <div>
                                                             <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                                                                 What kind of services do you provide?
                                                                     </Typography>
-                                                            {this.state.step3}
+                                                                    <Step3 />
                                                         </div>
                                                         <div>
                                                             <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
                                                                 What times are you open for business?
                                                                     </Typography>
-                                                            {this.state.step4}
+                                                                    <Step4 />
                                                         </div>
                                                         <div>
                                                             <Typography color="inherit" className="text-24 sm:text-32 font-light mb-24">
@@ -179,30 +257,30 @@ class BusinessSetup extends Component {
                                                     </SwipeableViews>
                                                 </FuseScrollbars>
                                                 <div>
-                                                    <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
+                                                    <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                                                         Back
                                                             </Button>
-                                                    {this.isStepOptional(activeStep) && (
+                                                    {isStepOptional(activeStep) && (
                                                         <Button
                                                             variant="contained"
                                                             color="primary"
-                                                            onClick={this.handleSkip}
+                                                            onClick={handleSkip}
                                                             className={classes.button}
                                                         >
                                                             Skip
                                                             </Button>
                                                     )}
 
-                                                    {!this.isSetupComplete(activeStep) && (<Button
+                                                    {!isSetupComplete(activeStep) && (<Button
                                                         variant="contained"
                                                         color="primary"
-                                                        onClick={this.handleNext}
+                                                        onClick={handleNext}
                                                         className={classes.button}
                                                     >
                                                         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                                                     </Button>)}
-                                                    {this.isSetupComplete(activeStep) && (
-                                                        <Button variant="contained" color="primary" onClick={this.handleComplete} className={classes.button} >
+                                                    {isSetupComplete(activeStep) && (
+                                                        <Button variant="contained" color="primary" onClick={handleComplete} className={classes.button} >
                                                             Take me to my business dashboard
                                                         </Button>)}
                                                 </div>
@@ -217,102 +295,6 @@ class BusinessSetup extends Component {
                 </div>
             </div>
         )
-    }
-
-    isStepOptional = step => {
-        return step === 2;
-    };
-    isSetupComplete = step => {
-        return step === 4;
-    };
-    isStepSkipped = step => {
-        return this.state.skipped.has(step);
-    };
-
-    handleNext = () => {
-        let newSkipped = this.state.skipped;
-        if (this.isStepSkipped(this.state.activeStep)) {
-            newSkipped = new Set(newSkipped.values());
-            newSkipped.delete(this.state.activeStep);
-        }
-        const success = this.handleValidation(this.state.activeStep);
-        if (success) {
-            this.setState({ activeStep: this.state.activeStep + 1 })
-            this.setState({ skipped: newSkipped });
-        }
-    };
-    
-    handleUploadPhoto = () => {
-    };
-
-    handleBack = () => {
-        this.setState({ activeStep: this.state.activeStep - 1 });
-    };
-
-    handleSkip = () => {
-        if (!this.isStepOptional(this.state.activeStep)) {
-            throw new Error("You can't skip a step that isn't optional.");
-        }
-
-        this.setState({ activeStep: this.state.activeStep + 1 });
-        const newSkipped = new Set(this.state.skipped.values());
-        newSkipped.add(this.state.activeStep);
-        this.setState({ skipped: newSkipped });
-
-    };
-
-    handleComplete = () => {
-        auth0Service.getUserData().then(tokenData => {
-            tokenData.user_metadata.accountStatus = 'Complete';
-            auth0Service.updateUserData(tokenData.user_metadata);
-            auth0Service.setRegistrationComplete();
-            history.push({
-                pathname: '/example'
-            });
-        });
-    };
-
-    handleValidation = (step) => {
-        switch (step) {
-            case 0: {
-                var result = validationEngine.validateGroup('businessData')
-                if (result.isValid) {
-                    if(this.props.Step4.staffOperatingHours && this.props.Step4.staffOperatingHours.length > 0) {
-                        const newStaffOperatingHours = [...this.props.Step4.staffOperatingHours];
-                        const newFirstStaffMember = {...newStaffOperatingHours[0]};
-                        newFirstStaffMember.staffName = this.props.Step1.businessDetails.FirstName + ' ' + this.props.Step1.businessDetails.LastName;
-                        newStaffOperatingHours[0] = newFirstStaffMember;
-                        this.props.setOperatingHours(newStaffOperatingHours);
-                    }
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-            case 1: {
-                result = validationEngine.validateGroup('businessType')
-                if (result.isValid && this.props.Step2.businessTypeDetails.businessType && this.props.Step2.businessTypeDetails.businessType) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-            case 3: {
-                result = validationEngine.validateGroup('businessOperatingHours')
-                if (result.isValid && this.props.Step4.staffOperatingHours && this.props.Step4.staffOperatingHours.length > 0) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-            default: {
-                return true;
-            }
-        }
-    };
 
 }
 
@@ -337,6 +319,5 @@ const mapSizesToProps = ({ width }) => ({
 })
 
 export default compose(
-    withStyles(styles, { withTheme: true }),
     withSizes(mapSizesToProps)
 )(connect(mapStateToProps, mapDispatchToProps)(BusinessSetup))

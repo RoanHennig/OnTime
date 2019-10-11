@@ -118,13 +118,13 @@ export default function ShiftDialog(props) {
             </DialogContent>
 
             <DialogActions className={classes.dialogAction} disableSpacing={true}>
-            <Button variant="contained" color="secondary" onClick={() => props.handleDeleteWholeShift()} className={"sm:float-left sm:m-16 m-3 sm:min-w-52 min-w-full"} startIcon={<DeleteIcon />}>
+            <Button variant="contained" color="secondary" onClick={() => props.handleDeleteWholeShift()} className={"sm:float-left sm:m-16 mb-3 sm:min-w-52 min-w-full"} startIcon={<DeleteIcon />}>
                     Delete
             </Button>
-            <Button variant="contained" color="primary" onClick={() => props.handleSaveShift(shiftData)} className={"sm:float-right sm:m-16 m-3 sm:min-w-52 min-w-full"} startIcon={<SaveIcon />}>
+            <Button variant="contained" color="primary" onClick={() => props.handleSaveShift(shiftData)} className={"sm:float-right sm:m-16 mb-3 sm:min-w-52 min-w-full"} startIcon={<SaveIcon />}>
                     Save
             </Button>
-            <Button className={"sm:float-right sm:m-16 m-3 sm:min-w-52 min-w-full"} onClick={handleClose}>
+            <Button className={"sm:float-right sm:m-16 mb-3 sm:min-w-52 min-w-full"} onClick={handleClose}>
                 Close
             </Button>
             </DialogActions>
