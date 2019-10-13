@@ -1,18 +1,20 @@
-export const DISABLE_NEXT = '[BUSINESSSETUP] DISABLE NEXT';
-export const ENABLE_NEXT = '[BUSINESSSETUP] ENABLE NEXT';
+export const SAVE_BUSINESS_DETAILS = '[BUSINESSSETUP] SAVE BUSINESS DETAILS';
 
-export function setEnableNext()
+export function saveBusinessDetails()
 {
-    return (dispatch) =>
-    dispatch({
-        type   : ENABLE_NEXT
+/*     const request = axios.post('api/businessDetails/save' ,{
+        headers: {
+            'Content-Type' : 'application/json',
+            'Authorization': 'Bearer ' + auth0Service.getAccessToken(),
+            
+        }
     });
-}
 
-export function setDisableNext()
-{
     return (dispatch) =>
-    dispatch({
-        type   : DISABLE_NEXT
-    });
+        request.then((response) =>
+            dispatch({
+                type   : SAVE_BUSINESS_DETAILS,
+                payload: response.data
+            })
+        ); */
 }
