@@ -96,7 +96,7 @@ function BusinessSetup(props) {
             auth0Service.updateUserData(tokenData.user_metadata);
             auth0Service.setRegistrationComplete();
             history.push({
-                pathname: '/example'
+                pathname: '/agenda'
             });
         });
     };

@@ -1,4 +1,5 @@
 import AgendaApp from './AgendaApp';
+import {authRoles} from 'app/auth';
 
 export const AgendaAppConfig = {
     settings: {

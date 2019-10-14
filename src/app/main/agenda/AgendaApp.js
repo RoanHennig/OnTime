@@ -11,7 +11,6 @@ import AgendaAppSidebarHeader from './AgendaAppSidebarHeader';
 import AgendaAppSidebarContent from './AgendaAppSidebarContent';
 import reducer from './store/reducers';
 
-
 function AgendaApp(props) {
 
     const pageLayout = useRef(null);
@@ -49,6 +48,7 @@ function AgendaApp(props) {
             ref={pageLayout}
             innerScroll
         />
+    )
 }
 
 
