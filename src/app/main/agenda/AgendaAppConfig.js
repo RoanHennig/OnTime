@@ -1,4 +1,5 @@
-import AgendaApp from './AgendaApp';
+import React from 'react';
+import {Redirect} from 'react-router-dom';
 import {authRoles} from 'app/auth';
 
 export const AgendaAppConfig = {
@@ -11,12 +12,17 @@ export const AgendaAppConfig = {
             }
         }
     },
-    auth : authRoles.user,
+    
     routes  : [
         {
+            path     : [
+                '/agenda/:agendaHandle/:appointmentId?',
+            ],
+            component: React.lazy(() => import('./AgendaApp'))
+        },
+        {
             path     : '/agenda',
-            component: AgendaApp
+            component: () => <Redirect to="/agenda/appointments"/>
         }
     ]
 };
-

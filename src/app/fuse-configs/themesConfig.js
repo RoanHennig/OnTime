@@ -11,8 +11,8 @@ const themesConfig = {
                 dark : '#9B3134'
             },
             secondary: {
-                light       : '#87EFFF',
-                main        : '#109cc7',
+                light       : '#008CB7',
+                main        : '#008CB7',
                 dark        : '#008CB7',
                 contrastText: '#FFF'
             },

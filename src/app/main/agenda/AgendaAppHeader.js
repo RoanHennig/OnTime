@@ -65,7 +65,7 @@ function AgendaAppHeader(props)
                     <InboxSharpIcon color="action" />
 
                     <FuseAnimate animation="transition.slideLeftIn" delay={1500}> 
-                    <Typography color="inherit" className="text-16 sm:text-28 pt-16 pl-16 font-light mb-16">
+                    <Typography color="inherit" className="text-15 sm:text-28 pt-16 pl-16 font-light mb-16">
                         So, what's on the agenda for today?
                      </Typography>
                     </FuseAnimate>

@@ -49,6 +49,8 @@ function AgendaAppSidebarContent(props) {
                     <ListItem
                         button
                         activeClassName="active"
+                        component={NavLinkAdapter}
+                        to={'/agenda/appointments'} key={1}
                         className={classes.listItem}
                     >
                         <EventSharpIcon className="list-item-icon active" />
@@ -57,6 +59,8 @@ function AgendaAppSidebarContent(props) {
                     <ListItem
                         button
                         activeClassName="active"
+                        component={NavLinkAdapter}
+                        to={'/agenda/notifications'} key={2}
                         className={classes.listItem}
                     >
                         <NotificationsSharpIcon className="list-item-icon" />
@@ -65,6 +69,8 @@ function AgendaAppSidebarContent(props) {
                     <ListItem
                         button
                         activeClassName="active"
+                        component={NavLinkAdapter}
+                        to={'/agenda/consultations'} key={3}
                         className={classes.listItem}
                     >
                         <PeopleOutlineSharpIcon className="list-item-icon" />
@@ -106,10 +112,10 @@ function AgendaAppSidebarContent(props) {
                 Consultations
             </Button>
             </div> */}
-                {/*             <div className="p-20">
+                         <div className="p-20">
             <Button
                 variant="contained"
-                color="default"
+                color="primary"
                 className="w-full"
                 startIcon={<MonetizationOnSharpIcon />}
             >
@@ -120,7 +126,7 @@ function AgendaAppSidebarContent(props) {
             <div className="p-20">
             <Button
                 variant="contained"
-                color="default"
+                color="primary"
                 className="w-full"
                 startIcon={<GroupAddSharpIcon />}
             >
@@ -131,7 +137,7 @@ function AgendaAppSidebarContent(props) {
             <div className="p-20">
             <Button
                 variant="contained"
-                color="default"
+                color="primary"
                 className="w-full"
                 startIcon={<DateRangeSharpIcon />}
             >
@@ -142,13 +148,13 @@ function AgendaAppSidebarContent(props) {
             <div className="p-20">
             <Button
                 variant="contained"
-                color="default"
+                color="primary"
                 className="w-full"
                 startIcon={<BlockSharpIcon />}
             >
                 BLOCK TIME SLOT
             </Button>
-            </div> */}
+            </div> 
 
             </div>
         </FuseAnimate>

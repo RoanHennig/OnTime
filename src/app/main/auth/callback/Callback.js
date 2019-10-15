@@ -14,7 +14,7 @@ function Callback(props)
             auth0Service.getUserData().then(tokenData => {
                 dispatch(userActions.setUserDataAuth0(tokenData));
           
-                if(!auth0Service.isRegistrationComplete()){
+                if(tokenData.user_metadata.accountStatus === 'Incomplete'){
                     history.push({
                         pathname: '/business-setup'
                     });
