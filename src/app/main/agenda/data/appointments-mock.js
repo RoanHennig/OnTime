@@ -23,6 +23,7 @@ const entities = [
       color:'blue'
     }]
   },
+  
   {
     time: '12:00 - 13:30',
     summary: 'Sally Robertson has an appointment for a Consultation regarding a Hair Coloring',

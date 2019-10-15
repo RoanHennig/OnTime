@@ -13,6 +13,7 @@ function AppointmentsToolbar(props)
                 checked={props.appointments.selectedAppointmentIds.length === Object.keys(props.appointments.entities).length && props.appointments.selectedAppointmentIds.length > 0}
                 indeterminate={props.appointments.selectedAppointmentIds.length !== Object.keys(props.appointments.entities).length && props.appointments.selectedAppointmentIds.length > 0}
             />
+            
         </div>
     );
 

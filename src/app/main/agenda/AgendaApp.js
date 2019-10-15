@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {FusePageCarded} from '@fuse';
+import {FusePageCarded,FuseAnimate} from '@fuse';
 import {useDispatch} from 'react-redux';
 import withReducer from 'app/store/withReducer';
 import AppointmentList from './appointments/AppointmentList';
@@ -17,8 +17,10 @@ function AgendaApp(props) {
     const pageLayout = useRef(null);
 
     return (
+        <React.Fragment>
         <FusePageCarded
             classes={{
+                contentWrapper: "p-24 pb-20 sm:pb-20 h-full",
                 root   : "w-full",
                 content: "flex flex-col",
                 header : "items-center min-h-72 h-72 sm:h-136 sm:min-h-136"
@@ -39,7 +41,7 @@ function AgendaApp(props) {
                 ) : (
                     <div>
                         <AppointmentList/>
-                        <AppointmentSpeedDial/>
+                        
                     </div>
                     
                 )
@@ -53,6 +55,10 @@ function AgendaApp(props) {
             ref={pageLayout}
             innerScroll
         />
+            <FuseAnimate animation="transition.expandIn" delay={300}>
+                <AppointmentSpeedDial/>
+            </FuseAnimate>
+        </React.Fragment>
     )
 }
 

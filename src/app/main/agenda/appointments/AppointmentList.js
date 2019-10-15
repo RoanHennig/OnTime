@@ -54,7 +54,8 @@ function AppointmentList(props)
         <List className="p-0">
             <FuseAnimateGroup
                 enter={{
-                    animation: "transition.slideUpBigIn"
+                    animation: "transition.slideUpBigIn",
+                    delay:400
                 }}
             >
                 {

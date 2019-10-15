@@ -17,14 +17,14 @@ import BlockSharpIcon from '@material-ui/icons/BlockSharp';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: 100,
+    zIndex: 99,
     transform: 'translateZ(0px)',
     flexGrow: 1,
   },
   speedDial: {
     position: 'absolute',
-    bottom: theme.spacing(1),
-    right: theme.spacing(2),
+    right   : 50,
+    bottom  : 60
   },
 }));
 

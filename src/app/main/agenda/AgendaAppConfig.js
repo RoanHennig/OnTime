@@ -4,7 +4,11 @@ import {authRoles} from 'app/auth';
 export const AgendaAppConfig = {
     settings: {
         layout: {
-            config: {}
+            config: {
+                footer        : {
+                    display: false
+                }
+            }
         }
     },
     auth : authRoles.user,

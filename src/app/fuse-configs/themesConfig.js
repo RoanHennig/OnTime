@@ -7,13 +7,13 @@ const themesConfig = {
             type     : 'light',
             primary  : {
                 light: '#FF908B',
-                main : '#D0605E',
+                main : '#c94242',
                 dark : '#9B3134'
             },
             secondary: {
-                light       : '#C76A1D',
-                main        : '#FF994C',
-                dark        : '#FFCA7B',
+                light       : '#87EFFF',
+                main        : '#109cc7',
+                dark        : '#008CB7',
                 contrastText: '#FFF'
             },
             error    : red
