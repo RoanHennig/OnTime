@@ -8,6 +8,7 @@ import _ from '@lodash';
 import * as Actions from '../store/actions/index';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import AppointmentChip from '../AppointmentChip';
 
 const pathToRegexp = require('path-to-regexp');
 
@@ -68,11 +69,11 @@ const AppointmentListItem = (props) => {
                     <Typography className="truncate">{props.appointment.summary}</Typography>
                 </div>
 
-{/*                 <div className="flex justify-end">
-                    {labels && props.mail.labels.map(label => (
-                        <MailChip className="mr-4" title={_.find(labels, {id: label}).title} color={_.find(labels, {id: label}).color} key={label}/>
+                <div className="flex justify-end">
+                    {props.appointment.labels.map(label => (
+                        <AppointmentChip className="mr-4" title={label.title} key={label}/>
                     ))}
-                </div> */}
+                </div>
             </div>
         </ListItem>
     );
@@ -80,7 +81,8 @@ const AppointmentListItem = (props) => {
 
 const mapStateToProps = state => {
     return {
-        selectedAppointmentIds: state.agendaApp.appointments.selectedAppointmentIds
+        selectedAppointmentIds: state.agendaApp.appointments.selectedAppointmentIds,
+        labels: state.agendaApp.appointments.labels
     };
 }
 

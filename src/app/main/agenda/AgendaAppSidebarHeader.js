@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Icon, MenuItem, TextField} from '@material-ui/core';
 import {FuseAnimate} from '@fuse';
-
+import CalendarTodaySharpIcon from '@material-ui/icons/CalendarTodaySharp';
 const staff = {
     'owner'    : 'Roan Hennig',
     'staff': 'Mdare Swart'
@@ -22,10 +22,10 @@ function AgendaAppSidebarHeader(props)
 
             <div className="flex items-center flex-1">
                 <FuseAnimate animation="transition.expandIn" delay={300}>
-                    <Icon className="mr-16 text-32">calendar</Icon>
+                    <CalendarTodaySharpIcon className="mr-16 text-32" />
                 </FuseAnimate>
                 <FuseAnimate animation="transition.slideLeftIn" delay={300}>
-                    <span className="text-24">Agenda</span>
+                    <span className="text-24">Today</span>
                 </FuseAnimate>
             </div>
 

@@ -3,6 +3,7 @@ import {FusePageCarded} from '@fuse';
 import {useDispatch} from 'react-redux';
 import withReducer from 'app/store/withReducer';
 import AppointmentList from './appointments/AppointmentList';
+import AppointmentSpeedDial from './appointments/AppointmentSpeedDial';
 import AppointmentDetails from './appointment/AppointmentDetails';
 import AppointmentToolbar from './appointment/AppointmentToolbar';
 import AppointmentsToolbar from './appointments/AppointmentsToolbar';
@@ -36,7 +37,11 @@ function AgendaApp(props) {
                 props.match.params.appointmentId ? (
                     <AppointmentDetails/>
                 ) : (
-                    <AppointmentList/>
+                    <div>
+                        <AppointmentList/>
+                        <AppointmentSpeedDial/>
+                    </div>
+                    
                 )
             }
             leftSidebarHeader={

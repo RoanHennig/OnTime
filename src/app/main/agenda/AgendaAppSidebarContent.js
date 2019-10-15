@@ -3,7 +3,10 @@ import {Icon, List, ListItem, ListItemText, ListSubheader, Button} from '@materi
 import {makeStyles} from '@material-ui/styles';
 import {FuseAnimate, NavLinkAdapter} from '@fuse';
 import {useSelector} from 'react-redux';
-
+import MonetizationOnSharpIcon from '@material-ui/icons/MonetizationOnSharp';
+import GroupAddSharpIcon from '@material-ui/icons/GroupAddSharp';
+import DateRangeSharpIcon from '@material-ui/icons/DateRangeSharp';
+import BlockSharpIcon from '@material-ui/icons/BlockSharp';
 
 const useStyles = makeStyles(theme => ({
     listItem: {
@@ -39,10 +42,50 @@ function AgendaAppSidebarContent(props)
         <FuseAnimate animation="transition.slideUpIn" delay={400}>
 
             <div className="flex-auto border-l-1">
+            <div className="p-20">
+            <Button
+                variant="contained"
+                color="default"
+                className="w-full"
+                startIcon={<MonetizationOnSharpIcon />}
+            >
+                PROCESS SALE
+            </Button>
+            </div>
 
-                <Button>
-                    Test
-                </Button>
+            <div className="p-20">
+            <Button
+                variant="contained"
+                color="default"
+                className="w-full"
+                startIcon={<GroupAddSharpIcon />}
+            >
+                REGISTER CLIENT
+            </Button>
+            </div>
+
+            <div className="p-20">
+            <Button
+                variant="contained"
+                color="default"
+                className="w-full"
+                startIcon={<DateRangeSharpIcon />}
+            >
+                ADD APPOINTMENT
+            </Button>
+            </div>
+
+            <div className="p-20">
+            <Button
+                variant="contained"
+                color="default"
+                className="w-full"
+                startIcon={<BlockSharpIcon />}
+            >
+                BLOCK TIME SLOT
+            </Button>
+            </div>
+
             </div>
         </FuseAnimate>
     );
