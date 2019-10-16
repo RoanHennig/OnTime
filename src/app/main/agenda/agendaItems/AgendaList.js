@@ -26,7 +26,7 @@ function AgendaList(props)
         {
             setFilteredData(getFilteredArray());
         }
-    }, [props.appointments, props.searchText]);
+    }, [props.appointments]);
 
     if ( !filteredData )
     {
