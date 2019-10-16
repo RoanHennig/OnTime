@@ -1,12 +1,11 @@
 import React, {useRef} from 'react';
 import {FusePageCarded,FuseAnimate} from '@fuse';
-import {useDispatch} from 'react-redux';
 import withReducer from 'app/store/withReducer';
-import AppointmentList from './appointments/AppointmentList';
-import AppointmentSpeedDial from './appointments/AppointmentSpeedDial';
+import AgendaList from './agendaItems/AgendaList';
+import AgendaSpeedDial from './agendaItems/AgendaSpeedDial';
 import AppointmentDetails from './appointment/AppointmentDetails';
 import AppointmentToolbar from './appointment/AppointmentToolbar';
-import AppointmentsToolbar from './appointments/AppointmentsToolbar';
+import AgendaToolbar from './agendaItems/AgendaToolbar';
 import AgendaAppHeader from './AgendaAppHeader';
 import AgendaAppSidebarHeader from './AgendaAppSidebarHeader';
 import AgendaAppSidebarContent from './AgendaAppSidebarContent';
@@ -32,7 +31,7 @@ function AgendaApp(props) {
                 props.match.params.appointmentId ? (
                     <AppointmentToolbar/>
                 ) : (
-                    <AppointmentsToolbar/>
+                    <AgendaToolbar/>
                 )
             }
             content={
@@ -40,8 +39,7 @@ function AgendaApp(props) {
                     <AppointmentDetails/>
                 ) : (
                     <div>
-                        <AppointmentList/>
-                        
+                        <AgendaList/>               
                     </div>
                     
                 )
@@ -56,7 +54,7 @@ function AgendaApp(props) {
             innerScroll
         />
             <FuseAnimate animation="transition.expandIn" delay={300}>
-                <AppointmentSpeedDial/>
+                <AgendaSpeedDial/>
             </FuseAnimate>
         </React.Fragment>
     )

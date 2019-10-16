@@ -190,7 +190,7 @@ class auth0Service {
                     this.registrationComplete = true;
                 }
                 else {
-                    response.data.user_metadata.roles = ['newBusinessOwner'];
+                    response.data.app_metadata.roles = ['newBusinessOwner'];
                 }
                 resolve(response.data);
             }).catch(error => {

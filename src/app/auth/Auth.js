@@ -96,17 +96,14 @@ class Auth extends Component {
             auth0Service.getUserData().then(tokenData => {
 
                 this.props.setUserDataAuth0(tokenData);
-
+                
                 resolve();
 
                 this.props.showMessage({message: 'Logged in with Auth0'});
-
                 if(tokenData.user_metadata.accountStatus === 'Incomplete'){
                     history.push({
                         pathname: '/business-setup'
                     });
-        
-                    this.props.showMessage({message: 'Registration Incomplete'});
                 }
             })
 

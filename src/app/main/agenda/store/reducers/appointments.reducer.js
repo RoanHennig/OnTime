@@ -5,7 +5,7 @@ import service from '../../data/appointments-mock.js';
 const initialState = {
     entities       : service.getmockappointments(),
     routeParams    : {},
-    selectedAppointmentIds: [],
+    selectedAgendaItemIds: [],
     searchText     : ''
 };
 

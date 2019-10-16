@@ -3,11 +3,11 @@ import {List, Typography} from '@material-ui/core';
 import {FuseUtils, FuseAnimate, FuseAnimateGroup} from '@fuse';
 import {withRouter} from 'react-router-dom';
 import * as Actions from '../store/actions';
-import AppointmentListItem from './AppointmentListItem';
+import AgendaListItem from './AgendaListItem';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-function AppointmentList(props)
+function AgendaList(props)
 {
     const [filteredData, setFilteredData] = useState(null);
 
@@ -19,11 +19,7 @@ function AppointmentList(props)
         function getFilteredArray()
         {
             const arr = Object.keys(props.appointments).map((id) => props.appointments[id]);
-            if ( props.searchText.length === 0 )
-            {
-                return arr;
-            }
-            return FuseUtils.filterArrayByString(arr, props.searchText);
+            return arr;
         }
 
         if ( props.appointments )
@@ -59,8 +55,8 @@ function AppointmentList(props)
                 }}
             >
                 {
-                    filteredData.map((appointment) => (
-                            <AppointmentListItem appointment={appointment} key={appointment.id}/>
+                    filteredData.map((agendaItem) => (
+                            <AgendaListItem appointment={agendaItem} key={agendaItem.id}/>
                         )
                     )
                 }
@@ -71,8 +67,7 @@ function AppointmentList(props)
 
 const mapStateToProps = state => {
     return {
-        appointments: state.agendaApp.appointments.entities,
-        searchText: state.agendaApp.appointments.searchText
+        appointments: state.agendaApp.appointments.entities
     };
 }
 
@@ -83,4 +78,4 @@ const mapDispatchToProps = dispatch => {
         dispatch);
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AppointmentList));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AgendaList));

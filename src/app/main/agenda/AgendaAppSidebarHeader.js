@@ -1,21 +1,24 @@
-import React, {useState} from 'react';
-import {Icon, MenuItem, TextField} from '@material-ui/core';
+import React, {useEffect, useState} from 'react';
+import {MenuItem, TextField} from '@material-ui/core';
 import {FuseAnimate} from '@fuse';
+import {useDispatch, useSelector} from 'react-redux';
 import CalendarTodaySharpIcon from '@material-ui/icons/CalendarTodaySharp';
-const staff = {
-    'owner'    : 'Roan Hennig',
-    'staff': 'Mdare Swart'
-};
+import * as Actions from './store/actions';
 
 function AgendaAppSidebarHeader(props)
 {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(Actions.getStaffMembers(0));
+    }, []);
+
+    const staff = useSelector(({agendaApp}) => agendaApp.agendaSidebar.staff);
     const [selectedStaff, setSelectedStaff] = useState('owner');
 
     function handleStaffChange(ev)
     {
         setSelectedStaff(ev.target.value);
     }
-
     
     return (
         <div className="flex flex-col justify-center h-full p-24">
@@ -39,9 +42,9 @@ function AgendaAppSidebarHeader(props)
                     placeholder="Select Staff Member"
                     margin="normal"
                 >
-                    {Object.keys(staff).map((key, value) => (
-                        <MenuItem key={key} value={key}>
-                            {staff[key]}
+                    {staff.map(staffMember => (
+                        <MenuItem key={staffMember.userId} value={staffMember.businessRole}>
+                            {staffMember.name}
                         </MenuItem>
                     ))}
                 </TextField>

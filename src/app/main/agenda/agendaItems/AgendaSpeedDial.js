@@ -35,7 +35,7 @@ const actions = [
   { icon: <BlockSharpIcon />, name: 'Block Time Slot' }
 ];
 
-export default function AppointmentSpeedDial() {
+export default function AgendaSpeedDial() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);

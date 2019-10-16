@@ -36,11 +36,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const AppointmentListItem = (props) => {
+const AgendaListItem = (props) => {
 
     const classes = useStyles(props);
     const toPath = pathToRegexp.compile(props.match.path);
-    const checked = props.selectedAppointmentIds.length > 0 && props.selectedAppointmentIds.find(id => id === props.appointment.id) !== undefined;
+    const checked = props.selectedAgendaItemIds.length > 0 && props.selectedAgendaItemIds.find(id => id === props.appointment.id) !== undefined;
 
     return (
         <ListItem
@@ -81,9 +81,9 @@ const AppointmentListItem = (props) => {
 
 const mapStateToProps = state => {
     return {
-        selectedAppointmentIds: state.agendaApp.appointments.selectedAppointmentIds,
+        selectedAgendaItemIds: state.agendaApp.appointments.selectedAgendaItemIds,
         labels: state.agendaApp.appointments.labels
     };
 }
 
-export default withRouter(connect(mapStateToProps, null)(AppointmentListItem));
+export default withRouter(connect(mapStateToProps, null)(AgendaListItem));
