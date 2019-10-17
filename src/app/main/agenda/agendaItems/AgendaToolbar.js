@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Checkbox, Icon, IconButton, Menu, MenuItem} from '@material-ui/core';
+import {Checkbox, Icon, IconButton, Tooltip, MenuItem} from '@material-ui/core';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import {useDispatch, useSelector} from 'react-redux';
 import * as Actions from '../store/actions/index';
@@ -43,13 +43,16 @@ function AgendaToolbar(props)
                 <React.Fragment>
 
                     <div className="border-r-1 h-48 w-1 mx-12 my-0"/>
-
+                    <Tooltip title="Clear" placement="right">
                     <IconButton
                         //onClick={(ev) => dispatch(Actions.setFolderOnSelectedMails(4))}
                         aria-label="Clear"
+                        too
                     >
                         <DoneAllIcon />
                     </IconButton>
+                    </Tooltip>
+
 
                 </React.Fragment>
             )}
