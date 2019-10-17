@@ -7,6 +7,7 @@ const initialState = {
         notifications: [],
         consultations: []
     },
+    selectedItem: [],
     routeParams: {},
     selectedAgendaItemIds: [],
     searchText: ''
@@ -50,6 +51,22 @@ const agendaItemsReducer = function (state = initialState, action) {
                     selectedAgendaItemIds
                 };
             }
+            case Actions.SELECT_ALL_ITEMS:
+                {     
+                    const selectedAgendaItemIds = action.payload.map(item => item.id);
+        
+                    return {
+                        ...state,
+                        selectedAgendaItemIds
+                    };
+                }
+                case Actions.DESELECT_ALL_ITEMS:
+                {
+                    return {
+                        ...state,
+                        selectedAgendaItemIds: []
+                    };
+                }
 
         default:
             return state;

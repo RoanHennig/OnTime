@@ -22,7 +22,6 @@ function AgendaList(props)
     useEffect(() => {
         dispatch(Actions.getAppointments(user.user_id));
         dispatch(Actions.getNotifications(user.user_id));
-        dispatch(Actions.getNotifications(user.user_id));
     }, [user.user_id]);
 
     useEffect(() => {
