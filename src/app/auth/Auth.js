@@ -94,7 +94,6 @@ class Auth extends Component {
              * Retrieve user data from Auth0
              */
             auth0Service.getUserData().then(tokenData => {
-
                 this.props.setUserDataAuth0(tokenData);
                 
                 resolve();

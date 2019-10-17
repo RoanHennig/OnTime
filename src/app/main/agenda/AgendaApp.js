@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {FusePageCarded,FuseAnimate} from '@fuse';
+import {FusePageCarded, FuseAnimate} from '@fuse';
 import withReducer from 'app/store/withReducer';
 import AgendaList from './agendaItems/AgendaList';
 import AgendaSpeedDial from './agendaItems/AgendaSpeedDial';
@@ -14,7 +14,7 @@ import reducer from './store/reducers';
 function AgendaApp(props) {
 
     const pageLayout = useRef(null);
-
+    
     return (
         <React.Fragment>
         <FusePageCarded

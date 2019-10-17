@@ -10,8 +10,8 @@ function AgendaToolbar(props)
         <div className="flex flex-1 items-center sm:px-8">
 
             <Checkbox
-                checked={props.appointments.selectedAgendaItemIds.length === Object.keys(props.appointments.entities).length && props.appointments.selectedAgendaItemIds.length > 0}
-                indeterminate={props.appointments.selectedAgendaItemIds.length !== Object.keys(props.appointments.entities).length && props.appointments.selectedAgendaItemIds.length > 0}
+                checked={props.agendaItems.selectedAgendaItemIds.length === Object.keys(props.agendaItems.items.appointments).length && props.agendaItems.selectedAgendaItemIds.length > 0}
+                indeterminate={props.agendaItems.selectedAgendaItemIds.length !== Object.keys(props.agendaItems.items.appointments).length && props.agendaItems.selectedAgendaItemIds.length > 0}
             />
             
         </div>
@@ -22,7 +22,7 @@ function AgendaToolbar(props)
 
 const mapStateToProps = state => {
     return {
-        appointments: state.agendaApp.appointments
+        agendaItems: state.agendaApp.agendaItems
     };
 }
 

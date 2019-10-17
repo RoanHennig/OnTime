@@ -21,6 +21,7 @@ export function setUserDataAuth0(tokenData)
         role: tokenData.app_metadata.roles ? tokenData.app_metadata.roles : ['admin'],
         from: 'auth0',
         data: {
+            user_id: tokenData.user_id,
             displayName: tokenData.username,
             photoURL   : tokenData.picture,
             email      : tokenData.email,

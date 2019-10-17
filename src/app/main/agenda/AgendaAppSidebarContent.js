@@ -1,5 +1,6 @@
 import React from 'react';
-import { List, ListItem, ListItemText, Button } from '@material-ui/core';
+import { List, ListItem, ListItemText, Button, Badge } from '@material-ui/core';
+import {useSelector} from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { FuseAnimate, NavLinkAdapter } from '@fuse';
 import MonetizationOnSharpIcon from '@material-ui/icons/MonetizationOnSharp';
@@ -15,9 +16,9 @@ const useStyles = makeStyles(theme => ({
         color: 'inherit!important',
         textDecoration: 'none!important',
         height: 40,
-        width: 'calc(100% - 16px)',
+        width: 'calc(100% - 24px)',
         borderRadius: '0 20px 20px 0',
-        paddingLeft: 24,
+        paddingLeft: 12,
         paddingRight: 12,
         '&.active': {
             backgroundColor: theme.palette.secondary.main,
@@ -39,13 +40,16 @@ const useStyles = makeStyles(theme => ({
 function AgendaAppSidebarContent() {
     const classes = useStyles();
 
+    const badges = useSelector(({agendaApp}) => agendaApp.agendaSidebar.agendaItemBadges);
+
     return (
         <FuseAnimate animation="transition.slideUpIn" delay={400}>
 
             <div className="flex-auto border-l-1">
 
                 <List>
-                    <ListItem
+                <Badge color="primary" className="w-full ml-12" badgeContent={badges.appointments} anchorOrigin={{ vertical: 'top', horizontal: 'left',}}>
+                <ListItem
                         button
                         activeClassName="active"
                         component={NavLinkAdapter}
@@ -55,7 +59,9 @@ function AgendaAppSidebarContent() {
                         <EventSharpIcon className="list-item-icon active" />
                         <ListItemText primary='Appointments' disableTypography={true} />
                     </ListItem>
-                    <ListItem
+                </Badge>
+                <Badge color="primary" className="w-full ml-12" badgeContent={badges.notifications} anchorOrigin={{ vertical: 'top', horizontal: 'left',}}>                   
+                <ListItem
                         button
                         activeClassName="active"
                         component={NavLinkAdapter}
@@ -65,7 +71,9 @@ function AgendaAppSidebarContent() {
                         <NotificationsSharpIcon className="list-item-icon" />
                         <ListItemText primary='Notifications' disableTypography={true} />
                     </ListItem>
-                    <ListItem
+                </Badge>
+                <Badge color="primary"  className="w-full ml-12" badgeContent={badges.consultations} anchorOrigin={{ vertical: 'top', horizontal: 'left',}}>
+                <ListItem
                         button
                         activeClassName="active"
                         component={NavLinkAdapter}
@@ -75,7 +83,7 @@ function AgendaAppSidebarContent() {
                         <PeopleOutlineSharpIcon className="list-item-icon" />
                         <ListItemText primary='Consultantions' disableTypography={true} />
                     </ListItem>
-
+                </Badge>
                 </List>
 
                 <div className="p-20">

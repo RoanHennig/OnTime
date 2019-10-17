@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function MailChip(props)
+function AgendaItemChip(props)
 {
     const classes = useStyles();
 
@@ -32,4 +32,4 @@ function MailChip(props)
     );
 }
 
-export default MailChip;
+export default AgendaItemChip;

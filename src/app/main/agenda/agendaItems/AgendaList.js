@@ -1,32 +1,50 @@
 import React, {useEffect, useState} from 'react';
 import {List, Typography} from '@material-ui/core';
+import {useDispatch, useSelector} from 'react-redux';
 import {FuseUtils, FuseAnimate, FuseAnimateGroup} from '@fuse';
 import {withRouter} from 'react-router-dom';
 import * as Actions from '../store/actions';
 import AgendaListItem from './AgendaListItem';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
 function AgendaList(props)
 {
+    const dispatch = useDispatch();
+    const items = useSelector(({agendaApp}) => agendaApp.agendaItems.items);
+    const appointments = useSelector(({agendaApp}) => agendaApp.agendaItems.items.appointments);
+    const notifications = useSelector(({agendaApp}) => agendaApp.agendaItems.items.notifications);
+    const user = useSelector(({auth}) => auth.user.data);
     const [filteredData, setFilteredData] = useState(null);
 
     useEffect(() => {
-        props.getAppointments(props.match.params);
-    }, [props.match.params]);
+        dispatch(Actions.setAgendaItemsBadges(items));
+    }, [items]);
 
     useEffect(() => {
+        dispatch(Actions.getAppointments(user.user_id));
+        dispatch(Actions.getNotifications(user.user_id));
+        dispatch(Actions.getNotifications(user.user_id));
+    }, [user.user_id]);
+
+    useEffect(() => {
+
         function getFilteredArray()
         {
-            const arr = Object.keys(props.appointments).map((id) => props.appointments[id]);
+            if(props.match.params.agendaHandle === 'appointments') {
+                return Object.keys(appointments).map((id) => appointments[id]);
+            }
+            else if(props.match.params.agendaHandle === 'notifications') {
+                return Object.keys(notifications).map((id) => notifications[id]);
+            }
+
+            const arr = Object.keys(appointments).map((id) => appointments[id]);
             return arr;
         }
 
-        if ( props.appointments )
+        if ( appointments || notifications )
         {
             setFilteredData(getFilteredArray());
         }
-    }, [props.appointments]);
+    }, [appointments,notifications,props.match.params]);
 
     if ( !filteredData )
     {
@@ -51,12 +69,12 @@ function AgendaList(props)
             <FuseAnimateGroup
                 enter={{
                     animation: "transition.slideUpBigIn",
-                    delay:400
+                    delay:300
                 }}
             >
                 {
                     filteredData.map((agendaItem) => (
-                            <AgendaListItem appointment={agendaItem} key={agendaItem.id}/>
+                            <AgendaListItem item={agendaItem} itemType={props.match.params.agendaHandle} key={agendaItem.id}/>
                         )
                     )
                 }
@@ -65,17 +83,5 @@ function AgendaList(props)
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        appointments: state.agendaApp.appointments.entities
-    };
-}
 
-const mapDispatchToProps = dispatch => {
-    return bindActionCreators({
-        getAppointments: Actions.getAppointments
-    },
-        dispatch);
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AgendaList));
+export default withRouter(AgendaList);

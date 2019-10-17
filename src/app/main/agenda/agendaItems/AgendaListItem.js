@@ -1,19 +1,18 @@
 import React from 'react';
-import {Avatar, Typography, Checkbox, ListItem} from '@material-ui/core';
+import {Avatar, Typography, Checkbox, ListItem, Chip} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import {withRouter} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import clsx from 'clsx';
 import _ from '@lodash';
 import * as Actions from '../store/actions/index';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import AppointmentChip from '../AppointmentChip';
+import AgendaItemChip from '../AgendaItemChip';
+import TimerIcon from '@material-ui/icons/Timer';
 
 const pathToRegexp = require('path-to-regexp');
 
 const useStyles = makeStyles(theme => ({
-    appointmentItem: {
+    agendaListItem: {
         borderBottom: '1px solid  ' + theme.palette.divider,
 
         '&.unread'  : {
@@ -30,48 +29,58 @@ const useStyles = makeStyles(theme => ({
                 backgroundColor: theme.palette.primary.main
             }
         }
-    },
-    avatar  : {
-        backgroundColor: theme.palette.primary[500]
     }
 }));
 
 const AgendaListItem = (props) => {
 
+    const dispatch = useDispatch();
     const classes = useStyles(props);
+
+    const selectedAgendaItemIds = useSelector(({agendaApp}) => agendaApp.agendaItems.selectedAgendaItemIds);
     const toPath = pathToRegexp.compile(props.match.path);
-    const checked = props.selectedAgendaItemIds.length > 0 && props.selectedAgendaItemIds.find(id => id === props.appointment.id) !== undefined;
+    const checked = selectedAgendaItemIds.length > 0 && selectedAgendaItemIds.find(id => id === props.item.id) !== undefined;
 
     return (
         <ListItem
+            key={props.item.id}
             dense
             button
             onClick={() => props.history.push(toPath(
                 {
                     ...props.match.params,
-                    appointmentId: props.appointment.id
+                    appointmentId: props.item.id
                 }
             ))}
-            className={clsx(classes.appointmentItem, checked && "selected", !props.appointment.read && "unread", "py-16 pl-0 pr-8 sm:pl-8 sm:pr-24")}>
+            className={clsx(classes.agendaListItem, checked && "selected", !props.item.read && "unread", "py-16 pl-0 pr-8 sm:pl-8 sm:pr-24")}>
 
             <Checkbox
                 tabIndex={-1}
                 disableRipple
+                checked={checked}
+                onChange={() => dispatch(Actions.toggleInSelectedAgendaItems(props.item.id))}
+                onClick={(ev) => ev.stopPropagation()}
             />
 
             <div className="flex flex-1 flex-col relative overflow-hidden">
 
                 <div className="flex items-center justify-between px-16 pb-8">
-                    <Typography variant="subtitle1">{props.appointment.time}</Typography>
+                <Chip
+                    icon={props.itemType == 'appointments' ? <TimerIcon /> : null}
+                    label={props.item.title}
+                    clickable
+                    color="secondary"
+                    size="small"
+                />
                 </div>
 
                 <div className="flex flex-col px-16 py-0">
-                    <Typography className="truncate">{props.appointment.summary}</Typography>
+                    <Typography className="truncate">{props.item.summary}</Typography>
                 </div>
 
                 <div className="flex justify-end">
-                    {props.appointment.labels.map(label => (
-                        <AppointmentChip className="mr-4" title={label.title} key={label}/>
+                    {props.item.labels.map(label => (
+                        <AgendaItemChip className="mr-4" title={label.title} key={label.id}/>
                     ))}
                 </div>
             </div>
@@ -79,11 +88,4 @@ const AgendaListItem = (props) => {
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        selectedAgendaItemIds: state.agendaApp.appointments.selectedAgendaItemIds,
-        labels: state.agendaApp.appointments.labels
-    };
-}
-
-export default withRouter(connect(mapStateToProps, null)(AgendaListItem));
+export default withRouter(AgendaListItem);
