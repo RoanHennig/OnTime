@@ -4,6 +4,8 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import {useDispatch, useSelector} from 'react-redux';
 import * as Actions from '../store/actions/index';
 import {withRouter} from 'react-router-dom';
+import RestoreIcon from '@material-ui/icons/Restore';
+import EventBusyIcon from '@material-ui/icons/EventBusy';
 
 function AgendaToolbar(props)
 {
@@ -43,15 +45,47 @@ function AgendaToolbar(props)
                 <React.Fragment>
 
                     <div className="border-r-1 h-48 w-1 mx-12 my-0"/>
-                    <Tooltip title="Clear" placement="right">
-                    <IconButton
-                        //onClick={(ev) => dispatch(Actions.setFolderOnSelectedMails(4))}
-                        aria-label="Clear"
-                        too
-                    >
-                        <DoneAllIcon />
-                    </IconButton>
-                    </Tooltip>
+
+                    {
+                        props.match.params.agendaHandle === 'appointments' ? 
+                        <div>
+                            <Tooltip title="Cancel Appointment" placement="right">
+                            <IconButton
+                                //onClick={(ev) => dispatch(Actions.setFolderOnSelectedMails(4))}
+                                aria-label="Cancel Appointment"
+                            >
+                                <EventBusyIcon />
+                            </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="Reschedule" placement="right">
+                            <IconButton
+                                //onClick={(ev) => dispatch(Actions.setFolderOnSelectedMails(4))}
+                                aria-label="Reschedule"
+                            >
+                                <RestoreIcon />
+                            </IconButton>
+                            </Tooltip>
+                        </div>
+                        :
+
+                        null
+                    }
+
+                    {
+                        props.match.params.agendaHandle === 'notifications' ?
+                        <Tooltip title="Clear" placement="right">
+                        <IconButton
+                            //onClick={(ev) => dispatch(Actions.setFolderOnSelectedMails(4))}
+                            aria-label="Clear"
+                        >
+                            <DoneAllIcon />
+                        </IconButton>
+                        </Tooltip>
+                        :
+                        null
+                    }
+
 
 
                 </React.Fragment>

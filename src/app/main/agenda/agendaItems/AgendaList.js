@@ -16,7 +16,7 @@ function AgendaList(props)
     const [filteredData, setFilteredData] = useState(null);
 
     useEffect(() => {
-        dispatch(Actions.setAgendaItemsBadges(items));
+        dispatch(Actions.setAgendaItemsBadges(items));     
     }, [items]);
 
     useEffect(() => {
@@ -25,6 +25,7 @@ function AgendaList(props)
     }, [user.user_id]);
 
     useEffect(() => {
+        dispatch(Actions.deselectAllItems())
 
         function getFilteredArray()
         {
@@ -35,8 +36,8 @@ function AgendaList(props)
                 return Object.keys(notifications).map((id) => notifications[id]);
             }
 
-            const arr = Object.keys(appointments).map((id) => appointments[id]);
-            return arr;
+            const filteredData = Object.keys(appointments).map((id) => appointments[id]);
+            return filteredData;
         }
 
         if ( appointments || notifications )

@@ -12,7 +12,7 @@ export const AgendaAppConfig = {
             }
         }
     },
-    
+    auth : authRoles.user,
     routes  : [
         {
             path     : [

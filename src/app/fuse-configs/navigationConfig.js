@@ -1,3 +1,4 @@
+
 const navigationConfig = [
     {
         'id'      : 'applications',
@@ -5,6 +6,21 @@ const navigationConfig = [
         'type'    : 'group',
         'icon'    : 'apps',
         'children': [
+            {
+                'id'   : 'agenda-component',
+                'title': 'Agenda',
+                'type' : 'item',
+                'icon' : 'check_box',
+                'url'  : '/agenda'
+            },
+            {
+                'id'   : 'agenda-component',
+                'title': 'Calendar',
+                'type' : 'item',
+                'icon' : 'event',
+                'url'  : '/calendar'
+            }
+            ,
             {
                 'id'   : 'example-component',
                 'title': 'Example',
