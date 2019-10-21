@@ -2,7 +2,12 @@ import * as Actions from '../actions';
 import _ from '@lodash';
 
 const initialState = {
-    events: []
+    events: [],
+    staff: [],
+    businessSettings: {
+        startingTime: 9,
+        endingTime:17
+    }
 };
 
 const calendarReducer = function (state = initialState, action) {
@@ -15,6 +20,14 @@ const calendarReducer = function (state = initialState, action) {
                     events: action.payload
                 };
             }
+            case Actions.GET_STAFF_MEMBERS:
+                {
+    
+                    return {
+                        ...state,
+                        staff: action.payload
+                    };
+                }
 
         default:
             return state;

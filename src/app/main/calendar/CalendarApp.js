@@ -1,49 +1,51 @@
-import React,{useEffect, useState} from 'react';
-
+import React,{useEffect, useState, useRef} from 'react';
 import { makeStyles } from '@material-ui/styles';
-import {FusePageSimple} from '@fuse';
+import {FusePageSimple,FusePageCarded, FuseAnimate} from '@fuse';
 import {useDispatch, useSelector} from 'react-redux';
-import Scheduler from 'devextreme-react/scheduler';
+import CalendarAppContent from './CalendarAppContent';
+import CalendarAppSpeedDial from './CalendarAppSpeedDial';
 import * as Actions from './store/actions';
 import withReducer from 'app/store/withReducer';
 import reducer from './store/reducers';
+import withSizes from 'react-sizes'
+import { compose } from 'redux'
 
 function CalendarApp(props)  {
-
-    const dispatch = useDispatch();
-    const user = useSelector(({auth}) => auth.user.data);
-    const data = useSelector(({calendarApp}) => calendarApp.calendar.events);
-    const currentDate = new Date(2017, 4, 25);
-    const views = [{type:'day',cellDuration:15}, 'week', 'workWeek', 'month'];
     const useStyles = makeStyles(theme => ({}));
-
-    useEffect(() => {
-        dispatch(Actions.getEvents());
-    }, [user.user_id]);
-
+    const pageLayout = useRef(null);
+    
     const classes = useStyles();
         return (
+            <React.Fragment>
             <FusePageSimple
-                classes={{
-                    root: classes.layoutRoot
-                }}
+            classes={{
+                contentWrapper: "p-24 pb-20 sm:pb-20 max-h-full",
+                root   : "w-full",
+                content: "flex flex-col",
+                header : "items-center min-h-72 h-72 sm:h-136 sm:min-h-136"
+            }}
                 contentToolbar={
                     <div className="px-24"><h4>My Calendar</h4></div>
                 }
                 content={
-                    <div className="p=24">
-                        <Scheduler
-                        dataSource={data}
-                        views={views}
-                        defaultCurrentView={'day'}
-                        defaultCurrentDate={currentDate}
-                        startDayHour={9}
-                        cellDuration={15}
-                        cell />
-                    </div>
+                    <CalendarAppContent isMobile={props.isMobile} />
                 }
+                ref={pageLayout}
+                innerScroll
             />
+
+            <FuseAnimate animation="transition.expandIn" delay={1000}>
+                <CalendarAppSpeedDial/>
+            </FuseAnimate>
+            </React.Fragment>
         )
 }
 
-export default withReducer('calendarApp', reducer)(CalendarApp);
+const mapSizesToProps = ({ width }) => ({
+    isMobile: width < 480,
+})
+
+export default compose(
+    withSizes(mapSizesToProps),
+    withReducer('calendarApp', reducer)
+)(CalendarApp);

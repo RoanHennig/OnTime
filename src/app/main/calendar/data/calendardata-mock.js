@@ -1,76 +1,92 @@
+export const eventData = [{
+  id: 1,
+  text: 'His Girl Friday',
+  director: 'Howard Hawks',
+  year: 1940,
+  image: 'images/movies/HisGirlFriday.jpg',
+  duration: 92,
+  color: '#cb6bb2'
+}, {
+  id: 2,
+  text: 'Royal Wedding',
+  director: 'Stanley Donen',
+  year: 1951,
+  image: 'images/movies/RoyalWedding.jpg',
+  duration: 93,
+  color: '#56ca85'
+}, {
+  id: 3,
+  text: 'A Star Is Born',
+  director: 'William A. Wellman',
+  year: 1937,
+  image: 'images/movies/AStartIsBorn.jpg',
+  duration: 111,
+  color: '#1e90ff'
+}, {
+  id: 4,
+  text: 'The Screaming Skull',
+  director: 'Alex Nicol',
+  year: 1958,
+  image: 'images/movies/ScreamingSkull.jpg',
+  duration: 68,
+  color: '#ff9747'
+}, {
+  id: 5,
+  text: 'It\'s a Wonderful Life',
+  director: 'Frank Capra',
+  year: 1946,
+  image: 'images/movies/ItsAWonderfulLife.jpg',
+  duration: 130,
+  color: '#f05797'
+}, {
+  id: 6,
+  text: 'City Lights',
+  director: 'Charlie Chaplin',
+  year: 1931,
+  image: 'images/movies/CityLights.jpg',
+  duration: 87,
+  color: '#2a9010'
+}];
+
+export const staffData = [{
+  text: 'Roan Hennig',
+  id: 0
+}, {
+  text: 'Madre Swart',
+  id: 1
+}
+];
+
+
 const data = [
     {
+      staffMemberId:0,
       text: 'Website Re-Design Plan',
-      startDate: new Date(2017, 4, 22, 9, 30),
-      endDate: new Date(2017, 4, 22, 11, 30)
-    }, {
+      startDate: new Date(2017, 5, 25, 9, 30),
+      endDate: new Date(2017, 5, 25, 11, 30)
+    }, 
+    {
+      staffMemberId:0,
       text: 'Book Flights to San Fran for Sales Trip',
-      startDate: new Date(2017, 4, 22, 12, 0),
-      endDate: new Date(2017, 4, 22, 13, 0),
+      startDate: new Date(2017, 5, 25, 12, 0),
+      endDate: new Date(2017, 5, 25, 13, 0),
       allDay: true
-    }, {
-      text: 'Install New Router in Dev Room',
-      startDate: new Date(2017, 4, 22, 14, 30),
-      endDate: new Date(2017, 4, 22, 15, 30)
-    }, {
-      text: 'Approve Personal Computer Upgrade Plan',
-      startDate: new Date(2017, 4, 23, 10, 0),
-      endDate: new Date(2017, 4, 23, 11, 0)
-    }, {
-      text: 'Final Budget Review',
-      startDate: new Date(2017, 4, 23, 12, 0),
-      endDate: new Date(2017, 4, 23, 13, 35)
-    }, {
-      text: 'New Brochures',
-      startDate: new Date(2017, 4, 23, 14, 30),
-      endDate: new Date(2017, 4, 23, 15, 45)
-    }, {
-      text: 'Install New Database',
-      startDate: new Date(2017, 4, 24, 9, 45),
-      endDate: new Date(2017, 4, 24, 11, 15)
-    }, {
-      text: 'Approve New Online Marketing Strategy',
-      startDate: new Date(2017, 4, 24, 12, 0),
-      endDate: new Date(2017, 4, 24, 14, 0)
-    }, {
-      text: 'Upgrade Personal Computers',
-      startDate: new Date(2017, 4, 24, 15, 15),
-      endDate: new Date(2017, 4, 24, 16, 30)
-    }, {
-      text: 'Customer Workshop',
-      startDate: new Date(2017, 4, 25, 11, 0),
-      endDate: new Date(2017, 4, 25, 12, 0),
-      allDay: true
-    }, {
-      text: 'Prepare 2015 Marketing Plan',
-      startDate: new Date(2017, 4, 25, 11, 0),
-      endDate: new Date(2017, 4, 25, 13, 30)
-    }, {
-      text: 'Brochure Design Review',
-      startDate: new Date(2017, 4, 25, 14, 0),
-      endDate: new Date(2017, 4, 25, 15, 30)
-    }, {
-      text: 'Create Icons for Website',
-      startDate: new Date(2017, 4, 26, 10, 0),
-      endDate: new Date(2017, 4, 26, 11, 30)
-    }, {
-      text: 'Upgrade Server Hardware',
-      startDate: new Date(2017, 4, 26, 14, 30),
-      endDate: new Date(2017, 4, 26, 16, 0)
-    }, {
-      text: 'Submit New Website Design',
-      startDate: new Date(2017, 4, 26, 16, 30),
-      endDate: new Date(2017, 4, 26, 18, 0)
-    }, {
-      text: 'Launch New Website',
-      startDate: new Date(2017, 4, 26, 12, 20),
-      endDate: new Date(2017, 4, 26, 14, 0)
-    }
+    },
+    {
+      staffMemberId:1,
+      text: 'Hair Coloring',
+      startDate: new Date(2017, 5, 25, 13, 0),
+      endDate: new Date(2017, 5, 25, 14, 0)
+    },
   ];
   
   export default {
     getMockCalendarEvents() {
       return data;
+    },
+
+    getMockStaffData() {
+      return staffData;
     }
   };
   
