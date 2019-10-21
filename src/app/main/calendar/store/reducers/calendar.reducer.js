@@ -3,7 +3,11 @@ import _ from '@lodash';
 
 const initialState = {
     events: [],
-    staff: [],
+    staff: {
+        businessId:0,
+        staffMembers:[]
+    },
+    filterStaff:[],
     businessSettings: {
         startingTime: 9,
         endingTime:17
@@ -27,7 +31,31 @@ const calendarReducer = function (state = initialState, action) {
                         ...state,
                         staff: action.payload
                     };
-                }
+            }
+            case Actions.SET_FILTER_STAFF_MEMBERS:
+                {
+                    const specificStaffMember = state.staff.staffMembers.find(x=> x.id === action.payload);
+                    if(specificStaffMember) {
+                        return {
+                            ...state,
+                            filterStaff: [state.staff.staffMembers.find(x=> x.id === action.payload)]
+                        };
+                    }
+                    else if(action.payload == 'working staff') 
+                    {
+                        return {
+                            ...state,
+                            filterStaff: state.staff.staffMembers.filter(x=> x.active === true)
+                        }; 
+                    }
+                    else
+                    {
+                        return {
+                            ...state,
+                            filterStaff: [...state.staff.staffMembers]
+                        };
+                    }
+            }
 
         default:
             return state;

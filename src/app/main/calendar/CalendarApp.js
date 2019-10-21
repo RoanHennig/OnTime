@@ -2,6 +2,7 @@ import React,{useEffect, useState, useRef} from 'react';
 import { makeStyles } from '@material-ui/styles';
 import {FusePageSimple,FusePageCarded, FuseAnimate} from '@fuse';
 import {useDispatch, useSelector} from 'react-redux';
+import CalendarAppToolbar from './CalendarAppToolbar';
 import CalendarAppContent from './CalendarAppContent';
 import CalendarAppSpeedDial from './CalendarAppSpeedDial';
 import * as Actions from './store/actions';
@@ -25,7 +26,7 @@ function CalendarApp(props)  {
                 header : "items-center min-h-72 h-72 sm:h-136 sm:min-h-136"
             }}
                 contentToolbar={
-                    <div className="px-24"><h4>My Calendar</h4></div>
+                    <CalendarAppToolbar/>
                 }
                 content={
                     <CalendarAppContent isMobile={props.isMobile} />
