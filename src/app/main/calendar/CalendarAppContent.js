@@ -9,32 +9,50 @@ import { cellContextMenuItems, appointmentContextMenuItems} from './templates/Me
 
 function CalendarAppContent(props)
 {
-    const [cellContextMenuEvent, setCellContextMenuEvent] = useState(null);
-    const [appointmentContextMenuEvent, setAppointmentContextMenuEvent] = useState(null);
-    
-    const onAppointmentContextMenu = (e) => {
-        setAppointmentContextMenuEvent(e);
-      }
-    
-    const onAppointmentContextMenuItemClick = (e) => {
-        if (!e.itemData.items && e.itemData.onItemClick) {
-          e.itemData.onItemClick(appointmentContextMenuEvent, e);
-        }
-    }
-    
-    const onCellContextMenuItemClick = (e) => {
-        e.itemData.onItemClick(cellContextMenuEvent);
-    }
-
-    onCellContextMenu = (e) => {
-        setCellContextMenuEvent(e);
-    }
+    var isSelectionStarted = false;  
+    var target;  
+    var startData;  
+    const downHandler = (e) => {  
+        var el = (e.target);  
+        if (el.hasClass("dx-scheduler-date-table-cell")) {  
+            startData = el.data().dxCellData;  
+            isSelectionStarted = true;  
+            target = e.target;  
+        }  
+        console.log('hello!');
+    }  
+    const upHandler = (e) => {  
+        var el = (e.target);  
+        if (el.hasClass("dx-scheduler-date-table-cell") && target !== e.target) {  
+            if(isSelectionStarted) {  
+                console.log('First Data ' + startData + ' - Second Data ' + el.data().dxCellData);  
+             }  
+        }  
+        console.log('bye!');
+        isSelectionStarted = false;  
+        target = null;  
+        startData = null;  
+    } 
 
     const getAppointmentTooltipTemplate = (data) => {
         return <AppointmentTooltipTemplate data={data} scheduler={scheduler} />;
     }
     const onContentReady = (e) => {
-        scheduler === null &&  setScheduler({ scheduler: e.component });
+        e.component.off( "dxpointerdown", downHandler );  
+        e.component.off( "dxpointerup", upHandler );  
+        e.component.on("dxpointerdown", downHandler);  
+        e.component.on("dxpointerup", upHandler);
+
+        if(scheduler == null)
+        {
+            setScheduler({ scheduler: e.component });
+            scheduler.addAppointment({
+                staffMember: 'auth0|5da6c12c379f840df8a55437',
+                text: 'Cut & Blow dry',
+                startDate: new Date(2017, 5, 25, 15, 30),
+                endDate: new Date(2017, 5, 25, 16, 30)
+            });
+        }
     }
 
     const dispatch = useDispatch();
@@ -74,7 +92,6 @@ function CalendarAppContent(props)
                     endDayHour={businessSettings.endingTime}
                     appointmentTooltipRender={getAppointmentTooltipTemplate}
                     onContentReady={onContentReady}              
-                    onCellContextMenu={onCellContextMenu}
                     cellDuration={15}
                     >
                         <Resource
@@ -82,17 +99,6 @@ function CalendarAppContent(props)
                         fieldExpr={'staffMember'}
                         />
                         </Scheduler>
-                        <ContextMenu
-                        dataSource={appointmentContextMenuItems}
-                        width={200}
-                        target={'.dx-scheduler-appointment'}
-                        />
-                        <ContextMenu
-                        dataSource={cellContextMenuItems}
-                        width={200}
-                        onItemClick={onCellContextMenuItemClick}
-                        target={'.dx-scheduler-date-table-cell'}
-                        />
                 </React.Fragment>
 
             </FuseAnimate>
