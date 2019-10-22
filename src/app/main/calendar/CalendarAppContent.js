@@ -9,49 +9,51 @@ import { cellContextMenuItems, appointmentContextMenuItems} from './templates/Me
 
 function CalendarAppContent(props)
 {
-    var isSelectionStarted = false;  
-    var target;  
+    let end;  
+    let start;  
     var startData;  
+    const createAppointment = useSelector(({ calendarApp }) => calendarApp.calendar.createAppointment);
     const downHandler = (e) => {  
         var el = (e.target);  
-        if (el.hasClass("dx-scheduler-date-table-cell")) {  
+/*         if (el.hasClass("dx-scheduler-date-table-cell")) {  
             startData = el.data().dxCellData;  
             isSelectionStarted = true;  
             target = e.target;  
         }  
-        console.log('hello!');
+        }  */ 
+        start = e.target.parentNode.rowIndex;
+        console.log(e.target.parentNode.rowIndex);
     }  
     const upHandler = (e) => {  
         var el = (e.target);  
-        if (el.hasClass("dx-scheduler-date-table-cell") && target !== e.target) {  
+/*         if (el.hasClass("dx-scheduler-date-table-cell") && target !== e.target) {  
             if(isSelectionStarted) {  
                 console.log('First Data ' + startData + ' - Second Data ' + el.data().dxCellData);  
              }  
-        }  
-        console.log('bye!');
-        isSelectionStarted = false;  
-        target = null;  
-        startData = null;  
+        }   */
+        end = e.target.parentNode.rowIndex;
+        const startHours = businessSettings.startingTime + (start * 15 / 60);
+        const startTime = start * 15 % 60;
+        const endHours = startHours + ((end - start) * 15 / 60);
+        const endTime = (end - start) * 15 % 60;
+        console.log(startHours);
+        console.log(endHours);
+        const selectedDates = {
+            startDate: new Date(2017, 5, 25, startHours, startTime),
+            endDate: new Date(2017, 5, 25, endHours, endTime)
+        };
+        dispatch(Actions.setSelectedDates(selectedDates));
     } 
 
     const getAppointmentTooltipTemplate = (data) => {
-        return <AppointmentTooltipTemplate data={data} scheduler={scheduler} />;
+        return <AppointmentTooltipTemplate data={data} scheduler={props.scheduler} />;
     }
     const onContentReady = (e) => {
-        e.component.off( "dxpointerdown", downHandler );  
-        e.component.off( "dxpointerup", upHandler );  
-        e.component.on("dxpointerdown", downHandler);  
-        e.component.on("dxpointerup", upHandler);
-
-        if(scheduler == null)
+        if(props.scheduler == null)
         {
-            setScheduler({ scheduler: e.component });
-            scheduler.addAppointment({
-                staffMember: 'auth0|5da6c12c379f840df8a55437',
-                text: 'Cut & Blow dry',
-                startDate: new Date(2017, 5, 25, 15, 30),
-                endDate: new Date(2017, 5, 25, 16, 30)
-            });
+            e.component.element().onpointerdown = downHandler;  
+            e.component.element().onpointerup = upHandler; 
+            props.setScheduler(e.component);     
         }
     }
 
@@ -65,7 +67,6 @@ function CalendarAppContent(props)
     const groups = ['staffMember'];
     const currentDate = new Date(2017, 5, 25);
     const views = ['day', 'week', 'workWeek', 'month'];
-    const [scheduler, setScheduler] = useState(null);
 
     useEffect(() => {
         dispatch(Actions.getEvents());

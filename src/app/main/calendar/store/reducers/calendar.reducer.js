@@ -11,7 +11,8 @@ const initialState = {
     businessSettings: {
         startingTime: 9,
         endingTime:17
-    }
+    },
+    selectedDates:{}
 };
 
 const calendarReducer = function (state = initialState, action) {
@@ -30,6 +31,14 @@ const calendarReducer = function (state = initialState, action) {
                     return {
                         ...state,
                         staff: action.payload
+                    };
+            }
+            case Actions.SET_SELECTED_DATES:
+                {
+    
+                    return {
+                        ...state,
+                        selectedDates: action.payload
                     };
             }
             case Actions.SET_FILTER_STAFF_MEMBERS:

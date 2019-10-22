@@ -15,6 +15,7 @@ function CalendarApp(props)  {
     const useStyles = makeStyles(theme => ({}));
     const pageLayout = useRef(null);
     
+    const [scheduler, setScheduler] = useState(null);
     const classes = useStyles();
         return (
             <React.Fragment>
@@ -26,17 +27,17 @@ function CalendarApp(props)  {
                 header : "items-center min-h-72 h-72 sm:h-136 sm:min-h-136"
             }}
                 contentToolbar={
-                    <CalendarAppToolbar/>
+                    <CalendarAppToolbar setScheduler={setScheduler} />
                 }
                 content={
-                    <CalendarAppContent isMobile={props.isMobile} />
+                    <CalendarAppContent scheduler={scheduler} setScheduler={setScheduler} isMobile={props.isMobile} />
                 }
                 ref={pageLayout}
                 innerScroll
             />
 
             <FuseAnimate animation="transition.expandIn" delay={1000}>
-                <CalendarAppSpeedDial/>
+                <CalendarAppSpeedDial scheduler={scheduler}/>
             </FuseAnimate>
             </React.Fragment>
         )

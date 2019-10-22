@@ -1,19 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
-import SaveIcon from '@material-ui/icons/Save';
-import PrintIcon from '@material-ui/icons/Print';
-import ShareIcon from '@material-ui/icons/Share';
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import MonetizationOnSharpIcon from '@material-ui/icons/MonetizationOnSharp';
 import GroupAddSharpIcon from '@material-ui/icons/GroupAddSharp';
-import DateRangeSharpIcon from '@material-ui/icons/DateRangeSharp';
 import BlockSharpIcon from '@material-ui/icons/BlockSharp';
+import {useDispatch, useSelector} from 'react-redux';
+import * as Actions from './store/actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,12 +22,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const actions = [
-  { icon: <GroupAddSharpIcon />, name: 'Add Appointment' },
-  { icon: <BlockSharpIcon />, name: 'Block Time Slot' }
-];
 
-export default function CalendarAppSpeedDial() {
+export default function CalendarAppSpeedDial(props) {
+
+  const dispatch = useDispatch();
+  const selectedDates = useSelector(({ calendarApp }) => calendarApp.calendar.selectedDates);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
@@ -49,6 +42,21 @@ export default function CalendarAppSpeedDial() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleCreateAppointment = () => {
+    props.scheduler.showAppointmentPopup({
+        staffMember: 'auth0|5da6c12c379f840df8a55437',
+        text: 'Cut & Blow dry',
+        startDate: selectedDates.startDate,
+        endDate: selectedDates.endDate
+    },true,null)
+  };
+
+  const actions = [
+    { icon: <GroupAddSharpIcon />, name: 'Add Appointment', click:handleCreateAppointment },
+    { icon: <BlockSharpIcon />, name: 'Block Time Slot',click:handleClose }
+  ];
+  
 
   return (
     <div className={classes.root}>
@@ -66,7 +74,7 @@ export default function CalendarAppSpeedDial() {
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
-            onClick={handleClose}
+            onClick={action.click}
           />
         ))}
       </SpeedDial>
