@@ -19,7 +19,6 @@ function CalendarAppContent(props)
             startData = el.data().dxCellData;  
             isSelectionStarted = true;  
             target = e.target;  
-        }  
         }  */ 
         start = e.target.parentNode.rowIndex;
         console.log(e.target.parentNode.rowIndex);
