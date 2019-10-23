@@ -36,7 +36,7 @@ function CalendarApp(props)  {
                 innerScroll
             />
 
-            <FuseAnimate animation="transition.expandIn" delay={1000}>
+            <FuseAnimate animation="transition.fadeIn" delay={500}>
                 <CalendarAppSpeedDial scheduler={scheduler}/>
             </FuseAnimate>
             </React.Fragment>

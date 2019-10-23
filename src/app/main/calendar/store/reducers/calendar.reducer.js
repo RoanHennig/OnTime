@@ -3,6 +3,7 @@ import _ from '@lodash';
 
 const initialState = {
     events: [],
+    eventTypes: [],
     staff: {
         businessId:0,
         staffMembers:[]
@@ -12,7 +13,8 @@ const initialState = {
         startingTime: 9,
         endingTime:17
     },
-    selectedDates:{}
+    selectedDates:null,
+    growSpeedDial:false
 };
 
 const calendarReducer = function (state = initialState, action) {
@@ -33,13 +35,29 @@ const calendarReducer = function (state = initialState, action) {
                         staff: action.payload
                     };
             }
+            case Actions.GET_EVENT_TYPES:
+                {
+    
+                    return {
+                        ...state,
+                        eventTypes: action.payload
+                    };
+            }
             case Actions.SET_SELECTED_DATES:
                 {
     
                     return {
                         ...state,
                         selectedDates: action.payload
-                    };
+                };
+            }
+            case Actions.SET_GROW_SPEED_DIAL:
+                {
+    
+                    return {
+                        ...state,
+                        growSpeedDial: action.payload
+                };
             }
             case Actions.SET_FILTER_STAFF_MEMBERS:
                 {

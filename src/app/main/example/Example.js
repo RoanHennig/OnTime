@@ -117,6 +117,7 @@ class Example extends Component {
                         <Scheduler
                         dataSource={data}
                         views={views}
+                        adaptivityEnabled={true}
                         defaultCurrentView={'day'}
                         defaultCurrentDate={currentDate}
                         startDayHour={9}

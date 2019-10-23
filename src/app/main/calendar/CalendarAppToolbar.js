@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { MenuItem, InputLabel, Select, FormControl } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Actions from './store/actions';

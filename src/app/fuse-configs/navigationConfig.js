@@ -14,7 +14,7 @@ const navigationConfig = [
                 'url'  : '/agenda'
             },
             {
-                'id'   : 'agenda-component',
+                'id'   : 'calendar-component',
                 'title': 'Calendar',
                 'type' : 'item',
                 'icon' : 'event',

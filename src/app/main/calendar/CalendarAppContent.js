@@ -1,67 +1,78 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Scheduler, { Resource } from 'devextreme-react/scheduler';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Actions from './store/actions';
-import {FuseAnimate} from '@fuse';
+import { FuseAnimate } from '@fuse';
 import AppointmentTooltipTemplate from './templates/AppointmentTooltipTemplate';
-import ContextMenu from 'devextreme-react/context-menu';
-import { cellContextMenuItems, appointmentContextMenuItems} from './templates/MenuItems.js';
+import AppointmentBlockedTemplate from './templates/AppointmentBlockedTemplate';
 
-function CalendarAppContent(props)
-{
-    let end;  
-    let start;  
-    var startData;  
-    const createAppointment = useSelector(({ calendarApp }) => calendarApp.calendar.createAppointment);
-    const downHandler = (e) => {  
-        var el = (e.target);  
-/*         if (el.hasClass("dx-scheduler-date-table-cell")) {  
-            startData = el.data().dxCellData;  
-            isSelectionStarted = true;  
-            target = e.target;  
-        }  */ 
-        start = e.target.parentNode.rowIndex;
-        console.log(e.target.parentNode.rowIndex);
-    }  
-    const upHandler = (e) => {  
-        var el = (e.target);  
-/*         if (el.hasClass("dx-scheduler-date-table-cell") && target !== e.target) {  
-            if(isSelectionStarted) {  
-                console.log('First Data ' + startData + ' - Second Data ' + el.data().dxCellData);  
-             }  
-        }   */
-        end = e.target.parentNode.rowIndex;
-        const startHours = businessSettings.startingTime + (start * 15 / 60);
-        const startTime = start * 15 % 60;
-        const endHours = startHours + ((end - start) * 15 / 60);
-        const endTime = (end - start) * 15 % 60;
-        console.log(startHours);
-        console.log(endHours);
-        const selectedDates = {
-            startDate: new Date(2017, 5, 25, startHours, startTime),
-            endDate: new Date(2017, 5, 25, endHours, endTime)
-        };
-        dispatch(Actions.setSelectedDates(selectedDates));
-    } 
+function CalendarAppContent(props) {
+    const downHandler = (e) => {
+        if (e.target.parentNode.rowIndex) {
+            start = e.target.parentNode.rowIndex;
+        }
+    }
+
+    const leaveHandler = (e) => {
+        if (e.relatedTarget && e.relatedTarget.outerHTML && e.relatedTarget.outerHTML.indexOf('SpeedDialopenIconexample') == -1) {
+            dispatch(Actions.setGrowSpeedDial(false));
+        }
+    }
+
+    const upHandler = (e) => {
+        if (e.target.parentNode.rowIndex) {
+            end = e.target.parentNode.rowIndex;
+            const startHours = businessSettings.startingTime + (start * 15 / 60);
+            const startTime = start * 15 % 60;
+            const endHours = businessSettings.startingTime + ((end + 1) * 15 / 60);
+            const endTime = (end + 1) * 15 % 60;
+            const selectedDates = {
+                startDate: new Date(2017, 5, 25, startHours, startTime),
+                endDate: new Date(2017, 5, 25, endHours, endTime),
+                staffIndex: e.target.cellIndex
+            };
+            dispatch(Actions.setSelectedDates(selectedDates));
+            dispatch(Actions.setGrowSpeedDial(true));
+        }
+        else {
+            dispatch(Actions.setSelectedDates(null));
+            dispatch(Actions.setGrowSpeedDial(false));
+        }
+    }
 
     const getAppointmentTooltipTemplate = (data) => {
         return <AppointmentTooltipTemplate data={data} scheduler={props.scheduler} />;
     }
-    const onContentReady = (e) => {
-        if(props.scheduler == null)
+
+    const getAppointmentTemplate = (data) => {
+        if(data.type == 2)
         {
-            e.component.element().onpointerdown = downHandler;  
-            e.component.element().onpointerup = upHandler; 
-            props.setScheduler(e.component);     
+            return <AppointmentBlockedTemplate data={data}/>;
+        }
+        else {
+            return null;
+        }      
+    }
+
+    const onContentReady = (e) => {
+        if (props.scheduler == null) {
+            e.component.element().onpointerdown = downHandler;
+            e.component.element().onpointerup = upHandler;
+            e.component.element().onpointerleave = leaveHandler;
+            props.setScheduler(e.component);
         }
     }
 
+    let end;
+    let start;
+
     const dispatch = useDispatch();
 
-    const user = useSelector(({auth}) => auth.user.data);
-    const businessSettings = useSelector(({calendarApp}) => calendarApp.calendar.businessSettings);
-    const filterStaff = useSelector(({calendarApp}) => calendarApp.calendar.filterStaff);
-    const data = useSelector(({calendarApp}) => calendarApp.calendar.events);
+    const user = useSelector(({ auth }) => auth.user.data);
+    const businessSettings = useSelector(({ calendarApp }) => calendarApp.calendar.businessSettings);
+    const filterStaff = useSelector(({ calendarApp }) => calendarApp.calendar.filterStaff);
+    const data = useSelector(({ calendarApp }) => calendarApp.calendar.events);
+    const eventTypes = useSelector(({ calendarApp }) => calendarApp.calendar.eventTypes);
 
     const groups = ['staffMember'];
     const currentDate = new Date(2017, 5, 25);
@@ -69,6 +80,7 @@ function CalendarAppContent(props)
 
     useEffect(() => {
         dispatch(Actions.getEvents());
+        dispatch(Actions.getEventTypes());
         dispatch(Actions.getStaffMembers());
 
     }, [user.user_id]);
@@ -78,8 +90,8 @@ function CalendarAppContent(props)
             animation="transition.fadeIn"
             duration={200}
             delay={200}
-            >
-                <React.Fragment>
+        >
+            <React.Fragment>
                 <Scheduler
                     dataSource={data}
                     views={views}
@@ -90,20 +102,27 @@ function CalendarAppContent(props)
                     defaultCurrentDate={currentDate}
                     startDayHour={businessSettings.startingTime}
                     endDayHour={businessSettings.endingTime}
+                    appointmentRender={getAppointmentTemplate}
                     appointmentTooltipRender={getAppointmentTooltipTemplate}
-                    onContentReady={onContentReady}              
+                    onContentReady={onContentReady}
                     cellDuration={15}
-                    >
-                        <Resource
+                >
+                    <Resource
                         dataSource={filterStaff}
                         fieldExpr={'staffMember'}
-                        />
-                        </Scheduler>
-                </React.Fragment>
+                    />
+                    <Resource
+                        dataSource={eventTypes}
+                        fieldExpr={'type'}
+                        label={'Type'}
+                        useColorAsDefault={true}
+                    />
+                </Scheduler>
+            </React.Fragment>
 
-            </FuseAnimate>
+        </FuseAnimate>
     );
-    
+
 }
 
 
