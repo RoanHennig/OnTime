@@ -16,6 +16,7 @@ function CalendarAppContent(props) {
     const leaveHandler = (e) => {
         if (e.relatedTarget && e.relatedTarget.outerHTML && e.relatedTarget.outerHTML.indexOf('SpeedDialopenIconexample') == -1) {
             dispatch(Actions.setGrowSpeedDial(false));
+            dispatch(Actions.setSelectedDates(null));
         }
     }
 

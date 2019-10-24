@@ -8,6 +8,7 @@ import GroupAddSharpIcon from '@material-ui/icons/GroupAddSharp';
 import BlockSharpIcon from '@material-ui/icons/BlockSharp';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Actions from './store/actions';
+import * as MessageActions from '../../../app/store/actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,14 +45,14 @@ export default function CalendarAppSpeedDial(props) {
     dispatch(Actions.setGrowSpeedDial(false));
   };
 
-  const handleCreateAppointment = (type) => {
+  const handleCreateAppointment = () => {
     if (selectedDates) {
       props.scheduler.showAppointmentPopup({
         staffMember: filterStaff[selectedDates.staffIndex].id,
         text: '',
         startDate: selectedDates.startDate,
         endDate: selectedDates.endDate,
-        type:type
+        type:1
       }, true, null);
     }
     else {
@@ -60,15 +61,39 @@ export default function CalendarAppSpeedDial(props) {
         text: '',
         startDate: new Date(),
         endDate: null,
-        type:type
+        type:1
+      }, true, null)
+    }
+
+  };
+
+  const handleCreateBlockedAppointment = () => {
+    if (selectedDates) {
+      props.scheduler.addAppointment({
+        staffMember: filterStaff[selectedDates.staffIndex].id,
+        text: '',
+        startDate: selectedDates.startDate,
+        endDate: selectedDates.endDate,
+        type:2
+      });
+
+      dispatch(MessageActions.showMessage({message: 'Blocked timeslot set', variant: 'success'}));
+    }
+    else {
+      props.scheduler.showAppointmentPopup({
+        staffMember: null,
+        text: '',
+        startDate: new Date(),
+        endDate: null,
+        type: 2
       }, true, null)
     }
 
   };
 
   const actions = [
-    { icon: <GroupAddSharpIcon />, name: 'Add Appointment', click: () => handleCreateAppointment(1) },
-    { icon: <BlockSharpIcon />, name: 'Block Time Slot', click: () => handleCreateAppointment(2) }
+    { icon: <GroupAddSharpIcon />, name: 'Add Appointment', click: () => handleCreateAppointment() },
+    { icon: <BlockSharpIcon />, name: 'Block Time Slot', click: () => handleCreateBlockedAppointment() }
   ];
 
 
