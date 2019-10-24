@@ -88,8 +88,7 @@ function AgendaAppSidebarContent() {
 
                 <div className="p-20">
                     <Button
-                        variant="contained"
-                        color="primary"
+                        variant="outlined"
                         className="w-full"
                         startIcon={<MonetizationOnSharpIcon />}
                     >
@@ -99,8 +98,7 @@ function AgendaAppSidebarContent() {
 
                 <div className="p-20">
                     <Button
-                        variant="contained"
-                        color="primary"
+                        variant="outlined"
                         className="w-full"
                         startIcon={<GroupAddSharpIcon />}
                         >
@@ -110,8 +108,7 @@ function AgendaAppSidebarContent() {
 
                 <div className="p-20">
                     <Button
-                        variant="contained"
-                        color="primary"
+                        variant="outlined"
                         className="w-full"
                         startIcon={<DateRangeSharpIcon />}
                     >
@@ -121,8 +118,7 @@ function AgendaAppSidebarContent() {
 
                 <div className="p-20">
                     <Button
-                        variant="contained"
-                        color="primary"
+                        variant="outlined"
                         className="w-full"
                         startIcon={<BlockSharpIcon />}
                     >
