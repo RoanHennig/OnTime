@@ -5,14 +5,14 @@ const themesConfig = {
         palette: {
             type     : 'light',
             primary  : {
-                light: '#D64747',
-                main : '#c94242',
-                dark : '#B03A3A'
+                light: '#b0bec5',
+                main : '#b0bec5',
+                dark : '#78909c'
             },
             secondary: {
-                light       : '#87EFFF',
-                main        : '#109cc7',
-                dark        : '#008CB7',
+                light       : '#e8305f',
+                main        : '#d22a5b',
+                dark        : '#bd2458',
                 contrastText: '#FFF'
             },
             error    : red
