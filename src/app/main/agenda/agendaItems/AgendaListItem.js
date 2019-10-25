@@ -69,6 +69,7 @@ const AgendaListItem = (props) => {
                     icon={props.itemType == 'appointments' ? <TimerIcon /> : null}
                     label={props.item.title}
                     clickable
+                    variant="outlined"
                     color="secondary"
                     size="small"
                 />

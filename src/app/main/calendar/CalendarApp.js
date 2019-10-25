@@ -1,22 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { FusePageSimple, FusePageCarded, FuseAnimate } from '@fuse';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useRef } from 'react';
+import { FusePageSimple, FuseAnimate } from '@fuse';
 import CalendarAppToolbar from './CalendarAppToolbar';
 import CalendarAppContent from './CalendarAppContent';
 import CalendarAppSpeedDial from './CalendarAppSpeedDial';
-import * as Actions from './store/actions';
 import withReducer from 'app/store/withReducer';
 import reducer from './store/reducers';
 import withSizes from 'react-sizes';
 import { compose } from 'redux';
 
 function CalendarApp(props) {
-	const useStyles = makeStyles((theme) => ({}));
 	const pageLayout = useRef(null);
 
 	const [ scheduler, setScheduler ] = useState(null);
-	const classes = useStyles();
 	return (
 		<React.Fragment>
 			<FusePageSimple
