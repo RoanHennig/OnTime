@@ -15,63 +15,63 @@ import GroupAddSharpIcon from '@material-ui/icons/GroupAddSharp';
 import DateRangeSharpIcon from '@material-ui/icons/DateRangeSharp';
 import BlockSharpIcon from '@material-ui/icons/BlockSharp';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    zIndex: 99,
-    transform: 'translateZ(0px)',
-    flexGrow: 1,
-  },
-  speedDial: {
-    position: 'absolute',
-    right   : 50,
-    bottom  : 60
-  },
+const useStyles = makeStyles((theme) => ({
+	root: {
+		zIndex: 99,
+		transform: 'translateZ(0px)',
+		flexGrow: 1
+	},
+	speedDial: {
+		position: 'absolute',
+		right: 50,
+		bottom: 60
+	}
 }));
 
 const actions = [
-  { icon: <MonetizationOnSharpIcon />, name: 'Process Sale' },
-  { icon: <GroupAddSharpIcon />, name: 'Register Client' },
-  { icon: <DateRangeSharpIcon />, name: 'Add Appointment' },
-  { icon: <BlockSharpIcon />, name: 'Block Time Slot' }
+	{ icon: <MonetizationOnSharpIcon />, name: 'Process Sale' },
+	{ icon: <GroupAddSharpIcon />, name: 'Register Client' },
+	{ icon: <DateRangeSharpIcon />, name: 'Add Appointment' },
+	{ icon: <BlockSharpIcon />, name: 'Block Time Slot' }
 ];
 
 export default function AgendaSpeedDial() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [hidden, setHidden] = React.useState(false);
+	const classes = useStyles();
+	const [ open, setOpen ] = React.useState(false);
+	const [ hidden, setHidden ] = React.useState(false);
 
-  const handleVisibility = () => {
-    setHidden(prevHidden => !prevHidden);
-  };
+	const handleVisibility = () => {
+		setHidden((prevHidden) => !prevHidden);
+	};
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+	const handleOpen = () => {
+		setOpen(true);
+	};
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+	const handleClose = () => {
+		setOpen(false);
+	};
 
-  return (
-    <div className={classes.root}>
-      <SpeedDial
-        ariaLabel="SpeedDial openIcon example"
-        className={classes.speedDial}
-        hidden={hidden}
-        icon={<SpeedDialIcon openIcon={<EditIcon />} />}
-        onClose={handleClose}
-        onOpen={handleOpen}
-        open={open}
-      >
-        {actions.map(action => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            onClick={handleClose}
-          />
-        ))}
-      </SpeedDial>
-    </div>
-  );
+	return (
+		<div className={classes.root}>
+			<SpeedDial
+				ariaLabel="SpeedDial openIcon example"
+				className={classes.speedDial}
+				hidden={hidden}
+				icon={<SpeedDialIcon color="secondary" openIcon={<EditIcon />} />}
+				onClose={handleClose}
+				onOpen={handleOpen}
+				open={open}
+			>
+				{actions.map((action) => (
+					<SpeedDialAction
+						key={action.name}
+						icon={action.icon}
+						tooltipTitle={action.name}
+						onClick={handleClose}
+					/>
+				))}
+			</SpeedDial>
+		</div>
+	);
 }

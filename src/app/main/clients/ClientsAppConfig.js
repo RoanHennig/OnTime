@@ -3,7 +3,11 @@ import React from 'react';
 export const ClientsAppConfig = {
 	settings: {
 		layout: {
-			config: {}
+			config: {
+				footer: {
+					display: false
+				}
+			}
 		}
 	},
 	routes: [
