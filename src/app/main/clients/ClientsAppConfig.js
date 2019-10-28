@@ -1,4 +1,5 @@
 import React from 'react';
+import { authRoles } from 'app/auth';
 
 export const ClientsAppConfig = {
 	settings: {
@@ -10,7 +11,12 @@ export const ClientsAppConfig = {
 			}
 		}
 	},
+	auth: authRoles.user,
 	routes: [
+		{
+			path: '/clients/:clientId',
+			component: React.lazy(() => import('./client/About'))
+		},
 		{
 			path: '/clients',
 			component: React.lazy(() => import('./ClientsApp'))

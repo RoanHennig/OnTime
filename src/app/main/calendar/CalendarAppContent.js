@@ -90,7 +90,7 @@ function CalendarAppContent(props) {
 	);
 
 	return (
-		<FuseAnimate animation="transition.fadeIn" duration={200} delay={200}>
+		<FuseAnimate animation="transition.fadeIn" delay={400}>
 			<React.Fragment>
 				<Scheduler
 					dataSource={data}

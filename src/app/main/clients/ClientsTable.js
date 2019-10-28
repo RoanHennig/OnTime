@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TablePagination, TableRow, Checkbox } from '@material-ui/core';
-import { FuseScrollbars, FuseUtils, FuseAnimateGroup } from '@fuse';
+import { FuseScrollbars, FuseUtils } from '@fuse';
 import { withRouter } from 'react-router-dom';
 import _ from '@lodash';
 import ClientsTableHead from './ClientsTableHead';
@@ -60,7 +60,7 @@ function ClientsTable(props) {
 	};
 
 	const handleClick = (item) => {
-		props.history.push('/clients/' + item.id + '/' + item.handle);
+		props.history.push('/clients/' + item.id);
 	};
 
 	const handleCheck = (event, id) => {

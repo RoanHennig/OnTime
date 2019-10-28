@@ -6,6 +6,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { FuseAnimate } from '@fuse';
 import Typography from '@material-ui/core/Typography';
 import PersonAddSharpIcon from '@material-ui/icons/PersonAddSharp';
+
 export default function ClientsHeader() {
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ clientsApp }) => clientsApp.clients.searchText);
