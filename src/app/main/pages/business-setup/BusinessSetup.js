@@ -106,11 +106,11 @@ function BusinessSetup(props) {
             case 0: {
                 var result = validationEngine.validateGroup('businessData')
                 if (result.isValid) {
-                    if(props.Step4.staffOperatingHours && props.Step4.staffOperatingHours.length > 0) {
-                        const newStaffOperatingHours = [...props.Step4.staffOperatingHours];
-                        const newFirstStaffMember = {...newStaffOperatingHours[0]};
+                    if(props.Step4.operatingHours && props.Step4.operatingHours.length > 0) {
+                        const newStaffOperatingHours = [...props.Step4.operatingHours];
+                        const newFirstStaffMember = {...newStaffOperatingHours[1]};
                         newFirstStaffMember.staffName = props.Step1.businessDetails.FirstName + ' ' + props.Step1.businessDetails.LastName;
-                        newStaffOperatingHours[0] = newFirstStaffMember;
+                        newStaffOperatingHours[1] = newFirstStaffMember;
                         props.setOperatingHours(newStaffOperatingHours);
                     }
                     return true;
@@ -129,8 +129,7 @@ function BusinessSetup(props) {
                 }
             }
             case 3: {
-                result = validationEngine.validateGroup('businessOperatingHours')
-                if (result.isValid && props.Step4.staffOperatingHours && props.Step4.staffOperatingHours.length > 0) {
+                if (props.Step4.operatingHours && props.Step4.operatingHours.length > 1) {
                     return true;
                 }
                 else {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { List, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { FuseUtils, FuseAnimate, FuseAnimateGroup } from '@fuse';
+import { FuseAnimate, FuseAnimateGroup } from '@fuse';
 import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
 import AgendaListItem from './AgendaListItem';
