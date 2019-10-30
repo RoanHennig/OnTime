@@ -20,7 +20,10 @@ const clientDetailData = {
 			},
 			lastInvoice: {
 				date: '14 October 2019',
-				amount: 'R 150.00',
+				subtotal: '150',
+				tax: '15',
+				discount: '20',
+				total: '145',
 				number: 'INV0001258'
 			}
 		}

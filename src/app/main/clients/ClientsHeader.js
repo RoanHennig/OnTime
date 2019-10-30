@@ -52,6 +52,7 @@ export default function ClientsHeader() {
 								color="secondary"
 								className="m-16"
 								startIcon={<PersonAddSharpIcon />}
+								onClick={(ev) => dispatch(Actions.openNewClientDialog())}
 							>
 								Add Client
 							</Button>

@@ -3,6 +3,7 @@ import { FusePageCarded, FuseAnimate } from '@fuse';
 import ClientsAppSpeedDial from './ClientsAppSpeedDial';
 import ClientsHeader from './ClientsHeader';
 import ClientsTable from './ClientsTable';
+import ClientDialog from './client/ClientDialog';
 import withReducer from 'app/store/withReducer';
 import reducer from './store/reducers';
 
@@ -21,6 +22,7 @@ function ClientsApp() {
 			<FuseAnimate animation="transition.fadeIn" delay={300}>
 				<ClientsAppSpeedDial />
 			</FuseAnimate>
+			<ClientDialog />
 		</React.Fragment>
 	);
 }
