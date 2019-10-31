@@ -15,7 +15,7 @@ export const ClientsAppConfig = {
 	routes: [
 		{
 			path: '/clients/:clientId',
-			component: React.lazy(() => import('./client/About'))
+			component: React.lazy(() => import('./client/Client'))
 		},
 		{
 			path: '/clients',
