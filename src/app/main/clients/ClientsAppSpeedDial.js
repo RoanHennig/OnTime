@@ -36,12 +36,10 @@ export default function ClientsAppSpeedDial(props) {
 		setOpen(false);
 	};
 
-	const handleCreateClient = () => {};
-
 	const handleCreateExportClients = () => {};
 
 	const actions = [
-		{ icon: <PersonAddSharpIcon />, name: 'Add Client', click: () => handleCreateClient() },
+		{ icon: <PersonAddSharpIcon />, name: 'Add Client', click: () => dispatch(Actions.openNewClientDialog()) },
 		{ icon: <ImportExportSharpIcon />, name: 'Export Clients', click: () => handleCreateExportClients() }
 	];
 

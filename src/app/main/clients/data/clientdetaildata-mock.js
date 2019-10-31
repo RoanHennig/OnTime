@@ -2,16 +2,21 @@ const clientDetailData = {
 	client: [
 		{
 			id: 1,
-			fullName: 'Roan Hennig',
-			general: {
-				gender: 'male',
-				birthday: 'November 2nd',
-				notes: 'always the same mens cut'
-			},
-			contact: {
-				mobile: '082 317 1611',
-				email: 'roan@gmail.com',
-				address: 'De Velde Estate'
+			details: {
+				firstName: 'Roan',
+				lastName: 'Hennig',
+				gender: 'Male',
+				birthday: '2 November',
+				birthDate: new Date(1993, 10, 2),
+				mobile: '+27823171611',
+				email: 'roanhennig@gmail.com',
+				address: 'De Velde Estate',
+				city: 'Cape Town',
+				zipCode: '7130',
+				notifications: 1,
+				sendMarketingNotifications: true,
+				notes: 'hi!',
+				alwaysShowAppointmentNotes: false
 			},
 			lastAppointment: {
 				date: '13 October 2019',

@@ -13,10 +13,12 @@ import {
 	Table
 } from '@material-ui/core';
 import { FuseAnimateGroup } from '@fuse';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AgendaItemChip from '../../agenda/AgendaItemChip';
+import * as Actions from '../store/actions';
 
 export default function AboutTab() {
+	const dispatch = useDispatch();
 	const client = useSelector(({ clientsApp }) => clientsApp.client.client);
 
 	const formatter = new Intl.NumberFormat('en-ZA', {
@@ -39,26 +41,41 @@ export default function AboutTab() {
 								<Typography variant="subtitle1" color="inherit" className="flex-1">
 									General Information
 								</Typography>
-								<Button className="normal-case" color="inherit" size="small">
+								<Button
+									className="normal-case"
+									color="inherit"
+									size="small"
+									onClick={(ev) => dispatch(Actions.openEditClientDialog(client.details))}
+								>
 									Edit
 								</Button>
 							</Toolbar>
 						</AppBar>
 
 						<CardContent>
-							<div className="mb-24">
+							<div className="mb-12">
+								<Typography className="font-bold mb-4 text-15">First Name</Typography>
+								<Typography>{client.details.firstName}</Typography>
+							</div>
+
+							<div className="mb-12">
+								<Typography className="font-bold mb-4 text-15">Last Name</Typography>
+								<Typography>{client.details.lastName}</Typography>
+							</div>
+
+							<div className="mb-12">
 								<Typography className="font-bold mb-4 text-15">Gender</Typography>
-								<Typography>{client.general.gender}</Typography>
+								<Typography>{client.details.gender}</Typography>
 							</div>
 
-							<div className="mb-24">
+							<div className="mb-12">
 								<Typography className="font-bold mb-4 text-15">Birthday</Typography>
-								<Typography>{client.general.birthday}</Typography>
+								<Typography>{client.details.birthday}</Typography>
 							</div>
 
-							<div className="mb-24">
+							<div className="mb-12">
 								<Typography className="font-bold mb-4 text-15">Notes</Typography>
-								<Typography>{client.general.notes}</Typography>
+								<Typography>{client.details.notes}</Typography>
 							</div>
 						</CardContent>
 					</Card>
@@ -69,7 +86,12 @@ export default function AboutTab() {
 								<Typography variant="subtitle1" color="inherit" className="flex-1">
 									Contact
 								</Typography>
-								<Button className="normal-case" color="inherit" size="small">
+								<Button
+									className="normal-case"
+									color="inherit"
+									size="small"
+									onClick={(ev) => dispatch(Actions.openEditClientDialog(client.details))}
+								>
 									Edit
 								</Button>
 							</Toolbar>
@@ -78,17 +100,25 @@ export default function AboutTab() {
 						<CardContent>
 							<div className="mb-24">
 								<Typography className="font-bold mb-4 text-15">Mobile number</Typography>
-								<Typography>{client.contact.mobile}</Typography>
+								<Typography>{client.details.mobile}</Typography>
 							</div>
 
 							<div className="mb-24">
 								<Typography className="font-bold mb-4 text-15">Email</Typography>
-								<Typography>{client.contact.email}</Typography>
+								<Typography>{client.details.email}</Typography>
 							</div>
 
 							<div className="mb-24">
 								<Typography className="font-bold mb-4 text-15">Address</Typography>
-								<Typography>{client.contact.address}</Typography>
+								<Typography>{client.details.address}</Typography>
+							</div>
+							<div className="mb-24">
+								<Typography className="font-bold mb-4 text-15">City</Typography>
+								<Typography>{client.details.city}</Typography>
+							</div>
+							<div className="mb-24">
+								<Typography className="font-bold mb-4 text-15">Zipcode</Typography>
+								<Typography>{client.details.zipCode}</Typography>
 							</div>
 						</CardContent>
 					</Card>
