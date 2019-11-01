@@ -18,7 +18,7 @@ function AgendaList(props) {
 		() => {
 			dispatch(Actions.setAgendaItemsBadges(items));
 		},
-		[ items ]
+		[ items, dispatch ]
 	);
 
 	useEffect(
@@ -26,7 +26,7 @@ function AgendaList(props) {
 			dispatch(Actions.getAppointments(user.user_id));
 			dispatch(Actions.getNotifications(user.user_id));
 		},
-		[ user.user_id ]
+		[ user.user_id, dispatch ]
 	);
 
 	useEffect(
@@ -48,7 +48,7 @@ function AgendaList(props) {
 				setFilteredData(getFilteredArray());
 			}
 		},
-		[ appointments, notifications, props.match.params ]
+		[ appointments, notifications, props.match.params, dispatch ]
 	);
 
 	if (!filteredData) {

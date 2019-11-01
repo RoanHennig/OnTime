@@ -3,7 +3,7 @@ import { FusePageCarded } from '@fuse';
 import withReducer from 'app/store/withReducer';
 import AppointmentsHeader from './AppointmentsHeader';
 import AppointmentsTable from './AppointmentsTable';
-import reducer from '../store/reducers';
+import reducer from '../../store/reducers';
 
 function Appointments() {
 	return (

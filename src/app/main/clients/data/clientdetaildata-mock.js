@@ -37,6 +37,6 @@ const clientDetailData = {
 
 export default {
 	getMockClient(clientId) {
-		return clientDetailData.client.find((x) => x.id == clientId);
+		return clientDetailData.client.find((x) => x.id === clientId);
 	}
 };

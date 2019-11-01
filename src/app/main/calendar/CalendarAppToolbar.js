@@ -23,7 +23,7 @@ function CalendarAppToolbar() {
 		() => {
 			dispatch(Actions.setFilterStaffMembers(staffMember));
 		},
-		[ staffMembers ]
+		[ staffMembers, staffMember, dispatch ]
 	);
 
 	const handleChange = (event) => {

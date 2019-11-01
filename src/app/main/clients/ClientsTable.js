@@ -27,7 +27,7 @@ function ClientsTable(props) {
 		() => {
 			dispatch(Actions.getClients(user.user_id));
 		},
-		[ user.user_id ]
+		[ user.user_id, dispatch ]
 	);
 
 	useEffect(

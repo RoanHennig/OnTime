@@ -154,7 +154,7 @@ function Step4({ setOperatingHours }) {
 						<FuseAnimate key={row.staffID} animation="transition.slideDownBigIn">
 							<TableRow>
 								<TableCell scope="row">
-									{row.staffID != 1 ? (
+									{row.staffID !== 1 ? (
 										<IconButton
 											aria-label="delete"
 											onClick={() => handleDeleteStaffMember(row)}

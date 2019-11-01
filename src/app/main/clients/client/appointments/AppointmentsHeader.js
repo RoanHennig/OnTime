@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function AppointmentsHeader() {
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ clientsApp }) => clientsApp.client.appointments.searchText);
+	const searchText = useSelector(({ clientsApp }) => clientsApp.appointments.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
 
 	return (

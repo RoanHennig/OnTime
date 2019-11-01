@@ -14,6 +14,14 @@ export const ClientsAppConfig = {
 	auth: authRoles.user,
 	routes: [
 		{
+			path: '/clients/:clientId/appointments/:appointmentId',
+			component: React.lazy(() => import('./client/appointments/Appointments'))
+		},
+		{
+			path: '/clients/:clientId/appointments',
+			component: React.lazy(() => import('./client/appointments/Appointments'))
+		},
+		{
 			path: '/clients/:clientId',
 			component: React.lazy(() => import('./client/Client'))
 		},

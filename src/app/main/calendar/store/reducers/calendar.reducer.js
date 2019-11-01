@@ -1,5 +1,4 @@
 import * as Actions from '../actions';
-import _ from '@lodash';
 
 const initialState = {
 	events: [],
@@ -56,7 +55,7 @@ const calendarReducer = function(state = initialState, action) {
 					...state,
 					filterStaff: [ state.staff.staffMembers.find((x) => x.id === action.payload) ]
 				};
-			} else if (action.payload == 'working staff') {
+			} else if (action.payload === 'working staff') {
 				return {
 					...state,
 					filterStaff: state.staff.staffMembers.filter((x) => x.active === true)

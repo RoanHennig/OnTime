@@ -3,13 +3,6 @@ import { TableHead, TableSortLabel, TableCell, TableRow, Tooltip } from '@materi
 
 const rows = [
 	{
-		id: 'appointmentid',
-		align: 'left',
-		disablePadding: false,
-		label: 'Appointment ID',
-		sort: false
-	},
-	{
 		id: 'service',
 		align: 'left',
 		disablePadding: false,
@@ -25,10 +18,10 @@ const rows = [
 	},
 	{
 		id: 'total',
-		align: 'right',
+		align: 'left',
 		disablePadding: false,
 		label: 'Total',
-		sort: false
+		sort: true
 	},
 	{
 		id: 'status',
@@ -46,7 +39,7 @@ const rows = [
 	}
 ];
 
-function OrdersTableHead(props) {
+function AppointmentsTableHead(props) {
 	const createSortHandler = (property) => (event) => {
 		props.onRequestSort(event, property);
 	};
@@ -60,7 +53,7 @@ function OrdersTableHead(props) {
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
-							sortDirection={props.order.id === row.id ? props.order.direction : false}
+							sortDirection={props.appointment.id === row.id ? props.appointment.direction : false}
 						>
 							{row.sort && (
 								<Tooltip
@@ -69,8 +62,8 @@ function OrdersTableHead(props) {
 									enterDelay={300}
 								>
 									<TableSortLabel
-										active={props.order.id === row.id}
-										direction={props.order.direction}
+										active={props.appointment.id === row.id}
+										direction={props.appointment.direction}
 										onClick={createSortHandler(row.id)}
 									>
 										{row.label}
@@ -85,4 +78,4 @@ function OrdersTableHead(props) {
 	);
 }
 
-export default OrdersTableHead;
+export default AppointmentsTableHead;

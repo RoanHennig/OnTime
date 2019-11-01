@@ -29,11 +29,6 @@ export default function CalendarAppSpeedDial(props) {
 	const filterStaff = useSelector(({ calendarApp }) => calendarApp.calendar.filterStaff);
 	const growSpeedDial = useSelector(({ calendarApp }) => calendarApp.calendar.growSpeedDial);
 	const classes = useStyles();
-	const [ hidden, setHidden ] = React.useState(false);
-
-	const handleVisibility = () => {
-		setHidden((prevHidden) => !prevHidden);
-	};
 
 	const handleOpen = () => {
 		dispatch(Actions.setGrowSpeedDial(true));
@@ -107,7 +102,6 @@ export default function CalendarAppSpeedDial(props) {
 			<SpeedDial
 				ariaLabel="SpeedDial openIcon example"
 				className={classes.speedDial}
-				hidden={hidden}
 				icon={<SpeedDialIcon openIcon={<EditIcon />} />}
 				onClose={handleClose}
 				onOpen={handleOpen}

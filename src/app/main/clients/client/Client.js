@@ -108,7 +108,7 @@ function Client(props) {
 									</FuseAnimate>
 								</React.Fragment>
 							)}
-							{tabValue === 1 && <AppointmentsTab />}
+							{tabValue === 1 && <AppointmentsTab classes={classes} />}
 							{tabValue === 2 && <InvoicesTab />}
 						</div>
 					)

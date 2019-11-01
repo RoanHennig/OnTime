@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ClientsAppSpeedDial(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles();
-	const [ hidden, setHidden ] = React.useState(false);
+	const [ hidden ] = React.useState(false);
 	const [ open, setOpen ] = React.useState(false);
 
 	const handleOpen = () => {

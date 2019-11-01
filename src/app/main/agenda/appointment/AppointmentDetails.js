@@ -1,9 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-function MailDetails(props)
-{
-
-}
+function MailDetails() {}
 
 export default withRouter(MailDetails);

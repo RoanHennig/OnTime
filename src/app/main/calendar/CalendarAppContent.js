@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Scheduler, { Resource } from 'devextreme-react/scheduler';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Actions from './store/actions';
@@ -17,7 +17,7 @@ function CalendarAppContent(props) {
 		if (
 			e.relatedTarget &&
 			e.relatedTarget.outerHTML &&
-			e.relatedTarget.outerHTML.indexOf('SpeedDialopenIconexample') == -1
+			e.relatedTarget.outerHTML.indexOf('SpeedDialopenIconexample') === -1
 		) {
 			dispatch(Actions.setGrowSpeedDial(false));
 			dispatch(Actions.setSelectedDates(null));
@@ -49,7 +49,7 @@ function CalendarAppContent(props) {
 	};
 
 	const getAppointmentTemplate = (data) => {
-		if (data.type == 2) {
+		if (data.type === 2) {
 			return <AppointmentBlockedTemplate data={data} />;
 		} else {
 			return null;
@@ -86,7 +86,7 @@ function CalendarAppContent(props) {
 			dispatch(Actions.getEventTypes());
 			dispatch(Actions.getStaffMembers());
 		},
-		[ user.user_id ]
+		[ user.user_id, dispatch ]
 	);
 
 	return (

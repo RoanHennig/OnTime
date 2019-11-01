@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { IconButton, Tooltip } from '@material-ui/core';
 import RestoreIcon from '@material-ui/icons/Restore';
 import EventBusyIcon from '@material-ui/icons/EventBusy';
-import AgendaItemChip from '../../agenda/AgendaItemChip';
+import ServiceItemChip from '../../../../components/ServiceItemChip';
 
 const useStyles = makeStyles((theme) => ({
 	tooltip: {
@@ -27,7 +27,7 @@ function AppointmentTooltipTemplate(props) {
 
 	return (
 		<div className={'h-96 mb-10'}>
-			{props.data.type == 1 ? (
+			{props.data.type === 1 ? (
 				<div className={classes.tooltip}>
 					<div className={classes.client}>John Smith</div>
 					<div className={classes.text}>{props.data.text}</div>
@@ -50,8 +50,8 @@ function AppointmentTooltipTemplate(props) {
 						</div>
 
 						<div className="flex items-center">
-							<AgendaItemChip className="mr-4 float-right" title="red" key={1} />
-							<AgendaItemChip className="mr-4 float-right" title="long-hair" key={2} />
+							<ServiceItemChip className="mr-4 float-right" title="red" key={1} />
+							<ServiceItemChip className="mr-4 float-right" title="long-hair" key={2} />
 						</div>
 					</div>
 				</div>

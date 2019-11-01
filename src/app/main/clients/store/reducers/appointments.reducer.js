@@ -1,18 +1,19 @@
 import * as Actions from '../actions';
+
 const initialState = {
-	clients: [],
+	data: [],
 	searchText: ''
 };
 
-const clientsReducer = function(state = initialState, action) {
+const appointmentsReducer = function(state = initialState, action) {
 	switch (action.type) {
-		case Actions.GET_CLIENTS: {
+		case Actions.GET_APPOINTMENTS: {
 			return {
 				...state,
-				clients: action.payload.clients
+				data: action.payload.appointments
 			};
 		}
-		case Actions.SET_CLIENTS_SEARCH_TEXT: {
+		case Actions.SET_APPOINTMENTS_SEARCH_TEXT: {
 			return {
 				...state,
 				searchText: action.searchText
@@ -24,4 +25,4 @@ const clientsReducer = function(state = initialState, action) {
 	}
 };
 
-export default clientsReducer;
+export default appointmentsReducer;

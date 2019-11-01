@@ -76,9 +76,8 @@ export default function ClientDialog() {
 						{clientDialog.type === 'new' ? 'New Contact' : 'Edit Contact'}
 					</Typography>
 					<IconButton
-						className="float-right"
 						aria-label="close"
-						className={classes.closeButton}
+						className={classes.closeButton + ' float-right'}
 						onClick={closeComposeDialog}
 					>
 						<CloseIcon />

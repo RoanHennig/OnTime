@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TablePagination, TableRow, Checkbox } from '@material-ui/core';
-import { FuseScrollbars, FuseUtils } from '@fuse';
+import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
+import { FuseScrollbars, FuseUtils, FuseAnimate } from '@fuse';
 import { withRouter } from 'react-router-dom';
 import _ from '@lodash';
-import OrdersTableHead from './OrdersTableHead';
-import OrdersStatus from '../order/OrdersStatus';
-import * as Actions from '../store/actions';
+import AppointmentsTableHead from './AppointmentsTableHead';
+import AppointmentStatus from './appointment/AppointmentStatus';
+import ServiceItemChip from '../../../../../components/ServiceItemChip';
+import * as Actions from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import Moment from 'moment';
 
-function AppointmentsTable() {
+function AppointmentsTable(props) {
 	const dispatch = useDispatch();
-	const appointments = useSelector(({ eCommerceApp }) => eCommerceApp.appointments.data);
-	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.appointments.searchText);
+	const appointments = useSelector(({ clientsApp }) => clientsApp.appointments.data);
+	const searchText = useSelector(({ clientsApp }) => clientsApp.appointments.searchText);
 
 	const [ data, setData ] = useState(appointments);
 	const [ appointment, setAppointment ] = useState({
@@ -21,9 +23,9 @@ function AppointmentsTable() {
 
 	useEffect(
 		() => {
-			dispatch(Actions.getAppointments());
+			dispatch(Actions.getAppointments(props.match.params));
 		},
-		[ dispatch ]
+		[ dispatch, props.match.params ]
 	);
 
 	useEffect(
@@ -48,86 +50,88 @@ function AppointmentsTable() {
 	}
 
 	function handleClick(item) {
-		props.history.push('/clients/appointments/' + item.id + '/' + item.handle);
+		console.log(props);
+		props.history.push('/clients/' + props.match.params.clientId + '/appointments/' + item.id);
 	}
 
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
-				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<AppointmentsTableHead
-						appointment={appointment}
-						onRequestSort={handleRequestSort}
-						rowCount={data.length}
-					/>
+				<FuseAnimate animation="transition.slideUpIn" delay={150}>
+					<Table className="min-w-xl" aria-labelledby="tableTitle">
+						<AppointmentsTableHead
+							appointment={appointment}
+							onRequestSort={handleRequestSort}
+							rowCount={data.length}
+						/>
 
-					<TableBody>
-						{_.orderBy(
-							data,
-							[
-								(o) => {
-									switch (appointment.id) {
-										case 'appointmentid': {
-											return parseInt(o.id, 10);
-										}
-										case 'service': {
-											return o.customer.service;
-										}
-										case 'staffMember': {
-											return o.payment.staffMember;
-										}
-										case 'status': {
-											return o.status;
-										}
-										default: {
-											return o[appointmentid.id];
+						<TableBody>
+							{_.orderBy(
+								data,
+								[
+									(o) => {
+										switch (appointment.id) {
+											case 'appointmentid': {
+												return parseInt(o.id, 10);
+											}
+											case 'services': {
+												return o.services;
+											}
+											case 'staffMember': {
+												return o.staffMember;
+											}
+											case 'statuses': {
+												return o.statuses;
+											}
+											default: {
+												return o[appointment.id];
+											}
 										}
 									}
-								}
-							],
-							[ appointment.direction ]
-						).map((n) => {
-							const isSelected = selected.indexOf(n.id) !== -1;
-							return (
-								<TableRow
-									className="h-64 cursor-pointer"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-									onClick={(event) => handleClick(n)}
-								>
-									<TableCell component="th" scope="row">
-										{n.id}
-									</TableCell>
+								],
+								[ appointment.direction ]
+							).map((n) => {
+								return (
+									<TableRow
+										className="h-64 cursor-pointer"
+										hover
+										tabIndex={-1}
+										key={n.id}
+										onClick={() => handleClick(n)}
+									>
+										<TableCell component="th" scope="row">
+											<div className="flex items-center">
+												{n.services.map((service) => (
+													<ServiceItemChip className="mr-4" title={service} key={service} />
+												))}
+											</div>
+										</TableCell>
 
-									<TableCell component="th" scope="row">
-										{n.service}
-									</TableCell>
+										<TableCell className="truncate" component="th" scope="row">
+											{n.staffMember}
+										</TableCell>
 
-									<TableCell className="truncate" component="th" scope="row">
-										{n.staffMember}
-									</TableCell>
+										<TableCell component="th" scope="row">
+											{FuseUtils.formatter.format(n.total)}
+										</TableCell>
 
-									<TableCell component="th" scope="row" align="right">
-										<span>$</span>
-										{n.total}
-									</TableCell>
+										<TableCell component="th" scope="row">
+											<div className="flex items-center">
+												{n.statuses.map((status) => (
+													<AppointmentStatus id={status} key={status} />
+												))}
+											</div>
+										</TableCell>
 
-									<TableCell component="th" scope="row">
-										{n.status}
-									</TableCell>
-
-									<TableCell component="th" scope="row">
-										{n.date}
-									</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
+										<TableCell component="th" scope="row">
+											{Moment(n.date).format('YYYY-MM-DD HH:mm')}
+										</TableCell>
+									</TableRow>
+								);
+							})}
+						</TableBody>
+					</Table>
+				</FuseAnimate>
 			</FuseScrollbars>
 		</div>
 	);
