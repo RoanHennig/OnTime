@@ -110,13 +110,16 @@ function ClientsTable(props) {
 											return parseInt(o.id, 10);
 										}
 										case 'fullname': {
-											return o.firstName;
+											return o.fullName;
 										}
-										case 'lastname': {
-											return o.lastName;
+										case 'mobileNumber': {
+											return o.mobileNumber;
 										}
 										case 'appointmentstotal': {
 											return o.appointmentsTotal;
+										}
+										case 'lastAppointment': {
+											return o.lastAppointment;
 										}
 										default: {
 											return o[client.id];
