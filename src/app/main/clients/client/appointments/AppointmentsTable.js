@@ -6,6 +6,7 @@ import _ from '@lodash';
 import AppointmentsTableHead from './AppointmentsTableHead';
 import AppointmentStatus from './appointment/AppointmentStatus';
 import ServiceItemChip from '../../../../../components/ServiceItemChip';
+import ServicePopover from '../../../../../components/ServicePopover';
 import * as Actions from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import Moment from 'moment';
@@ -49,9 +50,9 @@ function AppointmentsTable(props) {
 		});
 	}
 
-	function handleClick(item) {
-		console.log(props);
-		props.history.push('/clients/' + props.match.params.clientId + '/appointments/' + item.id);
+	function handleClick(event) {
+		//event.preventDefault();
+		//props.history.push('/clients/' + props.match.params.clientId + '/appointments/' + item.id);
 	}
 
 	return (
@@ -100,11 +101,7 @@ function AppointmentsTable(props) {
 										onClick={() => handleClick(n)}
 									>
 										<TableCell component="th" scope="row">
-											<div className="flex items-center">
-												{n.services.map((service) => (
-													<ServiceItemChip className="mr-4" title={service} key={service} />
-												))}
-											</div>
+											<ServicePopover label={n.services.label} />
 										</TableCell>
 
 										<TableCell className="truncate" component="th" scope="row">

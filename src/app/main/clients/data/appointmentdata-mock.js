@@ -3,7 +3,10 @@ const appointmentData = {
 	appointments: [
 		{
 			id: 1,
-			services: [ 'Mens Cut', 'Very short' ],
+			services: {
+				label: 'Package - Mens Combo',
+				items: [ 'Mens Cut', 'Very short' ]
+			},
 			staffMember: 'Madre Swart',
 			statuses: [ 5 ],
 			total: '150',
@@ -11,7 +14,10 @@ const appointmentData = {
 		},
 		{
 			id: 2,
-			services: [ 'Coloring', 'Yellow' ],
+			services: {
+				label: 'Custom',
+				items: [ 'Mens Cut', 'Very short' ]
+			},
 			staffMember: 'Roan Hennig',
 			statuses: [ 2, 6 ],
 			total: '500.50',
@@ -19,7 +25,10 @@ const appointmentData = {
 		},
 		{
 			id: 3,
-			services: [ 'Mens Cut', 'Very short' ],
+			services: {
+				label: 'Mens Cut',
+				items: [ 'Mens Cut', 'Very short' ]
+			},
 			staffMember: 'Madre Swart',
 			statuses: [ 2 ],
 			total: '150',
@@ -27,7 +36,10 @@ const appointmentData = {
 		},
 		{
 			id: 4,
-			services: [ 'Mens Cut', 'Very short' ],
+			services: {
+				label: 'Custom',
+				items: [ 'Mens Cut', 'Very short' ]
+			},
 			staffMember: 'Madre Swart',
 			statuses: [ 3 ],
 			total: '150',
@@ -35,7 +47,10 @@ const appointmentData = {
 		},
 		{
 			id: 5,
-			services: [ 'Mens Cut', 'Very short' ],
+			services: {
+				label: 'Custom',
+				items: [ 'Mens Cut', 'Very short' ]
+			},
 			staffMember: 'Madre Swart',
 			statuses: [ 1 ],
 			total: '150',

@@ -11,22 +11,22 @@ export const appointmentStatuses = [
 	{
 		id: 2,
 		name: 'Paid using Snapscan',
-		color: 'bg-green-300 text-white'
+		color: 'bg-green-400 text-white'
 	},
 	{
 		id: 3,
 		name: 'Paid using Zapper',
-		color: 'bg-green-300 text-white'
+		color: 'bg-green-400 text-white'
 	},
 	{
 		id: 4,
 		name: 'Paid using cash',
-		color: 'bg-green-300 text-white'
+		color: 'bg-green-400 text-white'
 	},
 	{
 		id: 5,
 		name: 'Appointment Cancelled',
-		color: 'bg-red-500 text-white'
+		color: 'bg-red-400 text-white'
 	},
 	{
 		id: 6,
