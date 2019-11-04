@@ -3,47 +3,45 @@ import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { FuseScrollbars, FuseUtils, FuseAnimate } from '@fuse';
 import { withRouter } from 'react-router-dom';
 import _ from '@lodash';
-import AppointmentsTableHead from './AppointmentsTableHead';
-import AppointmentStatus from './appointment/AppointmentStatus';
-import ServicePopover from '../../../../../components/ServicePopover';
+import InvoicesTableHead from './InvoicesTableHead';
+import InvoiceStatus from './invoice/InvoiceStatus';
 import * as Actions from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import Moment from 'moment';
 
-function AppointmentsTable(props) {
+function InvoicesTable(props) {
 	const dispatch = useDispatch();
-	const appointments = useSelector(({ clientsApp }) => clientsApp.appointments.data);
-	const searchText = useSelector(({ clientsApp }) => clientsApp.appointments.searchText);
+	const invoices = useSelector(({ clientsApp }) => clientsApp.invoices.data);
 
-	const [ data, setData ] = useState(appointments);
-	const [ appointment, setAppointment ] = useState({
+	const [ data, setData ] = useState(invoices);
+	const [ invoice, setInvoice ] = useState({
 		direction: 'asc',
 		id: null
 	});
 
 	useEffect(
 		() => {
-			dispatch(Actions.getAppointments(props.match.params));
+			dispatch(Actions.getInvoices(props.match.params));
 		},
 		[ dispatch, props.match.params ]
 	);
 
 	useEffect(
 		() => {
-			setData(searchText.length === 0 ? appointments : FuseUtils.filterArrayByString(appointments, searchText));
+			setData(invoices);
 		},
-		[ appointments, searchText ]
+		[ invoices ]
 	);
 
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
 
-		if (appointment.id === property && appointment.direction === 'desc') {
+		if (invoice.id === property && invoice.direction === 'desc') {
 			direction = 'asc';
 		}
 
-		setAppointment({
+		setInvoice({
 			direction,
 			id
 		});
@@ -59,37 +57,33 @@ function AppointmentsTable(props) {
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<FuseAnimate animation="transition.slideUpIn" delay={150}>
 					<Table className="min-w-xl" aria-labelledby="tableTitle">
-						<AppointmentsTableHead
-							appointment={appointment}
-							onRequestSort={handleRequestSort}
-							rowCount={data.length}
-						/>
+						<InvoicesTableHead invoice={invoice} onRequestSort={handleRequestSort} rowCount={data.length} />
 
 						<TableBody>
 							{_.orderBy(
 								data,
 								[
 									(o) => {
-										switch (appointment.id) {
-											case 'appointmentid': {
+										switch (invoice.id) {
+											case 'invoiceid': {
 												return parseInt(o.id, 10);
 											}
-											case 'services': {
+											case 'total': {
 												return o.services;
 											}
-											case 'staffMember': {
-												return o.staffMember;
+											case 'status': {
+												return o.status;
 											}
-											case 'statuses': {
-												return o.statuses;
+											case 'date': {
+												return o.date;
 											}
 											default: {
-												return o[appointment.id];
+												return o[invoice.id];
 											}
 										}
 									}
 								],
-								[ appointment.direction ]
+								[ invoice.direction ]
 							).map((n) => {
 								return (
 									<TableRow
@@ -99,12 +93,8 @@ function AppointmentsTable(props) {
 										key={n.id}
 										onClick={() => handleClick(n)}
 									>
-										<TableCell component="th" scope="row">
-											<ServicePopover label={n.services.label} />
-										</TableCell>
-
 										<TableCell className="truncate" component="th" scope="row">
-											{n.staffMember}
+											{n.id}
 										</TableCell>
 
 										<TableCell component="th" scope="row">
@@ -112,15 +102,11 @@ function AppointmentsTable(props) {
 										</TableCell>
 
 										<TableCell component="th" scope="row">
-											<div className="flex items-center">
-												{n.statuses.map((status) => (
-													<AppointmentStatus id={status} key={status} />
-												))}
-											</div>
+											<InvoiceStatus id={n.status} key={n.status} />
 										</TableCell>
 
 										<TableCell component="th" scope="row">
-											{Moment(n.date).format('YYYY-MM-DD HH:mm')}
+											{Moment(n.date).format('YYYY-MM-DD')}
 										</TableCell>
 									</TableRow>
 								);
@@ -133,4 +119,4 @@ function AppointmentsTable(props) {
 	);
 }
 
-export default withRouter(AppointmentsTable);
+export default withRouter(InvoicesTable);

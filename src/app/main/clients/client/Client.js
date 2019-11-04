@@ -109,7 +109,7 @@ function Client(props) {
 								</React.Fragment>
 							)}
 							{tabValue === 1 && <AppointmentsTab classes={classes} />}
-							{tabValue === 2 && <InvoicesTab />}
+							{tabValue === 2 && <InvoicesTab classes={classes} />}
 						</div>
 					)
 				}
