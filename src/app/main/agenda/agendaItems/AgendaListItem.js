@@ -46,18 +46,13 @@ const AgendaListItem = (props) => {
 			dense
 			button
 			onClick={() =>
-				props.history.push(
+				/* 				props.history.push(
 					toPath({
 						...props.match.params,
 						appointmentId: props.item.id
-					})
-				)}
-			className={clsx(
-				classes.agendaListItem,
-				checked && 'selected',
-				!props.item.read && 'unread',
-				'py-16 pl-0 pr-8 sm:pl-8 sm:pr-24'
-			)}
+					}) */
+				props.history.push('/appointment/' + props.item.id)}
+			className={clsx(classes.agendaListItem, checked && 'selected')}
 		>
 			<Checkbox
 				tabIndex={-1}
