@@ -43,11 +43,11 @@ const InvoiceAppContent = (props) => {
 
 	return (
 		<div className={clsx(classes.root, 'flex-grow flex-shrink-0 p-0')}>
-			{props.order && (
+			{props.invoice && (
 				<Card className="w-xl mx-auto" elevation={0}>
 					<CardContent className="p-88 print:p-0">
 						<Typography color="textSecondary" className="mb-32">
-							{props.order.date}
+							{props.invoice.date}
 						</Typography>
 
 						<div className="flex justify-between">
@@ -62,7 +62,7 @@ const InvoiceAppContent = (props) => {
 											</td>
 											<td className="pb-4">
 												<Typography className="font-light" variant="h6" color="inherit">
-													{props.order.reference}
+													{props.invoice.reference}
 												</Typography>
 											</td>
 										</tr>
@@ -70,19 +70,19 @@ const InvoiceAppContent = (props) => {
 								</table>
 
 								<Typography color="textSecondary">
-									{props.order.customer.firstName + ' ' + props.order.customer.lastName}
+									{props.invoice.client.firstName + ' ' + props.invoice.client.lastName}
 								</Typography>
 
-								{props.order.customer.invoiceAddress.address && (
+								{props.invoice.client.invoiceAddress.address && (
 									<Typography color="textSecondary">
-										{props.order.customer.invoiceAddress.address}
+										{props.invoice.client.invoiceAddress.address}
 									</Typography>
 								)}
-								{props.order.customer.phone && (
-									<Typography color="textSecondary">{props.order.customer.phone}</Typography>
+								{props.invoice.client.mobile && (
+									<Typography color="textSecondary">{props.invoice.client.mobile}</Typography>
 								)}
-								{props.order.customer.email && (
-									<Typography color="textSecondary">{props.order.customer.email}</Typography>
+								{props.invoice.client.email && (
+									<Typography color="textSecondary">{props.invoice.client.email}</Typography>
 								)}
 							</div>
 
@@ -106,23 +106,17 @@ const InvoiceAppContent = (props) => {
 							<Table className="simple">
 								<TableHead>
 									<TableRow>
-										<TableCell>PRODUCT</TableCell>
-										<TableCell>PRICE</TableCell>
-										<TableCell align="right">QUANTITY</TableCell>
+										<TableCell>SERVICE</TableCell>
 										<TableCell align="right">TOTAL</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									{props.order.products.map((product) => (
-										<TableRow key={product.id}>
+									{props.invoice.services.map((service) => (
+										<TableRow key={service.id}>
 											<TableCell>
-												<Typography variant="subtitle1">{product.name}</Typography>
+												<Typography variant="subtitle1">{service.name}</Typography>
 											</TableCell>
-											<TableCell align="right">{formatter.format(product.price)}</TableCell>
-											<TableCell align="right">{product.quantity}</TableCell>
-											<TableCell align="right">
-												{formatter.format(product.price * product.quantity)}
-											</TableCell>
+											<TableCell align="right">{formatter.format(service.price)}</TableCell>
 										</TableRow>
 									))}
 								</TableBody>
@@ -146,7 +140,7 @@ const InvoiceAppContent = (props) => {
 												variant="subtitle1"
 												color="textSecondary"
 											>
-												{formatter.format(props.order.subtotal)}
+												{formatter.format(props.invoice.subtotal)}
 											</Typography>
 										</TableCell>
 									</TableRow>
@@ -166,7 +160,7 @@ const InvoiceAppContent = (props) => {
 												variant="subtitle1"
 												color="textSecondary"
 											>
-												{formatter.format(props.order.tax)}
+												{formatter.format(props.invoice.tax)}
 											</Typography>
 										</TableCell>
 									</TableRow>
@@ -186,7 +180,7 @@ const InvoiceAppContent = (props) => {
 												variant="subtitle1"
 												color="textSecondary"
 											>
-												{formatter.format(props.order.discount)}
+												{formatter.format(props.invoice.discount)}
 											</Typography>
 										</TableCell>
 									</TableRow>
@@ -198,7 +192,7 @@ const InvoiceAppContent = (props) => {
 										</TableCell>
 										<TableCell align="right">
 											<Typography className="font-light" variant="h4" color="textSecondary">
-												{formatter.format(props.order.total)}
+												{formatter.format(props.invoice.total)}
 											</Typography>
 										</TableCell>
 									</TableRow>

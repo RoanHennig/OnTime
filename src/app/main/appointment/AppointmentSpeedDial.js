@@ -7,7 +7,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import MonetizationOnSharpIcon from '@material-ui/icons/MonetizationOnSharp';
 import GroupAddSharpIcon from '@material-ui/icons/GroupAddSharp';
 import DateRangeSharpIcon from '@material-ui/icons/DateRangeSharp';
-import BlockSharpIcon from '@material-ui/icons/BlockSharp';
 
 const useStyles = makeStyles((theme) => ({
 	root: {

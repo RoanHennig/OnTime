@@ -47,9 +47,8 @@ function InvoicesTable(props) {
 		});
 	}
 
-	function handleClick(event) {
-		//event.preventDefault();
-		//props.history.push('/clients/' + props.match.params.clientId + '/appointments/' + item.id);
+	function handleClick(item) {
+		props.history.push('/appointment/' + item.id);
 	}
 
 	return (

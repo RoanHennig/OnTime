@@ -1,23 +1,36 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Tab, Tabs } from '@material-ui/core';
 import { FusePageCarded, FuseAnimate } from '@fuse';
 import withReducer from 'app/store/withReducer';
-import AgendaList from './agendaItems/AgendaList';
-import AgendaSpeedDial from './agendaItems/AgendaSpeedDial';
-import AppointmentDetails from './appointment/AppointmentDetails';
-import AppointmentToolbar from './appointment/AppointmentToolbar';
-import AgendaToolbar from './agendaItems/AgendaToolbar';
-import AgendaAppHeader from './AgendaAppHeader';
-import AgendaAppSidebarHeader from './AgendaAppSidebarHeader';
-import AgendaAppSidebarContent from './AgendaAppSidebarContent';
+import AppointmentSpeedDial from './AppointmentSpeedDial';
+import InvoiceAppHeader from './invoice/InvoiceAppHeader';
+import InvoiceAppContent from './invoice/InvoiceAppContent';
+import InvoiceAppSidebarHeader from './invoice/InvoiceAppSidebarHeader';
+import InvoiceAppSidebarContent from './invoice/InvoiceAppSidebarContent';
+import { useDispatch, useSelector } from 'react-redux';
 import reducer from './store/reducers';
+import * as Actions from './store/actions';
 
 function AppointmentApp(props) {
 	const pageLayout = useRef(null);
-	const [ tabValue, setTabValue ] = useState(2);
+	const dispatch = useDispatch();
+
+	const [ tabValue, setTabValue ] = useState(1);
+	const appointment = useSelector(({ appointmentApp }) => appointmentApp.appointment.data);
 
 	function handleChangeTab(event, tabValue) {
 		setTabValue(tabValue);
 	}
+
+	useEffect(
+		() => {
+			/* 			if (props.destination === 'invoice') {
+				dispatch(Actions.getAppointmentByInvoiceId(props.match.params.appointmentId));
+            } */
+			dispatch(Actions.getAppointmentByInvoiceId(props.match.params.appointmentId));
+		},
+		[ dispatch, props.match.params.appointmentId, props.destination ]
+	);
 
 	return (
 		<React.Fragment>
@@ -29,10 +42,10 @@ function AppointmentApp(props) {
 					header: 'items-center min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={
-					tabValue === 2 && (
+					tabValue === 1 && (
 						<InvoiceAppHeader
-							returnUrl={props.returnUrl}
-							invoiceNumber={appointment.invoice.number}
+							goBack={props.history.goBack}
+							invoiceNumber={appointment.invoice.id}
 							pageLayout={pageLayout}
 						/>
 					)
@@ -51,9 +64,9 @@ function AppointmentApp(props) {
 						<Tab className="h-64 normal-case" label="Invoice" />
 					</Tabs>
 				}
-				content={tabValue === 2 && <InvoiceAppContent />}
-				leftSidebarHeader={tabValue === 2 && <InvoiceAppSidebarHeader />}
-				leftSidebarContent={tabValue === 2 && <InvoiceAppSidebarContent />}
+				content={tabValue === 1 && <InvoiceAppContent invoice={appointment.invoice} />}
+				leftSidebarHeader={tabValue === 1 && <InvoiceAppSidebarHeader />}
+				leftSidebarContent={tabValue === 1 && <InvoiceAppSidebarContent />}
 				ref={pageLayout}
 				innerScroll
 			/>

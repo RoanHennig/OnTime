@@ -1,7 +1,7 @@
 import React from 'react';
 import { authRoles } from 'app/auth';
 
-export const AgendaAppConfig = {
+export const AppointmentAppConfig = {
 	settings: {
 		layout: {
 			config: {
