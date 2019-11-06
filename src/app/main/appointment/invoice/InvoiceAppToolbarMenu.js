@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem, Icon, IconButton } from '@material-ui/core';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 function InvoiceAppToolbarMenu() {
 	const [ selectedOption, setSelectedOption ] = useState({
@@ -7,7 +9,21 @@ function InvoiceAppToolbarMenu() {
 		menuEl: null
 	});
 
-	function handleDownloadInvoice() {}
+	function handleDownloadInvoice() {
+		const input = document.getElementById('appointmentinvoice');
+		console.log(input);
+		html2canvas(input, {
+			allowTaint: true,
+			foreignObjectRendering: true
+		}).then((canvas) => {
+			console.log(canvas);
+			const imgData = canvas.toDataURL('image/png', 1.0);
+			const pdf = new jsPDF('l', 'mm', 'a4');
+			pdf.addImage(imgData, 'PNG', 100, 100, 250, 600);
+			// pdf.output('dataurlnewwindow');
+			pdf.save('download.pdf');
+		});
+	}
 
 	function handlePrintInvoice() {}
 

@@ -2,6 +2,11 @@ import * as Actions from '../actions';
 
 const initialState = {
 	data: {
+		client: {
+			id: 0,
+			firstName: '',
+			lastName: ''
+		},
 		invoice: {
 			id: 0,
 			date: '',

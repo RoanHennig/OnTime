@@ -1,10 +1,16 @@
 const appointmentData = [
 	{
+		client: {
+			id: 1,
+			firstName: 'Roan',
+			lastName: 'Hennig',
+			email: 'roanhennig@gmail.com'
+		},
 		detail: {},
 		invoice: {
 			id: 1,
 			date: '2019-10-21',
-			reference: '#REF00001',
+			reference: '#00001',
 			client: {
 				firstName: 'Roan',
 				lastName: 'Hennig',

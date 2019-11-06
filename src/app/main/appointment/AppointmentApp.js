@@ -18,7 +18,6 @@ function AppointmentApp(props) {
 
 	const [ tabValue, setTabValue ] = useState(1);
 	const appointment = useSelector(({ appointmentApp }) => appointmentApp.appointment.data);
-
 	function handleChangeTab(event, tabValue) {
 		setTabValue(tabValue);
 	}
@@ -47,7 +46,7 @@ function AppointmentApp(props) {
 					tabValue === 1 && (
 						<InvoiceAppHeader
 							goBack={props.history.goBack}
-							invoiceNumber={appointment.invoice.id}
+							invoiceNumber={appointment.invoice.reference}
 							pageLayout={pageLayout}
 						/>
 					)
@@ -71,8 +70,8 @@ function AppointmentApp(props) {
 					</React.Fragment>
 				}
 				content={tabValue === 1 && <InvoiceAppContent invoice={appointment.invoice} />}
-				leftSidebarHeader={tabValue === 1 && <InvoiceAppSidebarHeader />}
-				leftSidebarContent={tabValue === 1 && <InvoiceAppSidebarContent />}
+				leftSidebarHeader={tabValue === 1 && <InvoiceAppSidebarHeader client={appointment.client} />}
+				leftSidebarContent={tabValue === 1 && <InvoiceAppSidebarContent client={appointment.client} />}
 				ref={pageLayout}
 				innerScroll
 			/>

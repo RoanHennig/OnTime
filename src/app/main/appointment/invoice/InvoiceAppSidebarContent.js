@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { FuseAnimate } from '@fuse';
 import SendIcon from '@material-ui/icons/Send';
+import { useDispatch } from 'react-redux';
 
-function InvoiceAppSidebarContent() {
+function InvoiceAppSidebarContent(props) {
+	const dispatch = useDispatch();
+
+	const [ email, setEmail ] = useState(props.client.email);
+
+	const handleEmailChange = (ev) => {
+		setEmail(ev.target.value);
+	};
+
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={400}>
 			<div className="flex-auto border-l-1">
@@ -16,6 +25,8 @@ function InvoiceAppSidebarContent() {
 						margin="dense"
 						variant="outlined"
 						fullWidth
+						value={email}
+						onChange={handleEmailChange}
 					/>
 				</div>
 

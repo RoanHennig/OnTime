@@ -42,7 +42,7 @@ const InvoiceAppContent = (props) => {
 	});
 
 	return (
-		<div className={clsx(classes.root, 'flex-grow flex-shrink-0 p-0')}>
+		<div id="appointmentinvoice" className={clsx(classes.root, 'flex-grow flex-shrink-0 p-0')}>
 			{props.invoice && (
 				<Card className="w-xl mx-auto" elevation={0}>
 					<CardContent className="p-88 print:p-0">
