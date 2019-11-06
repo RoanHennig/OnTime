@@ -48,7 +48,7 @@ function InvoicesTable(props) {
 	}
 
 	function handleClick(item) {
-		props.history.push('/appointment/' + item.id);
+		props.history.push('/appointment/' + item.id + '/invoice');
 	}
 
 	return (

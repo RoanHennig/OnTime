@@ -2,7 +2,6 @@ import React from 'react';
 import { Icon } from '@material-ui/core';
 import { FuseAnimate } from '@fuse';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
 
 function InvoiceAppHeader(props) {
 	return (

@@ -1,10 +1,6 @@
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { FuseAnimate } from '@fuse';
-import MonetizationOnSharpIcon from '@material-ui/icons/MonetizationOnSharp';
-import GroupAddSharpIcon from '@material-ui/icons/GroupAddSharp';
-import DateRangeSharpIcon from '@material-ui/icons/DateRangeSharp';
-import BlockSharpIcon from '@material-ui/icons/BlockSharp';
 import SendIcon from '@material-ui/icons/Send';
 
 function InvoiceAppSidebarContent() {

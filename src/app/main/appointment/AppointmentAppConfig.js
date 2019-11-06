@@ -14,7 +14,7 @@ export const AppointmentAppConfig = {
 	auth: authRoles.user,
 	routes: [
 		{
-			path: [ '/appointment/:appointmentId?' ],
+			path: [ '/appointment/:appointmentId/:destination?', '/appointment/:appointmentId?' ],
 			component: React.lazy(() => import('./AppointmentApp'))
 		}
 	]

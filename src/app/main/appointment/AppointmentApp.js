@@ -4,6 +4,7 @@ import { FusePageCarded, FuseAnimate } from '@fuse';
 import withReducer from 'app/store/withReducer';
 import AppointmentSpeedDial from './AppointmentSpeedDial';
 import InvoiceAppHeader from './invoice/InvoiceAppHeader';
+import InvoiceAppToolbarMenu from './invoice/InvoiceAppToolbarMenu';
 import InvoiceAppContent from './invoice/InvoiceAppContent';
 import InvoiceAppSidebarHeader from './invoice/InvoiceAppSidebarHeader';
 import InvoiceAppSidebarContent from './invoice/InvoiceAppSidebarContent';
@@ -24,12 +25,13 @@ function AppointmentApp(props) {
 
 	useEffect(
 		() => {
-			/* 			if (props.destination === 'invoice') {
+			if (props.match.params.destination === 'invoice') {
 				dispatch(Actions.getAppointmentByInvoiceId(props.match.params.appointmentId));
-            } */
-			dispatch(Actions.getAppointmentByInvoiceId(props.match.params.appointmentId));
+			} else {
+				//dispatch(Actions.getAppointmentByInvoiceId(props.match.params.appointmentId));
+			}
 		},
-		[ dispatch, props.match.params.appointmentId, props.destination ]
+		[ dispatch, props.match.params.appointmentId, props.match.params.destination ]
 	);
 
 	return (
@@ -51,18 +53,22 @@ function AppointmentApp(props) {
 					)
 				}
 				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleChangeTab}
-						indicatorColor="secondary"
-						textColor="secondary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab className="h-64 normal-case" label="Details" />
-						<Tab className="h-64 normal-case" label="Invoice" />
-					</Tabs>
+					<React.Fragment>
+						{tabValue === 1 && <InvoiceAppToolbarMenu />}
+
+						<Tabs
+							value={tabValue}
+							onChange={handleChangeTab}
+							indicatorColor="secondary"
+							textColor="secondary"
+							variant="scrollable"
+							scrollButtons="auto"
+							classes={{ root: 'w-full h-64' }}
+						>
+							<Tab className="h-64 normal-case" label="Details" />
+							<Tab className="h-64 normal-case" label="Invoice" />
+						</Tabs>
+					</React.Fragment>
 				}
 				content={tabValue === 1 && <InvoiceAppContent invoice={appointment.invoice} />}
 				leftSidebarHeader={tabValue === 1 && <InvoiceAppSidebarHeader />}
