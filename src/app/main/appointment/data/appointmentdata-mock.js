@@ -6,7 +6,10 @@ const appointmentData = [
 			lastName: 'Hennig',
 			email: 'roanhennig@gmail.com'
 		},
-		detail: {},
+		details: {
+			startTime: new Date(2019, 10, 7, 13),
+			endTime: new Date(2019, 10, 7, 14, 30)
+		},
 		invoice: {
 			id: 1,
 			date: '2019-10-21',

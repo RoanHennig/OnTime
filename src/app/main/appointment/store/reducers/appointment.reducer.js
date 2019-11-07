@@ -7,6 +7,10 @@ const initialState = {
 			firstName: '',
 			lastName: ''
 		},
+		details: {
+			startTime: new Date(),
+			endTime: new Date()
+		},
 		invoice: {
 			id: 0,
 			date: '',
