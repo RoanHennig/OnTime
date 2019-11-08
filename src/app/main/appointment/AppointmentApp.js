@@ -68,7 +68,11 @@ function AppointmentApp(props) {
 				contentToolbar={
 					<React.Fragment>
 						{tabValue === 1 && <InvoiceAppToolbarMenu />}
-						{tabValue === 0 && <AppointmentDetailsAppToolbarMenu appointmentStatus={'complete'} />}
+						{tabValue === 0 && (
+							<AppointmentDetailsAppToolbarMenu
+								appointmentStatus={appointment.details.appointmentStatus}
+							/>
+						)}
 						<Tabs
 							value={tabValue}
 							onChange={handleChangeTab}

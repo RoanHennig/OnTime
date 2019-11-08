@@ -9,7 +9,8 @@ const initialState = {
 		},
 		details: {
 			startTime: new Date(),
-			endTime: new Date()
+			endTime: new Date(),
+			appointmentStatus: 'scheduled'
 		},
 		invoice: {
 			id: 0,

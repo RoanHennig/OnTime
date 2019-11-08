@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import { FuseAnimate } from '@fuse';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -18,10 +17,6 @@ function AppointmentDetailsAppSidebarContent(props) {
 	const [ open, setOpen ] = React.useState(false);
 	const anchorRef = React.useRef(null);
 	const [ selectedIndex, setSelectedIndex ] = React.useState(1);
-
-	const handleClick = () => {
-		alert(`You clicked ${options[selectedIndex]}`);
-	};
 
 	const handleMenuItemClick = (event, index) => {
 		setSelectedIndex(index);
@@ -43,13 +38,13 @@ function AppointmentDetailsAppSidebarContent(props) {
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={200}>
 			<div className="flex-auto border-l-1">
-				<div className="p-20">
+				<div className="pt-20 pl-20 pr-20">
 					<Button variant="contained" color="secondary" className="w-full" startIcon={<ShoppingCartIcon />}>
 						CHECKOUT
 					</Button>
 				</div>
 
-				<div className="p-20">
+				<div className="pt-20 pl-20 pr-20">
 					<ButtonGroup
 						className="w-full"
 						variant="contained"
@@ -57,7 +52,7 @@ function AppointmentDetailsAppSidebarContent(props) {
 						ref={anchorRef}
 						aria-label="split button"
 					>
-						<Button className="w-full" onClick={handleClick}>
+						<Button className="w-full" onClick={(event) => handleMenuItemClick(event, selectedIndex)}>
 							{options[selectedIndex]}
 						</Button>
 						<Button
