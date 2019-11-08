@@ -90,7 +90,7 @@ function AppointmentApp(props) {
 				content={
 					<React.Fragment>
 						{tabValue === 1 && <InvoiceAppContent invoice={appointment.invoice} />}
-						{tabValue === 0 && <AppointmentDetailsAppContent details={appointment.details} />}
+						{tabValue === 0 && <AppointmentDetailsAppContent appointment={appointment} />}
 					</React.Fragment>
 				}
 				leftSidebarHeader={

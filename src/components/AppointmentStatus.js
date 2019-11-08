@@ -5,23 +5,23 @@ import _ from '@lodash';
 export const appointmentStatuses = [
 	{
 		id: 1,
-		name: 'Appointment Pending',
+		name: 'Appointment Scheduled',
 		color: 'bg-blue-400 text-white'
 	},
 	{
 		id: 2,
 		name: 'Paid using Snapscan',
-		color: 'bg-green-400 text-white'
+		color: 'bg-yellow-700 text-white'
 	},
 	{
 		id: 3,
 		name: 'Paid using Zapper',
-		color: 'bg-green-400 text-white'
+		color: 'bg-yellow-700 text-white'
 	},
 	{
 		id: 4,
 		name: 'Paid using cash',
-		color: 'bg-green-400 text-white'
+		color: 'bg-yellow-700 text-white'
 	},
 	{
 		id: 5,
@@ -32,6 +32,17 @@ export const appointmentStatuses = [
 		id: 6,
 		name: 'No Show',
 		color: 'bg-red-400 text-white'
+	},
+	{
+		id: 7,
+		name: 'Arrived',
+		color: 'bg-green-400 text-white'
+	},
+	,
+	{
+		id: 8,
+		name: 'Appointment Change',
+		color: 'bg-blue-400 text-white'
 	}
 ];
 

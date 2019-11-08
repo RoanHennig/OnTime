@@ -4,8 +4,8 @@ import { FuseScrollbars, FuseUtils, FuseAnimate } from '@fuse';
 import { withRouter } from 'react-router-dom';
 import _ from '@lodash';
 import AppointmentsTableHead from './AppointmentsTableHead';
-import AppointmentStatus from './appointment/AppointmentStatus';
-import ServicePopover from '../../../../../components/ServicePopover';
+import AppointmentStatus from '../../../../../components/AppointmentStatus';
+import ServicesPopoverChip from '../../../../../components/ServicesPopoverChip';
 import * as Actions from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import Moment from 'moment';
@@ -100,7 +100,7 @@ function AppointmentsTable(props) {
 										onClick={() => handleClick(n)}
 									>
 										<TableCell component="th" scope="row">
-											<ServicePopover label={n.services.label} />
+											<ServicesPopoverChip label={n.services.label} />
 										</TableCell>
 
 										<TableCell className="truncate" component="th" scope="row">

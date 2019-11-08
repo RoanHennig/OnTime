@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function ServiceItemChip(props) {
+function ServicesPopoverChip(props) {
 	const classes = useStyles();
 	const [ anchorEl, setAnchorEl ] = React.useState(null);
 
@@ -47,4 +47,4 @@ function ServiceItemChip(props) {
 	);
 }
 
-export default ServiceItemChip;
+export default ServicesPopoverChip;

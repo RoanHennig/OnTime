@@ -18,7 +18,7 @@ function InvoiceAppHeader(props) {
 						</IconButton>
 					</Hidden>
 					<div className="flex items-center">
-						<FuseAnimate animation="transition.slideRightIn" delay={200}>
+						<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 							<Typography
 								className="normal-case text-20 flex items-center sm:mb-12"
 								role="button"

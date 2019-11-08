@@ -4,13 +4,35 @@ const initialState = {
 	data: {
 		client: {
 			id: 0,
+			avatar: '',
+			firstName: '',
+			lastName: '',
+			mobile: '',
+			email: '',
+			invoiceAddress: {
+				address: '',
+				lat: '',
+				lng: ''
+			}
+		},
+		staff: {
+			id: 0,
+			avatar: '',
 			firstName: '',
 			lastName: ''
 		},
 		details: {
 			startTime: new Date(),
 			endTime: new Date(),
-			appointmentStatus: 'scheduled'
+			appointmentStatus: 'scheduled',
+			services: [],
+			history: [],
+			payment: {
+				transactionId: 0,
+				method: '',
+				amount: '',
+				date: new Date()
+			}
 		},
 		invoice: {
 			id: 0,
@@ -20,7 +42,9 @@ const initialState = {
 				firstName: '',
 				lastName: '',
 				invoiceAddress: {
-					address: ''
+					address: '',
+					lat: '',
+					lng: ''
 				},
 				mobile: '',
 				email: ''

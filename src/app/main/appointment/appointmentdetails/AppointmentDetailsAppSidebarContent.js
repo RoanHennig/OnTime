@@ -10,16 +10,49 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import { withStyles } from '@material-ui/core/styles';
+import { green, red, blue, grey } from '@material-ui/core/colors';
 
-const options = [ 'Scheduled', 'Arrived', 'No Show' ];
+const options = [
+	{
+		text: 'Scheduled',
+		color: blue
+	},
+	{
+		text: 'Arrived',
+		color: green
+	},
+	{
+		text: 'No Show',
+		color: red
+	},
+	{
+		text: 'Cancelled',
+		color: red
+	}
+];
 
 function AppointmentDetailsAppSidebarContent(props) {
 	const [ open, setOpen ] = React.useState(false);
+	const [ appointmentStatusButtonColor, setAppointmentStatusButtonColor ] = React.useState(blue);
+
 	const anchorRef = React.useRef(null);
-	const [ selectedIndex, setSelectedIndex ] = React.useState(1);
+	const [ selectedIndex, setSelectedIndex ] = React.useState(0);
+
+	const ColorButton = withStyles((theme) => ({
+		root: {
+			color: grey[50],
+			backgroundColor: appointmentStatusButtonColor[400],
+			'&:hover': {
+				backgroundColor: appointmentStatusButtonColor[600]
+			},
+			borderRight: '1px solid ' + appointmentStatusButtonColor[400] + '!important'
+		}
+	}))(Button);
 
 	const handleMenuItemClick = (event, index) => {
 		setSelectedIndex(index);
+		setAppointmentStatusButtonColor(options[index].color);
 		setOpen(false);
 	};
 
@@ -37,25 +70,19 @@ function AppointmentDetailsAppSidebarContent(props) {
 
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={200}>
-			<div className="flex-auto border-l-1">
-				<div className="pt-20 pl-20 pr-20">
-					<Button variant="contained" color="secondary" className="w-full" startIcon={<ShoppingCartIcon />}>
-						CHECKOUT
-					</Button>
-				</div>
-
+			<div className="flex-auto border-l-1 relative">
 				<div className="pt-20 pl-20 pr-20">
 					<ButtonGroup
+						ref={anchorRef}
 						className="w-full"
 						variant="contained"
 						color="primary"
-						ref={anchorRef}
 						aria-label="split button"
 					>
-						<Button className="w-full" onClick={(event) => handleMenuItemClick(event, selectedIndex)}>
-							{options[selectedIndex]}
-						</Button>
-						<Button
+						<ColorButton className="w-full" onClick={handleToggle}>
+							{options[selectedIndex].text}
+						</ColorButton>
+						<ColorButton
 							color="primary"
 							size="small"
 							aria-controls={open ? 'split-button-menu' : undefined}
@@ -65,7 +92,7 @@ function AppointmentDetailsAppSidebarContent(props) {
 							onClick={handleToggle}
 						>
 							<ArrowDropDownIcon />
-						</Button>
+						</ColorButton>
 					</ButtonGroup>
 					<Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
 						{({ TransitionProps, placement }) => (
@@ -80,12 +107,11 @@ function AppointmentDetailsAppSidebarContent(props) {
 										<MenuList id="split-button-menu">
 											{options.map((option, index) => (
 												<MenuItem
-													key={option}
-													disabled={index === 2}
+													key={option.text}
 													selected={index === selectedIndex}
 													onClick={(event) => handleMenuItemClick(event, index)}
 												>
-													{option}
+													{option.text}
 												</MenuItem>
 											))}
 										</MenuList>
@@ -94,6 +120,12 @@ function AppointmentDetailsAppSidebarContent(props) {
 							</Grow>
 						)}
 					</Popper>
+				</div>
+
+				<div className="pt-20 pl-20 pr-20 mb-32 absolute bottom-0 w-full">
+					<Button variant="contained" color="secondary" className="w-full" startIcon={<ShoppingCartIcon />}>
+						CHECKOUT
+					</Button>
 				</div>
 			</div>
 		</FuseAnimate>

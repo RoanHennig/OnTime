@@ -13,7 +13,7 @@ function AppointmentDetailsAppSidebarHeader(props) {
 	return (
 		<div className="flex flex-col justify-center h-full p-24">
 			<div className="flex items-center flex-1">
-				<FuseAnimate animation="transition.expandIn" delay={200}>
+				<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 					<EventIcon className="mr-16 text-32" />
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={200}>
@@ -21,7 +21,7 @@ function AppointmentDetailsAppSidebarHeader(props) {
 				</FuseAnimate>
 			</div>
 
-			<FuseAnimate animation="transition.slideUpIn" delay={200}>
+			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<Button
 					className="normal-case text-18 flex items-center"
 					color="inherit"
