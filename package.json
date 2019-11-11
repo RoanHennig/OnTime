@@ -18,6 +18,7 @@
         "devextreme": "19.1.7-build-19263-1729",
         "devextreme-react": "19.1",
         "downshift": "3.2.14",
+        "export-to-csv": "^0.2.1",
         "firebase": "6.6.0",
         "formsy-react": "1.1.5",
         "google-map-react": "1.1.4",

@@ -106,7 +106,6 @@ const appointmentData = [
 
 export default {
 	getMockAppointmentByInvoice(invoiceId) {
-		console.log(invoiceId);
 		//return appointmentData.find((x) => x.invoice.id === invoiceId);
 		return appointmentData[0];
 	}
