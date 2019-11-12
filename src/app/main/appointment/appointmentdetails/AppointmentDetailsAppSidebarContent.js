@@ -89,7 +89,6 @@ function AppointmentDetailsAppSidebarContent(props) {
 		if (anchorRef.current && anchorRef.current.contains(event.target)) {
 			return;
 		}
-
 		setOpen(false);
 	};
 

@@ -16,6 +16,8 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
+import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
+import ImportExportSharpIcon from '@material-ui/icons/ImportExportSharp';
 
 const rows = [
 	{
@@ -70,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ClientsTableHead(props) {
 	const classes = useStyles(props);
-	const [ selectedClientssMenu, setSelectedClientsMenu ] = useState(null);
+	const [ selectedClientsMenu, setSelectedClientsMenu ] = useState(null);
 
 	const createSortHandler = (property) => (event) => {
 		props.onRequestSort(event, property);
@@ -101,16 +103,16 @@ export default function ClientsTableHead(props) {
 							)}
 						>
 							<IconButton
-								aria-owns={selectedClientssMenu ? 'selectedClientssMenu' : null}
+								aria-owns={selectedClientsMenu ? 'selectedClientsMenu' : null}
 								aria-haspopup="true"
 								onClick={openSelectedClientsMenu}
 							>
 								<Icon>more_horiz</Icon>
 							</IconButton>
 							<Menu
-								id="selectedClientssMenu"
-								anchorEl={selectedClientssMenu}
-								open={Boolean(selectedClientssMenu)}
+								id="selectedClientsMenu"
+								anchorEl={selectedClientsMenu}
+								open={Boolean(selectedClientsMenu)}
 								onClose={closeSelectedClientsMenu}
 							>
 								<MenuList>
@@ -120,9 +122,20 @@ export default function ClientsTableHead(props) {
 										}}
 									>
 										<ListItemIcon className="min-w-40">
-											<Icon>export</Icon>
+											<ImportExportSharpIcon />
 										</ListItemIcon>
-										<ListItemText primary="Export" />
+										<ListItemText primary="Export CSV" />
+									</MenuItem>
+
+									<MenuItem
+										onClick={() => {
+											closeSelectedClientsMenu();
+										}}
+									>
+										<ListItemIcon className="min-w-40">
+											<ChromeReaderModeIcon />
+										</ListItemIcon>
+										<ListItemText primary="Export Excel" />
 									</MenuItem>
 								</MenuList>
 							</Menu>

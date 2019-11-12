@@ -8,6 +8,9 @@ import PersonAddSharpIcon from '@material-ui/icons/PersonAddSharp';
 import ImportExportSharpIcon from '@material-ui/icons/ImportExportSharp';
 import { useDispatch } from 'react-redux';
 import * as Actions from './store/actions';
+import { ExportToCsv } from 'export-to-csv';
+import * as CSVOptions from './utils/CSVExport';
+import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -21,6 +24,30 @@ const useStyles = makeStyles((theme) => ({
 		bottom: 80
 	}
 }));
+
+var data = [
+	{
+		name: 'Test 1',
+		age: 13,
+		average: 8.2,
+		approved: true,
+		description: "using 'Content here, content here' "
+	},
+	{
+		name: 'Test 2',
+		age: 11,
+		average: 8.2,
+		approved: true,
+		description: "using 'Content here, content here' "
+	},
+	{
+		name: 'Test 4',
+		age: 10,
+		average: 8.2,
+		approved: true,
+		description: "using 'Content here, content here' "
+	}
+];
 
 export default function ClientsAppSpeedDial(props) {
 	const dispatch = useDispatch();
@@ -36,11 +63,25 @@ export default function ClientsAppSpeedDial(props) {
 		setOpen(false);
 	};
 
-	const handleCreateExportClients = () => {};
+	const handleCreateExportClientsCSV = () => {
+		const csvExporter = new ExportToCsv(CSVOptions.options);
+		csvExporter.generateCsv(data);
+	};
+
+	const handleCreateExportClientsExcel = () => {};
 
 	const actions = [
 		{ icon: <PersonAddSharpIcon />, name: 'Add Client', click: () => dispatch(Actions.openNewClientDialog()) },
-		{ icon: <ImportExportSharpIcon />, name: 'Export Clients', click: () => handleCreateExportClients() }
+		{
+			icon: <ImportExportSharpIcon />,
+			name: 'Export Clients CSV',
+			click: () => handleCreateExportClientsCSV()
+		},
+		{
+			icon: <ChromeReaderModeIcon />,
+			name: 'Export Clients Excel',
+			click: () => handleCreateExportClientsCSV()
+		}
 	];
 
 	return (
