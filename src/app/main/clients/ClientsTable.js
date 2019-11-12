@@ -12,7 +12,6 @@ function ClientsTable(props) {
 	const clients = useSelector(({ clientsApp }) => clientsApp.clients.clients);
 	const searchText = useSelector(({ clientsApp }) => clientsApp.clients.searchText);
 
-	const [ selected, setSelected ] = useState([]);
 	const [ data, setData ] = useState(clients);
 	const [ page, setPage ] = useState(0);
 	const [ rowsPerPage, setRowsPerPage ] = useState(10);
@@ -53,10 +52,10 @@ function ClientsTable(props) {
 
 	const handleSelectAllClick = (event) => {
 		if (event.target.checked) {
-			setSelected(data.map((n) => n.id));
+			props.setSelected(data.map((n) => n.id));
 			return;
 		}
-		setSelected([]);
+		props.setSelected([]);
 	};
 
 	const handleClick = (item) => {
@@ -64,20 +63,23 @@ function ClientsTable(props) {
 	};
 
 	const handleCheck = (event, id) => {
-		const selectedIndex = selected.indexOf(id);
+		const selectedIndex = props.selected.indexOf(id);
 		let newSelected = [];
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(props.selected, id);
 		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
+			newSelected = newSelected.concat(props.selected.slice(1));
+		} else if (selectedIndex === props.selected.length - 1) {
+			newSelected = newSelected.concat(props.selected.slice(0, -1));
 		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+			newSelected = newSelected.concat(
+				props.selected.slice(0, selectedIndex),
+				props.selected.slice(selectedIndex + 1)
+			);
 		}
 
-		setSelected(newSelected);
+		props.setSelected(newSelected);
 	};
 
 	const handleChangePage = (event, page) => {
@@ -93,7 +95,7 @@ function ClientsTable(props) {
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table className="min-w-xl" aria-labelledby="tableTitle">
 					<ClientsTableHead
-						numSelected={selected.length}
+						numSelected={props.selected.length}
 						client={client}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
@@ -131,7 +133,7 @@ function ClientsTable(props) {
 						)
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
-								const isSelected = selected.indexOf(n.id) !== -1;
+								const isSelected = props.selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"

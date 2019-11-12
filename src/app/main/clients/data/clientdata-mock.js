@@ -4,7 +4,7 @@ const clientData = {
 	clients: [
 		{
 			id: 1,
-			avatar: null,
+			avatar: '',
 			fullName: 'Nadine Hennig',
 			mobileNumber: '082 317 1611',
 			email: 'nadine@gmail.com',
@@ -13,7 +13,7 @@ const clientData = {
 		},
 		{
 			id: 2,
-			avatar: null,
+			avatar: '',
 			fullName: 'Roan Hennig',
 			mobileNumber: '082 258 1478',
 			email: 'rh@gmail.com',
@@ -22,7 +22,7 @@ const clientData = {
 		},
 		{
 			id: 3,
-			avatar: null,
+			avatar: '',
 			fullName: 'Francois Theron',
 			mobileNumber: '082 896 1473',
 			email: 'ftheron@gmail.com',
@@ -31,7 +31,7 @@ const clientData = {
 		},
 		{
 			id: 4,
-			avatar: null,
+			avatar: '',
 			fullName: 'Madre Swart',
 			mobileNumber: '082 156 8921',
 			email: 'madswart@gmail.com',
@@ -40,7 +40,7 @@ const clientData = {
 		},
 		{
 			id: 5,
-			avatar: null,
+			avatar: '',
 			fullName: 'Bernard Heyns',
 			mobileNumber: '084 853 1256',
 			email: 'bheyns@gmail.com',
@@ -49,7 +49,7 @@ const clientData = {
 		},
 		{
 			id: 6,
-			avatar: null,
+			avatar: '',
 			fullName: 'Bernard Heyns',
 			mobileNumber: '084 853 1256',
 			email: 'bheyns@gmail.com',
@@ -58,7 +58,7 @@ const clientData = {
 		},
 		{
 			id: 7,
-			avatar: null,
+			avatar: '',
 			fullName: 'Bernard Heyns',
 			mobileNumber: '084 853 1256',
 			email: 'bheyns@gmail.com',
@@ -67,7 +67,7 @@ const clientData = {
 		},
 		{
 			id: 8,
-			avatar: null,
+			avatar: '',
 			fullName: 'Bernard Heyns',
 			mobileNumber: '084 853 1256',
 			email: 'bheyns@gmail.com',
@@ -76,7 +76,7 @@ const clientData = {
 		},
 		{
 			id: 9,
-			avatar: null,
+			avatar: '',
 			fullName: 'Bernard Heyns',
 			mobileNumber: '084 853 1256',
 			email: 'bheyns@gmail.com',

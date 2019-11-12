@@ -6,7 +6,7 @@ import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import EditIcon from '@material-ui/icons/Edit';
 import PersonAddSharpIcon from '@material-ui/icons/PersonAddSharp';
 import ImportExportSharpIcon from '@material-ui/icons/ImportExportSharp';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Actions from './store/actions';
 import { ExportToCsv } from 'export-to-csv';
 import * as CSVOptions from './utils/CSVExport';
@@ -25,35 +25,11 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-var data = [
-	{
-		name: 'Test 1',
-		age: 13,
-		average: 8.2,
-		approved: true,
-		description: "using 'Content here, content here' "
-	},
-	{
-		name: 'Test 2',
-		age: 11,
-		average: 8.2,
-		approved: true,
-		description: "using 'Content here, content here' "
-	},
-	{
-		name: 'Test 4',
-		age: 10,
-		average: 8.2,
-		approved: true,
-		description: "using 'Content here, content here' "
-	}
-];
-
 export default function ClientsAppSpeedDial(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles();
-	const [ hidden ] = React.useState(false);
 	const [ open, setOpen ] = React.useState(false);
+	const clients = useSelector(({ clientsApp }) => clientsApp.clients.clients);
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -64,8 +40,15 @@ export default function ClientsAppSpeedDial(props) {
 	};
 
 	const handleCreateExportClientsCSV = () => {
+		const clientsToExport = clients.filter((x) => props.selected.find((y) => y === x.id));
 		const csvExporter = new ExportToCsv(CSVOptions.options);
-		csvExporter.generateCsv(data);
+		if (clientsToExport.length > 0) {
+			console.log(clientsToExport);
+			csvExporter.generateCsv(clientsToExport);
+		} else {
+			console.log(clients);
+			csvExporter.generateCsv(clients);
+		}
 	};
 
 	const handleCreateExportClientsExcel = () => {};
@@ -80,7 +63,7 @@ export default function ClientsAppSpeedDial(props) {
 		{
 			icon: <ChromeReaderModeIcon />,
 			name: 'Export Clients Excel',
-			click: () => handleCreateExportClientsCSV()
+			click: () => handleCreateExportClientsExcel()
 		}
 	];
 
@@ -89,7 +72,6 @@ export default function ClientsAppSpeedDial(props) {
 			<SpeedDial
 				ariaLabel="SpeedDial openIcon example"
 				className={classes.speedDial}
-				hidden={hidden}
 				icon={<SpeedDialIcon openIcon={<EditIcon />} />}
 				onClose={handleClose}
 				onOpen={handleOpen}
