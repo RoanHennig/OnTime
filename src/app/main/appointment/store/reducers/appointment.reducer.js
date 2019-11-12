@@ -24,7 +24,7 @@ const initialState = {
 		details: {
 			startTime: new Date(),
 			endTime: new Date(),
-			appointmentStatus: 'scheduled',
+			appointmentStatus: 'Scheduled',
 			services: [],
 			history: [],
 			payment: {

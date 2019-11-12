@@ -20,7 +20,7 @@ const appointmentData = [
 		details: {
 			startTime: new Date(2019, 10, 7, 13),
 			endTime: new Date(2019, 10, 7, 14, 30),
-			appointmentStatus: 'complete',
+			appointmentStatus: 'Processed',
 			services: [
 				{
 					id: 1,

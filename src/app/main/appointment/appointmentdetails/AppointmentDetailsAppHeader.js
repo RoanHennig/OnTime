@@ -3,6 +3,7 @@ import { Hidden, Icon, IconButton } from '@material-ui/core';
 import { FuseAnimate } from '@fuse';
 import Typography from '@material-ui/core/Typography';
 import Moment from 'moment';
+import AppointmentStatus from '../../../../components/AppointmentStatus';
 
 function AppointmentDetailsAppHeader(props) {
 	return (
@@ -42,6 +43,11 @@ function AppointmentDetailsAppHeader(props) {
 								' - ' +
 								Moment(props.details.endTime).format('HH:mm')}
 						</Typography>
+					</FuseAnimate>
+				</div>
+				<div className="flex flex-col min-w-0 items-center sm:items-start sm:flex mt-8 mb-8">
+					<FuseAnimate animation="transition.slideLeftIn" delay={200}>
+						<AppointmentStatus id={4} key={4} />
 					</FuseAnimate>
 				</div>
 			</div>
