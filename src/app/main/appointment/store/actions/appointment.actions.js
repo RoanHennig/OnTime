@@ -10,3 +10,12 @@ export function getAppointmentByInvoiceId(invoiceId) {
 			payload: appointment
 		});
 }
+
+export function getAppointmentByAppointmentId(appointmentId) {
+	const appointment = serviceAppointment.getMockAppointmentByInvoice(appointmentId);
+	return (dispatch) =>
+		dispatch({
+			type: GET_APPOINTMENT,
+			payload: appointment
+		});
+}

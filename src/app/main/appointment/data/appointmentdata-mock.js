@@ -108,5 +108,9 @@ export default {
 	getMockAppointmentByInvoice(invoiceId) {
 		//return appointmentData.find((x) => x.invoice.id === invoiceId);
 		return appointmentData[0];
+	},
+
+	getMockAppointmentByAppointment(appointmentId) {
+		return appointmentData[0];
 	}
 };

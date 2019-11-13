@@ -21,7 +21,7 @@ function AppointmentApp(props) {
 	const pageLayout = useRef(null);
 	const dispatch = useDispatch();
 
-	const [ tabValue, setTabValue ] = useState(1);
+	const [ tabValue, setTabValue ] = useState(0);
 	const appointment = useSelector(({ appointmentApp }) => appointmentApp.appointment.data);
 	function handleChangeTab(event, tabValue) {
 		setTabValue(tabValue);
@@ -30,12 +30,14 @@ function AppointmentApp(props) {
 	useEffect(
 		() => {
 			if (props.match.params.destination === 'invoice') {
-				dispatch(Actions.getAppointmentByInvoiceId(props.match.params.appointmentId));
+				dispatch(Actions.getAppointmentByInvoiceId(props.match.params.Id));
+				setTabValue(1);
 			} else {
-				//dispatch(Actions.getAppointmentByInvoiceId(props.match.params.appointmentId));
+				dispatch(Actions.getAppointmentByAppointmentId(props.match.params.Id));
+				setTabValue(0);
 			}
 		},
-		[ dispatch, props.match.params.appointmentId, props.match.params.destination ]
+		[ dispatch, props.match.params.Id, props.match.params.destination ]
 	);
 
 	return (

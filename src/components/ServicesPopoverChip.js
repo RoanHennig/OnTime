@@ -25,7 +25,7 @@ function ServicesPopoverChip(props) {
 	const id = open ? 'simple-popover' : undefined;
 
 	return (
-		<div>
+		<div onClick={(ev) => ev.stopPropagation()}>
 			<Chip size="small" icon={<WorkIcon />} variant="outlined" label={props.label} onClick={handleClick} />
 			<Popover
 				id={id}
