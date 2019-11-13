@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@material-ui/core';
 import { FuseAnimate } from '@fuse';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
@@ -11,30 +11,54 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { withStyles } from '@material-ui/core/styles';
-import { green, red, blue, grey } from '@material-ui/core/colors';
+import { green, red, blue, grey, yellow } from '@material-ui/core/colors';
 
 const options = [
 	{
+		id: 0,
 		text: 'Scheduled',
-		color: blue
+		color: blue,
+		standard: 400,
+		hover: 600,
+		hide: false
 	},
 	{
+		id: 1,
 		text: 'Arrived',
-		color: green
+		color: green,
+		standard: 400,
+		hover: 600,
+		hide: false
 	},
 	{
+		id: 2,
 		text: 'No Show',
-		color: red
+		color: red,
+		standard: 400,
+		hover: 600,
+		hide: false
 	},
 	{
+		id: 3,
 		text: 'Cancelled',
-		color: red
+		color: red,
+		standard: 400,
+		hover: 600,
+		hide: false
+	},
+	{
+		id: 4,
+		text: 'Processed',
+		color: yellow,
+		standard: 700,
+		hover: 900,
+		hide: true
 	}
 ];
 
 function AppointmentDetailsAppSidebarContent(props) {
 	const [ open, setOpen ] = React.useState(false);
-	const [ appointmentStatusButtonColor, setAppointmentStatusButtonColor ] = React.useState(blue);
+	const [ appointmentStatusButtonColor, setAppointmentStatusButtonColor ] = React.useState(options[0]);
 
 	const anchorRef = React.useRef(null);
 	const [ selectedIndex, setSelectedIndex ] = React.useState(0);
@@ -42,17 +66,18 @@ function AppointmentDetailsAppSidebarContent(props) {
 	const ColorButton = withStyles((theme) => ({
 		root: {
 			color: grey[50],
-			backgroundColor: appointmentStatusButtonColor[400],
+			backgroundColor: appointmentStatusButtonColor.color[appointmentStatusButtonColor.standard],
 			'&:hover': {
-				backgroundColor: appointmentStatusButtonColor[600]
+				backgroundColor: appointmentStatusButtonColor.color[appointmentStatusButtonColor.hover]
 			},
-			borderRight: '1px solid ' + appointmentStatusButtonColor[400] + '!important'
+			borderRight:
+				'1px solid ' + appointmentStatusButtonColor.color[appointmentStatusButtonColor.standard] + '!important'
 		}
 	}))(Button);
 
 	const handleMenuItemClick = (event, index) => {
 		setSelectedIndex(index);
-		setAppointmentStatusButtonColor(options[index].color);
+		setAppointmentStatusButtonColor(options[index]);
 		setOpen(false);
 	};
 
@@ -66,6 +91,15 @@ function AppointmentDetailsAppSidebarContent(props) {
 		}
 		setOpen(false);
 	};
+
+	useEffect(
+		() => {
+			const index = options.find((x) => x.text === props.appointmentStatus).id;
+			setSelectedIndex(index);
+			setAppointmentStatusButtonColor(options[index]);
+		},
+		[ options, setSelectedIndex, setAppointmentStatusButtonColor ]
+	);
 
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={200}>
@@ -109,6 +143,7 @@ function AppointmentDetailsAppSidebarContent(props) {
 													key={option.text}
 													selected={index === selectedIndex}
 													onClick={(event) => handleMenuItemClick(event, index)}
+													hidden={option.hide}
 												>
 													{option.text}
 												</MenuItem>

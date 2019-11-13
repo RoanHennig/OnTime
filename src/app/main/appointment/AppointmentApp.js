@@ -102,7 +102,12 @@ function AppointmentApp(props) {
 				leftSidebarContent={
 					<React.Fragment>
 						{tabValue === 1 && <InvoiceAppSidebarContent client={appointment.client} />}
-						{tabValue === 0 && <AppointmentDetailsAppSidebarContent client={appointment.client} />}
+						{tabValue === 0 && (
+							<AppointmentDetailsAppSidebarContent
+								client={appointment.client}
+								appointmentStatus={appointment.details.appointmentStatus}
+							/>
+						)}
 					</React.Fragment>
 				}
 				ref={pageLayout}
