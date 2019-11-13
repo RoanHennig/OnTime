@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Actions from './store/actions';
 import { ExportToCsv } from 'export-to-csv';
 import * as CSVOptions from './utils/CSVExport';
+import ExcelExport from './utils/ExcelExport';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +30,7 @@ export default function ClientsAppSpeedDial(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const [ open, setOpen ] = React.useState(false);
+	const [ downloadExcel, setDownloadExcel ] = React.useState(false);
 	const clients = useSelector(({ clientsApp }) => clientsApp.clients.clients);
 
 	const handleOpen = () => {
@@ -43,15 +45,15 @@ export default function ClientsAppSpeedDial(props) {
 		const clientsToExport = clients.filter((x) => props.selected.find((y) => y === x.id));
 		const csvExporter = new ExportToCsv(CSVOptions.options);
 		if (clientsToExport.length > 0) {
-			console.log(clientsToExport);
 			csvExporter.generateCsv(clientsToExport);
 		} else {
-			console.log(clients);
 			csvExporter.generateCsv(clients);
 		}
 	};
 
-	const handleCreateExportClientsExcel = () => {};
+	const handleCreateExportClientsExcel = () => {
+		setDownloadExcel(true);
+	};
 
 	const actions = [
 		{ icon: <PersonAddSharpIcon />, name: 'Add Client', click: () => dispatch(Actions.openNewClientDialog()) },
@@ -63,7 +65,8 @@ export default function ClientsAppSpeedDial(props) {
 		{
 			icon: <ChromeReaderModeIcon />,
 			name: 'Export Clients Excel',
-			click: () => handleCreateExportClientsExcel()
+			click: () => handleCreateExportClientsExcel(),
+			excelfile: true
 		}
 	];
 
@@ -85,6 +88,8 @@ export default function ClientsAppSpeedDial(props) {
 						onClick={action.click}
 					/>
 				))}
+
+				{downloadExcel ? <ExcelExport setDownloadExcel={setDownloadExcel} data={clients} /> : null}
 			</SpeedDial>
 		</div>
 	);

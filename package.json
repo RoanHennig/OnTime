@@ -47,6 +47,7 @@
         "react-chartjs-2": "2.7.6",
         "react-dom": "16.9.0",
         "react-draggable": "3.3.2",
+        "react-export-excel": "^0.5.3",
         "react-frame-component": "4.1.1",
         "react-masonry-css": "1.0.12",
         "react-number-format": "4.2.0",
