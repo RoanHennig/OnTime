@@ -4,8 +4,10 @@ import { FuseAnimate } from '@fuse';
 import Typography from '@material-ui/core/Typography';
 import Moment from 'moment';
 import AppointmentStatus from '../../../../components/AppointmentStatus';
+import { useSelector } from 'react-redux';
 
 function AppointmentDetailsAppHeader(props) {
+	const appointmentStatus = useSelector(({ appointmentApp }) => appointmentApp.appointment.appointmentStatus);
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex flex-1 flex-col items-center sm:items-start">
@@ -46,8 +48,8 @@ function AppointmentDetailsAppHeader(props) {
 					</FuseAnimate>
 				</div>
 				<div className="flex flex-col min-w-0 items-center sm:items-start sm:flex mt-8 mb-8">
-					<FuseAnimate animation="transition.slideLeftIn" delay={200}>
-						<AppointmentStatus id={4} key={4} />
+					<FuseAnimate animation="transition.fadeIn" delay={200}>
+						<AppointmentStatus id={appointmentStatus.id} />
 					</FuseAnimate>
 				</div>
 			</div>

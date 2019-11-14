@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import * as Actions from '../store/actions';
 import { Button } from '@material-ui/core';
 import { FuseAnimate } from '@fuse';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
@@ -12,6 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { withStyles } from '@material-ui/core/styles';
 import { green, red, blue, grey, yellow } from '@material-ui/core/colors';
+import * as MessageActions from '../../../../app/store/actions';
 
 const options = [
 	{
@@ -57,6 +60,7 @@ const options = [
 ];
 
 function AppointmentDetailsAppSidebarContent(props) {
+	const dispatch = useDispatch();
 	const [ open, setOpen ] = React.useState(false);
 	const [ appointmentStatusButtonColor, setAppointmentStatusButtonColor ] = React.useState(options[0]);
 
@@ -76,9 +80,11 @@ function AppointmentDetailsAppSidebarContent(props) {
 	}))(Button);
 
 	const handleMenuItemClick = (event, index) => {
+		dispatch(Actions.setAppointmentStatus(options[index]));
 		setSelectedIndex(index);
 		setAppointmentStatusButtonColor(options[index]);
 		setOpen(false);
+		dispatch(MessageActions.showMessage({ message: 'Appointment Status Updated', variant: 'success' }));
 	};
 
 	const handleToggle = () => {
@@ -97,8 +103,9 @@ function AppointmentDetailsAppSidebarContent(props) {
 			const index = options.find((x) => x.text === props.appointmentStatus).id;
 			setSelectedIndex(index);
 			setAppointmentStatusButtonColor(options[index]);
+			dispatch(Actions.setAppointmentStatus(options[index]));
 		},
-		[ options, setSelectedIndex, setAppointmentStatusButtonColor ]
+		[ dispatch, setSelectedIndex, setAppointmentStatusButtonColor, props.appointmentStatus ]
 	);
 
 	return (

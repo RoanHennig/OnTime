@@ -16,8 +16,9 @@ import { FuseAnimateGroup } from '@fuse';
 import { useDispatch, useSelector } from 'react-redux';
 import ServiceItemChip from '../../../../components/ServiceItemChip';
 import * as Actions from '../store/actions';
+import { withRouter } from 'react-router-dom';
 
-export default function AboutTab() {
+function AboutTab(props) {
 	const dispatch = useDispatch();
 	const client = useSelector(({ clientsApp }) => clientsApp.client.client);
 
@@ -26,6 +27,14 @@ export default function AboutTab() {
 		currency: 'ZAR',
 		minimumFractionDigits: 2
 	});
+
+	function handleNavigateToAppointment() {
+		props.history.push('/appointment/' + client.lastAppointment.id + '/appointment');
+	}
+
+	function handleNavigateToInvoice() {
+		props.history.push('/appointment/' + client.lastInvoice.id + '/invoice');
+	}
 
 	return (
 		<React.Fragment>
@@ -147,10 +156,20 @@ export default function AboutTab() {
 								<Typography variant="subtitle1" color="inherit" className="flex-1">
 									Last Appointment
 								</Typography>
-								<Button className="normal-case" color="inherit" size="small">
+								<Button
+									className="normal-case"
+									color="inherit"
+									size="small"
+									onClick={handleNavigateToAppointment}
+								>
 									View
 								</Button>
-								<Button className="normal-case" color="inherit" size="small">
+								<Button
+									className="normal-case"
+									color="inherit"
+									size="small"
+									onClick={() => props.setTabValue(1)}
+								>
 									See All
 								</Button>
 							</Toolbar>
@@ -184,10 +203,20 @@ export default function AboutTab() {
 								<Typography variant="subtitle1" color="inherit" className="flex-1">
 									Last Invoice
 								</Typography>
-								<Button className="normal-case" color="inherit" size="small">
+								<Button
+									className="normal-case"
+									color="inherit"
+									size="small"
+									onClick={handleNavigateToInvoice}
+								>
 									View
 								</Button>
-								<Button className="normal-case" color="inherit" size="small">
+								<Button
+									className="normal-case"
+									color="inherit"
+									size="small"
+									onClick={() => props.setTabValue(2)}
+								>
 									See All
 								</Button>
 							</Toolbar>
@@ -288,3 +317,5 @@ export default function AboutTab() {
 		</React.Fragment>
 	);
 }
+
+export default withRouter(AboutTab);

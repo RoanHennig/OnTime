@@ -61,6 +61,9 @@ const initialState = {
 			discount: '',
 			total: ''
 		}
+	},
+	appointmentStatus: {
+		id: 0
 	}
 };
 
@@ -70,6 +73,12 @@ const appointmentReducer = function(state = initialState, action) {
 			return {
 				...state,
 				data: action.payload
+			};
+		}
+		case Actions.SET_APPOINTMENT_STATUS: {
+			return {
+				...state,
+				appointmentStatus: action.payload
 			};
 		}
 

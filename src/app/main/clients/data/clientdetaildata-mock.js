@@ -19,11 +19,13 @@ const clientDetailData = {
 				alwaysShowAppointmentNotes: false
 			},
 			lastAppointment: {
+				id: 1,
 				date: '13 October 2019',
 				service: [ 'Mens Cut', 'Styled' ],
 				payment: 'Paid using Snapscan'
 			},
 			lastInvoice: {
+				id: 1,
 				date: '14 October 2019',
 				subtotal: '150',
 				tax: '15',

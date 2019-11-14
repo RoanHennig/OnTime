@@ -4,6 +4,11 @@ import _ from '@lodash';
 
 export const appointmentStatuses = [
 	{
+		id: 0,
+		name: 'Scheduled',
+		color: 'bg-blue-400 text-white'
+	},
+	{
 		id: 1,
 		name: 'Appointment Scheduled',
 		color: 'bg-blue-400 text-white'
@@ -20,7 +25,7 @@ export const appointmentStatuses = [
 	},
 	{
 		id: 4,
-		name: 'Paid using cash',
+		name: 'Processed',
 		color: 'bg-yellow-700 text-white'
 	},
 	{
@@ -38,7 +43,6 @@ export const appointmentStatuses = [
 		name: 'Arrived',
 		color: 'bg-green-400 text-white'
 	},
-	,
 	{
 		id: 8,
 		name: 'Appointment Change',

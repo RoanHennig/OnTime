@@ -8,8 +8,6 @@ import * as Actions from '../store/actions/index';
 import ServiceItemChip from '../../../../components/ServiceItemChip';
 import TimerIcon from '@material-ui/icons/Timer';
 
-const pathToRegexp = require('path-to-regexp');
-
 const useStyles = makeStyles((theme) => ({
 	agendaListItem: {
 		borderBottom: '1px solid  ' + theme.palette.divider,
@@ -36,7 +34,6 @@ const AgendaListItem = (props) => {
 	const classes = useStyles(props);
 
 	const selectedAgendaItemIds = useSelector(({ agendaApp }) => agendaApp.agendaItems.selectedAgendaItemIds);
-	const toPath = pathToRegexp.compile(props.match.path);
 	const checked =
 		selectedAgendaItemIds.length > 0 && selectedAgendaItemIds.find((id) => id === props.item.id) !== undefined;
 

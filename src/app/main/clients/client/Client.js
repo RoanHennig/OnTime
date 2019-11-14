@@ -95,7 +95,7 @@ function Client(props) {
 						<div className="p-16 sm:p-24 md:flex w-full">
 							{tabValue === 0 && (
 								<React.Fragment>
-									<AboutTab />
+									<AboutTab setTabValue={setTabValue} />
 									<FuseAnimate animation="transition.expandIn" delay={300}>
 										<Fab
 											color="secondary"

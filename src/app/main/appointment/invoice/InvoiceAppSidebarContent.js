@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { FuseAnimate } from '@fuse';
 import SendIcon from '@material-ui/icons/Send';
-import { useDispatch } from 'react-redux';
 
 function InvoiceAppSidebarContent(props) {
-	const dispatch = useDispatch();
-
 	const [ email, setEmail ] = useState(props.client.email);
 	const [ sendButtonDisabled, setSendButtonDisabled ] = useState(true);
 
@@ -19,7 +16,7 @@ function InvoiceAppSidebarContent(props) {
 		() => {
 			validateEmail(email);
 		},
-		[ email, validateEmail ]
+		[ email ]
 	);
 
 	function validateEmail(emailAddress) {

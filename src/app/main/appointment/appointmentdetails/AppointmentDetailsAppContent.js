@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	Avatar,
 	ExpansionPanel,
 	ExpansionPanelSummary,
 	ExpansionPanelDetails,
 	Icon,
-	Tab,
-	Tabs,
 	Tooltip,
 	Typography
 } from '@material-ui/core';
 
 import { FuseUtils } from '@fuse';
-import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import GoogleMap from 'google-map-react';
-import withReducer from 'app/store/withReducer';
-import * as Actions from '../store/actions';
-import reducer from '../store/reducers';
-import { useDispatch, useSelector } from 'react-redux';
 import WorkIcon from '@material-ui/icons/Work';
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
