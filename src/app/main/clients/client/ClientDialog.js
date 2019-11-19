@@ -17,6 +17,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import validationEngine from 'devextreme/ui/validation_engine';
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/styles';
+import MobileDetect from 'mobile-detect';
+import Slide from '@material-ui/core/Slide';
+
+const md = new MobileDetect(window.navigator.userAgent);
+const isMobile = md.mobile();
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -26,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.white
 	}
 }));
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function ClientDialog() {
 	const classes = useStyles();
@@ -63,12 +72,14 @@ export default function ClientDialog() {
 	return (
 		<Dialog
 			classes={{
-				paper: 'm-24'
+				paper: isMobile ? '' : 'm-24'
 			}}
 			{...clientDialog.props}
 			onClose={closeComposeDialog}
 			fullWidth
-			maxWidth="md"
+			fullScreen={isMobile ? true : false}
+			maxWidth={isMobile ? false : 'md'}
+			TransitionComponent={Transition}
 		>
 			<AppBar position="static" elevation={1}>
 				<Toolbar className="flex w-full">

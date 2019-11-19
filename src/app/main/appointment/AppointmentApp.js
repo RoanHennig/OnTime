@@ -2,17 +2,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Tab, Tabs } from '@material-ui/core';
 import { FusePageCarded, FuseAnimate } from '@fuse';
 import withReducer from 'app/store/withReducer';
-import AppointmentSpeedDial from './AppointmentSpeedDial';
 import InvoiceAppHeader from './invoice/InvoiceAppHeader';
 import InvoiceAppToolbarMenu from './invoice/InvoiceAppToolbarMenu';
 import InvoiceAppContent from './invoice/InvoiceAppContent';
 import InvoiceAppSidebarHeader from './invoice/InvoiceAppSidebarHeader';
 import InvoiceAppSidebarContent from './invoice/InvoiceAppSidebarContent';
+import InvoiceAppSpeedDial from './invoice/InvoiceAppSpeedDial';
 import AppointmentDetailsAppHeader from './appointmentdetails/AppointmentDetailsAppHeader';
 import AppointmentDetailsAppToolbarMenu from './appointmentdetails/AppointmentDetailsAppToolbarMenu';
 import AppointmentDetailsAppContent from './appointmentdetails/AppointmentDetailsAppContent';
 import AppointmentDetailsAppSidebarHeader from './appointmentdetails/AppointmentDetailsAppSidebarHeader';
 import AppointmentDetailsAppSidebarContent from './appointmentdetails/AppointmentDetailsAppSidebarContent';
+import AppointmentDetailsAppSpeedDial from './appointmentdetails/AppointmentDetailsAppSpeedDial';
+
 import { useDispatch, useSelector } from 'react-redux';
 import reducer from './store/reducers';
 import * as Actions from './store/actions';
@@ -116,7 +118,12 @@ function AppointmentApp(props) {
 				innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
-				<AppointmentSpeedDial />
+				<React.Fragment>
+					{tabValue === 0 && (
+						<AppointmentDetailsAppSpeedDial appointmentStatus={appointment.details.appointmentStatus} />
+					)}
+					{tabValue === 1 && <InvoiceAppSpeedDial />}
+				</React.Fragment>
 			</FuseAnimate>
 		</React.Fragment>
 	);

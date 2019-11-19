@@ -6,17 +6,36 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import PrintIcon from '@material-ui/icons/Print';
 
 function InvoiceAppToolbarMenu() {
+	function saveAs(uri, filename) {
+		var link = document.createElement('a');
+
+		if (typeof link.download === 'string') {
+			link.href = uri;
+			link.download = filename;
+
+			//Firefox requires the link to be in the body
+			document.body.appendChild(link);
+
+			//simulate click
+			link.click();
+
+			//remove the link when done
+			document.body.removeChild(link);
+		} else {
+			window.open(uri);
+		}
+	}
+
 	function handleDownloadInvoice() {
 		const input = document.getElementById('appointmentinvoice');
-		html2canvas(input, {
-			allowTaint: true,
-			foreignObjectRendering: true
-		}).then((canvas) => {
-			const imgData = canvas.toDataURL('image/png', 1.0);
-			const pdf = new jsPDF('l', 'mm', 'a4');
-			pdf.addImage(imgData, 'PNG', 100, 100, 250, 600);
-			// pdf.output('dataurlnewwindow');
-			pdf.save('download.pdf');
+		html2canvas(input).then((canvas) => {
+			const imgData = canvas.toDataURL('image/png');
+			var doc = new jsPDF('p', 'mm', 'a4');
+
+			var width = doc.internal.pageSize.getWidth();
+			var height = doc.internal.pageSize.getHeight();
+			doc.addImage(imgData, 'JPEG', 0, 0, width, height);
+			doc.save('download.pdf');
 		});
 	}
 
