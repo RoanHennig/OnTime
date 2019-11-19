@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Actions from '../store/actions';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { FuseAnimate } from '@fuse';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import SaveIcon from '@material-ui/icons/Save';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -62,6 +63,7 @@ const options = [
 function AppointmentDetailsAppSidebarContent(props) {
 	const dispatch = useDispatch();
 	const [ open, setOpen ] = React.useState(false);
+	const [ listenNoteClickAway, setListenNoteClickAway ] = React.useState(false);
 	const [ appointmentStatusButtonColor, setAppointmentStatusButtonColor ] = React.useState(options[0]);
 
 	const anchorRef = React.useRef(null);
@@ -96,6 +98,13 @@ function AppointmentDetailsAppSidebarContent(props) {
 			return;
 		}
 		setOpen(false);
+	};
+
+	const handleSaveNote = (event) => {
+		if (listenNoteClickAway) {
+			dispatch(MessageActions.showMessage({ message: 'Note Saved.', variant: 'success' }));
+		}
+		setListenNoteClickAway(false);
 	};
 
 	useEffect(
@@ -134,7 +143,14 @@ function AppointmentDetailsAppSidebarContent(props) {
 							<ArrowDropDownIcon />
 						</ColorButton>
 					</ButtonGroup>
-					<Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+					<Popper
+						className="z-9999"
+						open={open}
+						anchorEl={anchorRef.current}
+						role={undefined}
+						transition
+						disablePortal
+					>
 						{({ TransitionProps, placement }) => (
 							<Grow
 								{...TransitionProps}
@@ -161,6 +177,24 @@ function AppointmentDetailsAppSidebarContent(props) {
 							</Grow>
 						)}
 					</Popper>
+				</div>
+
+				<div className="pt-20 pl-20 pr-20">
+					<ClickAwayListener onClickAway={handleSaveNote}>
+						<TextField
+							className="mb-24"
+							onFocus={() => setListenNoteClickAway(true)}
+							id="outlined-textarea"
+							label="Appointment Note"
+							rows="10"
+							rowsMax="10"
+							placeholder="Add a note about the appointment"
+							multiline
+							margin="normal"
+							variant="outlined"
+							fullWidth
+						/>
+					</ClickAwayListener>
 				</div>
 
 				<div className="pt-20 pl-20 pr-20 mb-32 absolute bottom-0 w-full">

@@ -5,8 +5,6 @@ import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import EditIcon from '@material-ui/icons/Edit';
 import MonetizationOnSharpIcon from '@material-ui/icons/MonetizationOnSharp';
-import GroupAddSharpIcon from '@material-ui/icons/GroupAddSharp';
-import NoteIcon from '@material-ui/icons/Note';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import RestoreIcon from '@material-ui/icons/Restore';
 import EventBusyIcon from '@material-ui/icons/EventBusy';
@@ -31,10 +29,7 @@ const incompleteActions = [
 	{ icon: <RestoreIcon />, name: 'Reschedule Appointment', appointmentStatus: 'incomplete' }
 ];
 
-const completeActions = [
-	{ icon: <DateRangeIcon />, name: 'Rebook Appointment', appointmentStatus: 'complete' },
-	{ icon: <NoteIcon />, name: 'Edit Appointment Notes', appointmentStatus: 'complete' }
-];
+const completeActions = [ { icon: <DateRangeIcon />, name: 'Rebook Appointment', appointmentStatus: 'complete' } ];
 
 export default function AppointmentSpeedDial(props) {
 	const classes = useStyles();

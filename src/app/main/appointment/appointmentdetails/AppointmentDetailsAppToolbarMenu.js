@@ -31,17 +31,6 @@ function AppointmentDetailsAppToolbarMenu(props) {
 							<DateRangeIcon />
 						</IconButton>
 					</Tooltip>
-
-					<Tooltip title="Edit Appointment Notes" placement="top">
-						<IconButton
-							aria-label="Edit Appointment Notes"
-							onClick={(ev) => {
-								handleEditAppointmentNotes();
-							}}
-						>
-							<NoteIcon />
-						</IconButton>
-					</Tooltip>
 				</React.Fragment>
 			) : (
 				<React.Fragment>
