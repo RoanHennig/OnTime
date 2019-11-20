@@ -64,6 +64,7 @@ function AppointmentDetailsAppSidebarContent(props) {
 	const dispatch = useDispatch();
 	const [ open, setOpen ] = React.useState(false);
 	const [ listenNoteClickAway, setListenNoteClickAway ] = React.useState(false);
+	const [ appointmentNotes, setAppointmentNotes ] = React.useState('');
 	const [ appointmentStatusButtonColor, setAppointmentStatusButtonColor ] = React.useState(options[0]);
 
 	const anchorRef = React.useRef(null);
@@ -105,6 +106,10 @@ function AppointmentDetailsAppSidebarContent(props) {
 			dispatch(MessageActions.showMessage({ message: 'Note Saved.', variant: 'success' }));
 		}
 		setListenNoteClickAway(false);
+	};
+
+	const handleChangeAppoinmentNotes = (event) => {
+		setAppointmentNotes(event.target.value);
 	};
 
 	useEffect(
@@ -188,6 +193,8 @@ function AppointmentDetailsAppSidebarContent(props) {
 							label="Appointment Note"
 							rows="10"
 							rowsMax="10"
+							value={appointmentNotes}
+							onChange={handleChangeAppoinmentNotes}
 							placeholder="Add a note about the appointment"
 							multiline
 							margin="normal"
