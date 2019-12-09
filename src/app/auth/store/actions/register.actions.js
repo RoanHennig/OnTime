@@ -8,17 +8,22 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export function submitRegister(businessName, firstName, lastName, auth0Id, email) {
 	return (dispatch) =>
 		axios
-			.post('api/auth/register', {
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: 'Bearer ' + auth0Service.getAccessToken()
+			.post(
+				'api/auth/register',
+				{
+					email: email,
+					businessName: businessName,
+					firstName: firstName,
+					lastName: lastName,
+					auth0UserId: auth0Id
 				},
-				email: email,
-				businessName: businessName,
-				firstName: firstName,
-				lastName: lastName,
-				auth0UserId: auth0Id
-			})
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: 'Bearer ' + auth0Service.getAccessToken()
+					}
+				}
+			)
 			.then((user) => {
 				return dispatch({
 					type: REGISTER_SUCCESS
