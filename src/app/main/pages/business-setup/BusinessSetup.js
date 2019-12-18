@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import service from './data/data.js';
@@ -26,6 +26,7 @@ import withSizes from 'react-sizes';
 import SwipeableViews from 'react-swipeable-views';
 import validationEngine from 'devextreme/ui/validation_engine';
 import * as ActionsBusiness from './store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 function getSteps() {
 	return [ 'Business Details', 'Business Type', 'Services Provided', 'Staff & Operating Hours' ];
@@ -55,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function BusinessSetup(props) {
+	const dispatch = useDispatch();
 	const isStepOptional = (step) => {
 		return step === 2;
 	};
@@ -73,7 +75,6 @@ function BusinessSetup(props) {
 		}
 		const success = handleValidation(activeStep);
 		if (success) {
-			console.log(props);
 			ActionsBusiness.saveBusinessDetails(props);
 			setActiveStep(activeStep + 1);
 			setSkipped(newSkipped);
@@ -149,11 +150,14 @@ function BusinessSetup(props) {
 		}
 	};
 
-	const [ businessDetails ] = useState(service.getbusinessDetails());
 	const [ activeStep, setActiveStep ] = useState(0);
 	const [ skipped, setSkipped ] = useState(new Set());
 	const classes = useStyles();
 	const steps = getSteps();
+
+	useEffect(() => {
+		dispatch(ActionsBusiness.getBusinessDetails(props.businessId));
+	}, []);
 
 	return (
 		<div
@@ -227,7 +231,7 @@ function BusinessSetup(props) {
 														>
 															Tell us a little bit about your business...
 														</Typography>
-														<Step1 businessDetails={businessDetails} />
+														<Step1 businessDetails={props.Steps.step1} />
 													</div>
 													<div>
 														<Typography
@@ -351,8 +355,9 @@ function BusinessSetup(props) {
 
 const mapStateToProps = (state) => {
 	return {
-		enableNext: state.businessSetup.BusinessSetup.enableNext,
+		Steps: state.businessSetup.BusinessSetup.businessSetupSteps,
 		userId: state.auth.user.data.user_id,
+		businessId: state.auth.user.data.business_id,
 		Step1: state.businessSetupSteps.Step1,
 		Step2: state.businessSetupSteps.Step2,
 		Step4: state.businessSetupSteps.Step4

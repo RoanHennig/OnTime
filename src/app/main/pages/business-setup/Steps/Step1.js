@@ -22,19 +22,19 @@ function Step1(props) {
 			stylingMode={'outlined'}
 		>
 			<GroupItem caption={'Business Details'}>
-				<Item dataField={'FirstName'}>
+				<Item dataField={'firstName'}>
 					<RequiredRule message={'First Name is required'} />
 					<PatternRule message={'Do not use digits in the First Name'} pattern={/^[^0-9]+$/} />
 				</Item>
-				<Item dataField={'LastName'}>
+				<Item dataField={'lastName'}>
 					<RequiredRule message={'Last Name is required'} />
 					<PatternRule message={'Do not use digits in the Last Name'} pattern={/^[^0-9]+$/} />
 				</Item>
-				<Item dataField={'BusinessName'}>
+				<Item dataField={'businessName'}>
 					<RequiredRule message={'Business Name is required'} />
 				</Item>
 				<Item
-					dataField={'Phone'}
+					dataField={'phone'}
 					editorOptions={{
 						mask: '+27 00 000 0000',
 						maskRules: {
@@ -46,20 +46,20 @@ function Step1(props) {
 				/>
 			</GroupItem>
 			<GroupItem caption={'Business Address'}>
-				<Item dataField={'Address'}>
+				<Item dataField={'address'}>
 					<RequiredRule message={'Address is required'} />
 				</Item>
-				<Item dataField={'City'}>
+				<Item dataField={'city'}>
 					<RequiredRule message={'City is required'} />
 				</Item>
 				<Item
-					dataField={'Province'}
+					dataField={'province'}
 					editorType={'dxSelectBox'}
 					editorOptions={{ dataSource: service.getProvinces() }}
 				>
 					<RequiredRule message={'Province is required'} />
 				</Item>
-				<Item dataField={'Zipcode'}>
+				<Item dataField={'zipcode'}>
 					<RequiredRule message={'Zipcode is required'} />
 				</Item>
 			</GroupItem>

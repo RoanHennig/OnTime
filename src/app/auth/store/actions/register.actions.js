@@ -26,7 +26,8 @@ export function submitRegister(businessName, firstName, lastName, auth0Id, email
 			)
 			.then((user) => {
 				return dispatch({
-					type: REGISTER_SUCCESS
+					type: REGISTER_SUCCESS,
+					payload: user
 				});
 			})
 			.catch((error) => {
