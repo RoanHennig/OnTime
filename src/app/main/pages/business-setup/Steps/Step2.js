@@ -1,53 +1,57 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import service from './data/businessTypes.js';
-import Form, {Item, RequiredRule } from 'devextreme-react/form';
+import Form, { Item, RequiredRule } from 'devextreme-react/form';
 
-function Step2() {
+function Step2(props) {
+	const stepDetails = useSelector((state) => state.businessSetupSteps.Step2);
+	stepDetails.businessTypeDetails = props.businessCategory;
+	const { labelLocation, readOnly, showColon, colCount } = stepDetails;
 
-    const stepDetails = useSelector(state => state.businessSetupSteps.Step2);
-    const {
-        labelLocation,
-        readOnly,
-        showColon,
-        colCount
-      } = stepDetails;
-      
-          return (
-                    <Form
-                    id={'form'}
-                    formData={stepDetails.businessTypeDetails}
-                    readOnly={readOnly}
-                    showColonAfterLabel={showColon}
-                    labelLocation={labelLocation}
-                    colCount={colCount}
-                    showValidationSummary={true}
-                    validationGroup={'businessType'}
-                    stylingMode= {'outlined'}
-                    >           
-                        <Item dataField={'businessType'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getBusinessTypes(),
-                            displayExpr:'Name',
-                            searchEnabled:true,
-                            searchMode:'contains',
-                            searchExpr:'Name',
-                            searchTimeout:200,
-                            minSearchLength:2,
-                            placeholder:'what describes your business best...',
-                            showDataBeforeSearch:true
-                            }}>
-                            <RequiredRule message={'Business Type is required'} />
-                        </Item>  
-                        <Item dataField={'businessSize'} editorType={'dxSelectBox'} editorOptions={{ dataSource: service.getBusinessSize(),
-                            displayExpr:'Name',                    
-                            placeholder:'how many members are there within your business...',
-                            searchEnabled:false,
-                            showDataBeforeSearch:true
-                            }}>
-                            <RequiredRule message={'Business Size is required'} />
-                        </Item>  
-                    </Form>
-          )
-
+	return (
+		<Form
+			id={'form'}
+			formData={stepDetails.businessTypeDetails}
+			readOnly={readOnly}
+			showColonAfterLabel={showColon}
+			labelLocation={labelLocation}
+			colCount={colCount}
+			showValidationSummary={true}
+			validationGroup={'businessType'}
+			stylingMode={'outlined'}
+		>
+			<Item
+				dataField={'selectedBusinessTypeId'}
+				editorType={'dxSelectBox'}
+				editorOptions={{
+					dataSource: props.businessCategory.businessTypes,
+					displayExpr: 'Name',
+					searchEnabled: true,
+					searchMode: 'contains',
+					searchExpr: 'Name',
+					searchTimeout: 200,
+					minSearchLength: 2,
+					placeholder: 'what describes your business best...',
+					showDataBeforeSearch: true
+				}}
+			>
+				<RequiredRule message={'Business Type is required'} />
+			</Item>
+			<Item
+				dataField={'businessSize'}
+				editorType={'dxSelectBox'}
+				editorOptions={{
+					dataSource: service.getBusinessSize(),
+					displayExpr: 'Name',
+					placeholder: 'how many members are there within your business...',
+					searchEnabled: false,
+					showDataBeforeSearch: true
+				}}
+			>
+				<RequiredRule message={'Business Size is required'} />
+			</Item>
+		</Form>
+	);
 }
 
-export default (Step2);
+export default Step2;

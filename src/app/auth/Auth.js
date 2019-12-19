@@ -84,7 +84,6 @@ class Auth extends Component {
              * Retrieve user data from Auth0
              */
 				auth0Service.getUserData().then((tokenData) => {
-					console.log(tokenData);
 					if (tokenData.user_metadata.accountStatus === 'Incomplete') {
 						this.props
 							.submitRegister(
@@ -96,17 +95,13 @@ class Auth extends Component {
 							)
 							.then((authData) => {
 								tokenData.business_id = authData.payload.data.businessId;
-								console.log(authData);
-								console.log(tokenData);
 								this.props.setUserDataAuth0(tokenData);
 								resolve();
 
 								this.props.showMessage({ message: 'Logged in with Auth0' });
-								if (tokenData.user_metadata.accountStatus === 'Incomplete') {
-									history.push({
-										pathname: '/business-setup'
-									});
-								}
+								history.push({
+									pathname: '/business-setup'
+								});
 							});
 					} else {
 						this.props.setUserDataAuth0(tokenData);

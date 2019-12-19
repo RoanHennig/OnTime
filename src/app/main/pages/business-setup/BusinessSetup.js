@@ -75,7 +75,7 @@ function BusinessSetup(props) {
 		}
 		const success = handleValidation(activeStep);
 		if (success) {
-			ActionsBusiness.saveBusinessDetails(props);
+			dispatch(ActionsBusiness.saveBusinessDetails(props));
 			setActiveStep(activeStep + 1);
 			setSkipped(newSkipped);
 		}
@@ -240,7 +240,7 @@ function BusinessSetup(props) {
 														>
 															What type of business are you in?
 														</Typography>
-														<Step2 />
+														<Step2 businessCategory={props.Steps.step2} />
 													</div>
 													<div>
 														<Typography
