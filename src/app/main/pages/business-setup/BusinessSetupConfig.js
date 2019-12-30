@@ -16,6 +16,9 @@ import {authRoles} from 'app/auth';
                 },
                 rightSidePanel: {
                     display: false
+                },           
+                footer        : {
+                    display: false
                 }
             }
         }

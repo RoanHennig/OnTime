@@ -1,200 +1,380 @@
-import React, {Component} from 'react';
-import {Card, CardContent} from '@material-ui/core';
-import {withStyles} from '@material-ui/core/styles';
-import {FusePageSimple} from '@fuse';
-import { CheckBox, SelectBox, NumberBox, Form } from 'devextreme-react';
-import service from './data.js';
-import {darken} from '@material-ui/core/styles/colorManipulator';
-import {FuseAnimate} from '@fuse';
+import React, { useState, useEffect } from 'react';
+import { Container, Card, CardContent } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import service from './data/data.js';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import { FuseAnimate, FuseScrollbars } from '@fuse';
+import * as Actions from './Steps/store/actions';
 import clsx from 'clsx';
+import Step1 from './Steps/Step1';
+import Step2 from './Steps/Step2';
+import Step3 from './Steps/Step3';
+import Step4 from './Steps/Step4';
+import { bindActionCreators } from 'redux';
+import Stepper from '@material-ui/core/Stepper';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { Avatar } from '@material-ui/core';
+import auth0Service from 'app/services/auth0Service';
+import history from '@history';
+import withSizes from 'react-sizes';
+import SwipeableViews from 'react-swipeable-views';
+import validationEngine from 'devextreme/ui/validation_engine';
+import * as ActionsBusiness from './store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
-const styles = theme => ({
-    layoutRoot: {
-        background: 'radial-gradient(' + darken(theme.palette.primary.dark, 0.3) + ' 0%, ' + theme.palette.primary.dark + ' 60%)',
-        color     : theme.palette.primary.contrastText
-    },
-    root:{
-        background: 'radial-gradient(' + darken(theme.palette.primary.dark, 0.3) + ' 0%, ' + theme.palette.primary.dark + ' 60%)',
-        color     : theme.palette.primary.contrastText
-    }
+function getSteps() {
+	return [ 'Business Details', 'Business Type', 'Services Provided', 'Staff & Operating Hours' ];
+}
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+		background:
+			'radial-gradient(' +
+			darken(theme.palette.primary.dark, 0.5) +
+			' 0%, ' +
+			theme.palette.primary.dark +
+			' 80%)',
+		color: theme.palette.primary.contrastText
+	},
+	button: {
+		marginRight: theme.spacing(1),
+		marginTop: theme.spacing(3)
+	},
+	input: {
+		display: 'none'
+	},
+	mobileStepper: {
+		maxWidth: 400,
+		flexGrow: 1
+	}
+}));
+
+function BusinessSetup(props) {
+	const dispatch = useDispatch();
+	const isStepOptional = (step) => {
+		return step === 2;
+	};
+	const isSetupComplete = (step) => {
+		return step === 4;
+	};
+	const isStepSkipped = (step) => {
+		return skipped.has(step);
+	};
+
+	const handleNext = () => {
+		let newSkipped = skipped;
+		if (isStepSkipped(activeStep)) {
+			newSkipped = new Set(newSkipped.values());
+			newSkipped.delete(activeStep);
+		}
+		const success = handleValidation(activeStep);
+		if (success) {
+			dispatch(ActionsBusiness.saveBusinessDetails(props));
+			setActiveStep(activeStep + 1);
+			setSkipped(newSkipped);
+		}
+	};
+
+	const handleBack = () => {
+		setActiveStep(activeStep - 1);
+	};
+
+	const handleSkip = () => {
+		if (!isStepOptional(activeStep)) {
+			throw new Error("You can't skip a step that isn't optional.");
+		}
+
+		setActiveStep({ activeStep: activeStep + 1 });
+		const newSkipped = new Set(skipped.values());
+		newSkipped.add(activeStep);
+		setSkipped(newSkipped);
+	};
+
+	const handleComplete = () => {
+		auth0Service.getUserData().then((tokenData) => {
+			tokenData.user_metadata.accountStatus = 'Complete';
+			auth0Service.updateUserData(tokenData.user_metadata);
+			auth0Service.setRegistrationComplete();
+			history.push({
+				pathname: '/agenda'
+			});
+		});
+	};
+
+	const handleValidation = (step) => {
+		switch (step) {
+			case 0: {
+				var result = validationEngine.validateGroup('businessData');
+				if (result.isValid) {
+					if (props.Step4.operatingHours && props.Step4.operatingHours.length > 0) {
+						const newStaffOperatingHours = [ ...props.Step4.operatingHours ];
+						const newFirstStaffMember = { ...newStaffOperatingHours[1] };
+						newFirstStaffMember.staffName =
+							props.Step1.businessDetails.FirstName + ' ' + props.Step1.businessDetails.LastName;
+						newStaffOperatingHours[1] = newFirstStaffMember;
+						props.setOperatingHours(newStaffOperatingHours);
+					}
+					return true;
+				} else {
+					return false;
+				}
+			}
+			case 1: {
+				result = validationEngine.validateGroup('businessType');
+				if (
+					result.isValid &&
+					props.Step2.businessTypeDetails.businessType &&
+					props.Step2.businessTypeDetails.businessType
+				) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+			case 3: {
+				if (props.Step4.operatingHours && props.Step4.operatingHours.length > 1) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+			default: {
+				return true;
+			}
+		}
+	};
+
+	const [ activeStep, setActiveStep ] = useState(0);
+	const [ skipped, setSkipped ] = useState(new Set());
+	const classes = useStyles();
+	const steps = getSteps();
+
+	useEffect(() => {
+		dispatch(ActionsBusiness.getBusinessDetails(props.businessId));
+	}, []);
+
+	return (
+		<div
+			className={clsx(
+				classes.root,
+				'flex flex-col flex-auto flex-shrink-0 items-center justify-center sm:p-32 p-2'
+			)}
+		>
+			<div className="flex flex-col items-center justify-center w-full">
+				<Container
+					maxWidth="md"
+					className="md:max-w-4xl flex flex-col items-stretch justify-center sm:p-32 p-2 text-center"
+				>
+					<FuseAnimate animation="transition.expandIn">
+						<Card className="md:max-w-4xl xl:max-h-full max-h-screen">
+							<CardContent className="flex flex-col items-stretch justify-center p-32 text-center">
+								<div>
+									{props.isMobile ? (
+										<MobileStepper
+											variant="dots"
+											steps={4}
+											activeStep={activeStep}
+											position="static"
+											className={classes.mobileStepper}
+										>
+											{steps.map((label, index) => {
+												const stepProps = {};
+												const labelProps = {};
+												if (isStepSkipped(index)) {
+													stepProps.completed = false;
+												}
+												return (
+													<Step key={label} {...stepProps}>
+														<StepLabel {...labelProps}>{label}</StepLabel>
+													</Step>
+												);
+											})}
+										</MobileStepper>
+									) : (
+										<Stepper activeStep={activeStep}>
+											{steps.map((label, index) => {
+												const stepProps = {};
+												const labelProps = {};
+												if (isStepSkipped(index)) {
+													stepProps.completed = false;
+												}
+												return (
+													<Step key={label} {...stepProps}>
+														<StepLabel {...labelProps}>{label}</StepLabel>
+													</Step>
+												);
+											})}
+										</Stepper>
+									)}
+									<div>
+										<div>
+											<FuseScrollbars
+												className="w-full xl:max-h-full max-h-400 overflow-auto"
+												scrollToTopOnChildChange={true}
+											>
+												<SwipeableViews
+													className="overflow-hidden "
+													index={activeStep}
+													enableMouseEvents={false}
+													disabled={true}
+												>
+													<div>
+														<Typography
+															color="inherit"
+															className="text-24 sm:text-32 font-light mb-24"
+														>
+															Tell us a little bit about your business...
+														</Typography>
+														<Step1 businessDetails={props.Steps.step1} />
+													</div>
+													<div>
+														<Typography
+															color="inherit"
+															className="text-24 sm:text-32 font-light mb-24"
+														>
+															What type of business are you in?
+														</Typography>
+														<Step2 businessCategory={props.Steps.step2} />
+													</div>
+													<div>
+														<Typography
+															color="inherit"
+															className="text-24 sm:text-32 font-light mb-24"
+														>
+															What kind of services do you provide?
+														</Typography>
+														<Step3 />
+													</div>
+													<div>
+														<Typography
+															color="inherit"
+															className="text-24 sm:text-32 font-light mb-24"
+														>
+															What times are you open for business?
+														</Typography>
+														<Step4 />
+													</div>
+													<div>
+														<Typography
+															color="inherit"
+															className="text-24 sm:text-32 font-light mb-24"
+														>
+															Setup Complete!
+														</Typography>
+														<Typography
+															color="inherit"
+															className="text-14 sm:text-18 font-light mb-24"
+														>
+															Set your business logo so your clients can recognize you
+														</Typography>
+														<div className="flex flex-col items-center justify-center pb-24">
+															<Avatar
+																className="w-128 h-128"
+																alt="contact avatar"
+																src={'assets/images/avatars/profile.jpg'}
+															/>
+
+															<input
+																accept="image/*"
+																className={classes.input}
+																id="contained-button-file"
+																multiple
+																type="file"
+															/>
+															<label htmlFor="contained-button-file">
+																<Button
+																	variant="contained"
+																	color="secondary"
+																	component="span"
+																	className={classes.button}
+																>
+																	Upload
+																</Button>
+															</label>
+														</div>
+													</div>
+												</SwipeableViews>
+											</FuseScrollbars>
+											<div>
+												<Button
+													disabled={activeStep === 0}
+													onClick={handleBack}
+													className={classes.button}
+												>
+													Back
+												</Button>
+												{isStepOptional(activeStep) && (
+													<Button
+														variant="contained"
+														color="primary"
+														onClick={handleSkip}
+														className={classes.button}
+													>
+														Skip
+													</Button>
+												)}
+
+												{!isSetupComplete(activeStep) && (
+													<Button
+														variant="contained"
+														color="primary"
+														onClick={handleNext}
+														className={classes.button}
+													>
+														{activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+													</Button>
+												)}
+												{isSetupComplete(activeStep) && (
+													<Button
+														variant="contained"
+														color="primary"
+														onClick={handleComplete}
+														className={classes.button}
+													>
+														Take me to my business dashboard
+													</Button>
+												)}
+											</div>
+										</div>
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+					</FuseAnimate>
+				</Container>
+			</div>
+		</div>
+	);
+}
+
+const mapStateToProps = (state) => {
+	return {
+		Steps: state.businessSetup.BusinessSetup.businessSetupSteps,
+		userId: state.auth.user.data.user_id,
+		businessId: state.auth.user.data.business_id,
+		Step1: state.businessSetupSteps.Step1,
+		Step2: state.businessSetupSteps.Step2,
+		Step4: state.businessSetupSteps.Step4
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators(
+		{
+			setOperatingHours: Actions.setOperatingHours
+		},
+		dispatch
+	);
+};
+
+const mapSizesToProps = ({ width }) => ({
+	isMobile: width < 480
 });
 
-class BusinessSetup extends Component {
-    constructor() {
-        super();
-        this.companies = service.getCompanies();
-        this.state = {
-          labelLocation: 'top',
-          readOnly: false,
-          showColon: true,
-          minColWidth: 600,
-          colCount: 2,
-          width: 500,
-          company: this.companies[0]
-        };
-        this.onCompanyChanged = this.onCompanyChanged.bind(this);
-        this.onLabelLocationChanged = this.onLabelLocationChanged.bind(this);
-        this.onReadOnlyChanged = this.onReadOnlyChanged.bind(this);
-        this.onShowColonChanged = this.onShowColonChanged.bind(this);
-        this.onMinColWidthChanged = this.onMinColWidthChanged.bind(this);
-        this.onColumnsCountChanged = this.onColumnsCountChanged.bind(this);
-        this.onFormWidthChanged = this.onFormWidthChanged.bind(this);
-      }
-
-      render()
-      {
-        const {
-            labelLocation,
-            readOnly,
-            showColon,
-            minColWidth,
-            colCount,
-            company,
-            width
-          } = this.state;
-
-          const {classes} = this.props;
-       
-          return (
-              <FusePageSimple
-                  classes={{
-                      root: classes.layoutRoot
-                  }}
-                  content={
-
-                    <div className={clsx(classes.root, "flex flex-col flex-auto flex-shrink-0 items-center justify-center p-32")}>
-
-                        <div className="flex flex-col items-center justify-center w-full">
-
-                            <FuseAnimate animation="transition.expandIn">
-
-                                <Card className="w-full max-w-640">
-
-                                    <CardContent className="flex flex-col items-center justify-center p-32 text-center">
-
-                                        <div id={'form-demo'}>
-                                            <div className={'widget-container'}>
-                                                <div>Select company:</div>
-                                                <SelectBox
-                                                    displayExpr={'Name'}
-                                                    dataSource={this.companies}
-                                                    value={company}
-                                                    onValueChanged={this.onCompanyChanged}
-                                                />
-                                                <Form
-                                                    id={'form'}
-                                                    formData={company}
-                                                    readOnly={readOnly}
-                                                    showColonAfterLabel={showColon}
-                                                    labelLocation={labelLocation}
-                                                    minColWidth={minColWidth}
-                                                    colCount={colCount}
-                                                    width={width}
-                                                />
-                                                </div>
-                                                <div className={'options'}>
-                                                <div className={'caption'}>Options</div>
-                                                <div className={'option'}>
-                                                    <span>Label location:</span>
-                                                    <SelectBox
-                                                    items={['left', 'top']}
-                                                    value={labelLocation}
-                                                    onValueChanged={this.onLabelLocationChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <span>Columns count:</span>
-                                                    <SelectBox
-                                                    items={['auto', 1, 2, 3]}
-                                                    value={colCount}
-                                                    onValueChanged={this.onColumnsCountChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <span>Min column width:</span>
-                                                    <SelectBox
-                                                    items={[150, 200, 300]}
-                                                    value={minColWidth}
-                                                    onValueChanged={this.onMinColWidthChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <span>Form width:</span>
-                                                    <NumberBox
-                                                    max={550}
-                                                    value={width}
-                                                    onValueChanged={this.onFormWidthChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <CheckBox
-                                                    text={'readOnly'}
-                                                    value={readOnly}
-                                                    onValueChanged={this.onReadOnlyChanged}
-                                                    />
-                                                </div>
-                                                <div className={'option'}>
-                                                    <CheckBox
-                                                    text={'showColonAfterLabel'}
-                                                    value={showColon}
-                                                    onValueChanged={this.onShowColonChanged}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </FuseAnimate>
-                        </div>
-                    </div>
-                    
-                  }
-              />
-          )
-      }
-
-      onCompanyChanged(e) {
-        this.setState({
-          company: e.value
-        });
-      }
-    
-      onLabelLocationChanged(e) {
-        this.setState({
-          labelLocation: e.value
-        });
-      }
-    
-      onReadOnlyChanged(e) {
-        this.setState({
-          readOnly: e.value
-        });
-      }
-    
-      onShowColonChanged(e) {
-        this.setState({
-          showColon: e.value
-        });
-      }
-    
-      onMinColWidthChanged(e) {
-        this.setState({
-          minColWidth: e.value
-        });
-      }
-    
-      onColumnsCountChanged(e) {
-        this.setState({
-          colCount: e.value
-        });
-      }
-    
-      onFormWidthChanged(e) {
-        this.setState({
-          width: e.value
-        });
-      }
-  }
-  
-  
-  export default withStyles(styles, {withTheme: true})(BusinessSetup);
+export default compose(withSizes(mapSizesToProps))(connect(mapStateToProps, mapDispatchToProps)(BusinessSetup));

@@ -185,8 +185,8 @@ class auth0Service {
                     'Authorization': 'Bearer ' + this.getAccessToken()
                 }
             }).then(response => {
-                    if(response.data.app_metadata.accountStatus &&
-                     response.data.app_metadata.accountStatus === 'Complete'){
+                    if(response.data.user_metadata.accountStatus &&
+                     response.data.user_metadata.accountStatus === 'Complete'){
                     this.registrationComplete = true;
                 }
                 else {
@@ -236,6 +236,10 @@ class auth0Service {
 
     isRegistrationComplete = () => {
         return this.registrationComplete;
+    }
+
+    setRegistrationComplete = () => {
+        this.registrationComplete = true;
     }
 }
 

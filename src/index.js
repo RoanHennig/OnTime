@@ -15,12 +15,9 @@ import App from 'app/App';
 import axios from 'axios';
 import AXIOS_CONFIG from './app/fuse-configs/axiosConfig';
 
-axios.defaults.baseURL = AXIOS_CONFIG.baseURL;
+axios.defaults.baseURL = AXIOS_CONFIG.baseUrl;
 
-ReactDOM.render(
-    <App/>,
-    document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
