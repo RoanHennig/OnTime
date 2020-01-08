@@ -13,7 +13,7 @@ function Callback(props) {
 			auth0Service.onAuthenticated(() => {
 				auth0Service.getUserData().then((tokenData) => {
 					if (tokenData.user_metadata.accountStatus === 'Incomplete') {
-						this.props
+						props
 							.submitRegister(
 								tokenData.user_metadata.business_name,
 								tokenData.user_metadata.first_name,
@@ -25,7 +25,7 @@ function Callback(props) {
 								tokenData.business_id = authData.payload.data.businessId;
 								dispatch(userActions.setUserDataAuth0(tokenData));
 
-								this.props.showMessage({ message: 'Logged in with Auth0' });
+								props.showMessage({ message: 'Logged in with Auth0' });
 								history.push({
 									pathname: '/business-setup'
 								});
