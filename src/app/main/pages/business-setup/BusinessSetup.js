@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import service from './data/data.js';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { FuseAnimate, FuseScrollbars } from '@fuse';
 import * as Actions from './Steps/store/actions';
@@ -26,7 +25,7 @@ import withSizes from 'react-sizes';
 import SwipeableViews from 'react-swipeable-views';
 import validationEngine from 'devextreme/ui/validation_engine';
 import * as ActionsBusiness from './store/actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 function getSteps() {
 	return [ 'Business Details', 'Business Type', 'Services Provided', 'Staff & Operating Hours' ];

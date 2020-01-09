@@ -5,8 +5,6 @@ export const SAVE_BUSINESS_DETAILS = '[BUSINESSSETUP] SAVE BUSINESS DETAILS';
 export const GET_BUSINESS_DETAILS = '[BUSINESSSETUP] GET BUSINESS DETAILS';
 
 export function saveBusinessDetails(steps) {
-	console.log(steps.Step1.businessDetails);
-	console.log(steps.userId);
 	const request = axios.post(
 		'api/businessSetup/save',
 		{
